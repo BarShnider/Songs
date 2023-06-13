@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "SZmpp50/YwRuK9VHV1+kkQuqywju8wwq7An8CNBJi9qm7LT2C48/0WLsR0uYM0/nnMzspR7+pYS1uoyx2VS0Og==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\יוני\\Desktop\\Final-Project\\lyrics-final-proj\\server\\Lyrics_Final_Proj\\Lyrics_Final_Proj\\Lyrics_Final_Proj.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\יוני\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\יוני\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\יוני\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\יוני\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\יוני\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\יוני\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
