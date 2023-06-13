@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Lyrics_Final_Proj.Models;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +14,13 @@ namespace Lyrics_Final_Proj.Controllers
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet]
+        [Route("GetAllSongs")]
+        public IEnumerable<Song> GetAllSongs()
+        {
+            return Song.ReadAllSongs();
         }
 
         // GET api/<SongsController>/5

@@ -9,6 +9,13 @@
         public string ArtistName { get; set; }
 
         public int FavoriteCount { get; set; }
+        public static List<Song> ReadAllSongs()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ReadAllSongs();
+
+        }
 
     }
+
 }

@@ -66,6 +66,73 @@ public class DBservices
 
 
 
+    //--------------------------------------------------------------------------------------------------
+    // This method Reads all Songs
+    //--------------------------------------------------------------------------------------------------
+    public List<Song> ReadAllSongs()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_GetAllSongs", con, null);             // create the command
+
+
+        List<Song> songsList = new List<Song>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Song s = new Song();
+                s.Id = Convert.ToInt32(dataReader["Id"]);
+                s.ArtistName = dataReader["artist"].ToString();
+                s.Title = dataReader["song"].ToString();
+                s.Link = dataReader["link"].ToString();
+                s.Lyrics = dataReader["text"].ToString();
+
+
+
+
+
+
+
+
+
+                songsList.Add(s);
+            }
+            return songsList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
 
 
 

@@ -5,7 +5,6 @@ C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyr
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\obj\Debug\net6.0\Lyrics_Final_Proj.csproj.CoreCompileInputs.cache
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\obj\Debug\net6.0\Lyrics_Final_Proj.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\obj\Debug\net6.0\Lyrics_Final_Proj.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\bin\Debug\net6.0\Lyrics_Final_Proj.exe
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\bin\Debug\net6.0\Lyrics_Final_Proj.deps.json
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\bin\Debug\net6.0\Lyrics_Final_Proj.runtimeconfig.json
@@ -30,3 +29,4 @@ C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyr
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\obj\Debug\net6.0\Lyrics_Final_Proj.pdb
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\obj\Debug\net6.0\Lyrics_Final_Proj.genruntimeconfig.cache
 C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\obj\Debug\net6.0\ref\Lyrics_Final_Proj.dll
+C:\Users\barsh\Desktop\Study\Second Year\Semster B\Server Side\final-project\lyrics-final-proj\server\Lyrics_Final_Proj\Lyrics_Final_Proj\bin\Debug\net6.0\appsettings.json
