@@ -16,6 +16,19 @@
 
         }
 
+        public static List<Song> GetSongsByArtist(string artistName)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetSongsByArtist(artistName);
+
+        }
+
+        public static List<Song> GetSongsBySongName(string songName)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetSongsBySongName(songName);
+
+        }
     }
 
 }

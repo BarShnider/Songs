@@ -23,6 +23,20 @@ namespace Lyrics_Final_Proj.Controllers
             return Song.ReadAllSongs();
         }
 
+        [HttpGet]
+        [Route("GetSongsByArtist/{artistName}")]
+        public IEnumerable<Song> GetSongsByArtist(string artistName)
+        {
+            return Song.GetSongsByArtist(artistName);
+        }
+
+        [HttpGet]
+        [Route("GetSongsBySongName/{songName}")]
+        public IEnumerable<Song> GetSongs(string songName)
+        {
+            return Song.GetSongsBySongName(songName);
+        }
+
         // GET api/<SongsController>/5
         [HttpGet("{id}")]
         public string Get(int id)
