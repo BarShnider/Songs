@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Lyrics_Final_Proj.props" />
+</Project>

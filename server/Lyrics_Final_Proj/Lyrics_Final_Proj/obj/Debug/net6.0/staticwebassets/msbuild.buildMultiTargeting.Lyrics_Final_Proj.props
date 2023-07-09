@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Lyrics_Final_Proj.props" />
+</Project>

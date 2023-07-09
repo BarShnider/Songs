@@ -7,6 +7,7 @@ using System.Data;
 using System.Text;
 using Lyrics_Final_Proj.Models;
 
+
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
 /// </summary>
@@ -257,6 +258,52 @@ public class DBservices
     /////////////////////////////////////////////////////////////////
     ///////////////////////// USER /////////////////////////////////
     ////////////////////////////////////////////////////////////////
+
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if user exists 
+    //--------------------------------------------------------------------------------------------------
+    public int LoginUser(string email)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@userEmail", email);
+
+        cmd = CreateCommandWithStoredProcedure("[dbo].[Final_CheckUser]", con, paramDic);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
 
 
     //--------------------------------------------------------------------------------------------------
