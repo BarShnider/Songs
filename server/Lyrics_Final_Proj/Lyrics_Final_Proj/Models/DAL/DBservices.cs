@@ -262,7 +262,7 @@ public class DBservices
     //--------------------------------------------------------------------------------------------------
     // This method checks if user exists 
     //--------------------------------------------------------------------------------------------------
-    public int LoginUser(string email)
+    public int LoginUser(User user)
     {
 
         SqlConnection con;
@@ -279,14 +279,18 @@ public class DBservices
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@userEmail", email);
+        paramDic.Add("@userEmail", user.Email);
+        paramDic.Add("@userPassword", user.Password);
+
+
+
 
         cmd = CreateCommandWithStoredProcedure("[dbo].[Final_CheckUser]", con, paramDic);             // create the command
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
+            //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
             return numEffected;
         }
         catch (Exception ex)
@@ -305,6 +309,55 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method adds to user a favorite song 
+    //--------------------------------------------------------------------------------------------------
+    public int UserSong(string email, string songName)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@userEmail", email);
+        paramDic.Add("@songName", songName);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedure("SP_Final_UserLikesSong", con, paramDic);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
 
     //--------------------------------------------------------------------------------------------------
     // This method returns a user by email

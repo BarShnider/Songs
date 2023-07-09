@@ -7,11 +7,20 @@ public class User
     public string Password { get; set; }
     public DateTime dateRegister { get; set; }
 
-    public bool Login(string email)
+    public int Login()
     {
         DBservices dbs = new DBservices();
-        if (dbs.LoginUser(email) == 1)
-            return true ;
-        return false ;
+        int numCheck = dbs.LoginUser(this);
+        return numCheck;
+    }
+
+    public bool AddSongToFav(string email, string songName)
+    {
+        DBservices dbs = new DBservices();
+        if (dbs.UserSong(email, songName) == 1)
+        {
+            return true;
+        }
+        return false;
     }
 }

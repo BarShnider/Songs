@@ -26,12 +26,11 @@ namespace Lyrics_Final_Proj.Controllers
         // Check if user exists
         [HttpPost]
         [Route("Login")]
-        public bool Login(string email)
+        public int Login(User user)
         {
             try
             {
-                User user=new User();
-                return user.Login(email);
+                return user.Login();
             }
             catch (Exception ex)
             {
@@ -41,8 +40,11 @@ namespace Lyrics_Final_Proj.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("UserLikesSong")]
+        public bool Post(string email, string songName)
         {
+            User user = new User();
+            return user.AddSongToFav(email, songName);
 
         }
 
