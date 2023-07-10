@@ -38,6 +38,13 @@ namespace Lyrics_Final_Proj.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Register")]
+        public bool Register([FromBody] User user)
+        {
+            return user.Register();
+        }
+
         // POST api/<UsersController>
         [HttpPost]
         [Route("UserLikesSong")]

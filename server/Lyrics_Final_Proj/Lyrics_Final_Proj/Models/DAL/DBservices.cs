@@ -359,6 +359,161 @@ public class DBservices
         }
     }
 
+
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if user is already exist 
+    //--------------------------------------------------------------------------------------------------
+    public int CheckUserExist(string email)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@email", email);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_IsUserExist", con, paramDic);             // create the command
+
+        try
+        {
+            //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method Inserts a user to the Users table 
+    //--------------------------------------------------------------------------------------------------
+    public int InsertUser(User user)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@name", user.Name);
+        paramDic.Add("@email", user.Email);
+        paramDic.Add("@password", user.Password);
+        cmd = CreateCommandWithStoredProcedure("Final_UserRegister", con, paramDic);             // create the command
+
+        try
+        {
+            // int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method Read user by email
+    //--------------------------------------------------------------------------------------------------
+    public User ReadUserByEmail(string email)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@email", email);
+        cmd = CreateCommandWithStoredProcedure("SP_ReadUserByEmail_Bar", con, paramDic);             // create the command
+
+
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            User u = new User();
+            while (dataReader.Read())
+            {
+                u.Name = dataReader["name"].ToString();
+                u.Email = dataReader["email"].ToString();
+                u.Password = dataReader["password"].ToString();
+                u.DateRegister = Convert.ToDateTime(dataReader["created_at"]);
+            }
+            return u;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
     //--------------------------------------------------------------------------------------------------
     // This method returns a user by email
     //--------------------------------------------------------------------------------------------------

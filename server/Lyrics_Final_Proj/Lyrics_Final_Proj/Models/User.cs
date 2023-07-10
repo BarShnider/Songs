@@ -5,13 +5,33 @@ public class User
     public string Name { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public DateTime dateRegister { get; set; }
+    public DateTime DateRegister { get; set; }
 
     public int Login()
     {
         DBservices dbs = new DBservices();
         int numCheck = dbs.LoginUser(this);
         return numCheck;
+    }
+
+    public bool Register()
+    {
+        DBservices dbs = new DBservices();
+        if (dbs.CheckUserExist(this.Email) == 1) // if there is a user with this email will return 1, else return 0
+        {
+            return false;
+        }
+        else
+        {
+            dbs.InsertUser(this);
+            return true;
+        }
+    }
+
+    public static User ReadUserByEmail(string email)
+    {
+        DBservices dbs = new DBservices();
+        return dbs.ReadUserByEmail(email);
     }
 
     public bool AddSongToFav(string email, string songName)
