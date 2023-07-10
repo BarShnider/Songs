@@ -4,4 +4,5 @@ server/Lyrics_Final_Proj/Lyrics_Final_Proj/obj/Debug/net6.0/project.razor.json
 server/Lyrics_Final_Proj/Lyrics_Final_Proj/bin
 server/Lyrics_Final_Proj/Lyrics_Final_Proj/obj
 server/Lyrics_Final_Proj/Lyrics_Final_Proj/Properties
-
+server/.vs
+*.vsidx
