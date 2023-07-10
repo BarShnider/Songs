@@ -279,7 +279,7 @@ public class DBservices
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@userEmail", user.Email);
+        paramDic.Add("@userName", user.Name);
         paramDic.Add("@userPassword", user.Password);
 
 
@@ -335,7 +335,7 @@ public class DBservices
 
 
 
-        cmd = CreateCommandWithStoredProcedure("SP_Final_UserLikesSong", con, paramDic);             // create the command
+        cmd = CreateCommandWithStoredProcedure("Final_UserLikesSong", con, paramDic);             // create the command
 
         try
         {
