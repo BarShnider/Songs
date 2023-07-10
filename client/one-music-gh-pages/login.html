@@ -131,7 +131,7 @@
                         <h3>Welcome Back</h3>
                         <!-- Login Form -->
                         <div class="login-form">
-                            <form action="#" method="post">
+                            <form  id="login-form" action="#" method="post" >
                                 <div class="form-group">
                                     <label for="loginEmail">Email address</label>
                                     <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter E-mail">
@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="loginPassword">Password</label>
-                                    <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="loginPassword" placeholder="Password" pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$" oninvalid="this.setCustomValidity('password must have a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.')" oninput="this.setCustomValidity('')">
                                 </div>
                                 <button type="submit" class="btn oneMusic-btn mt-30">Login</button>
                             </form>
@@ -187,8 +187,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="js/bootstrap/bootstrap.min.js"></script>
     <!-- All Plugins js -->
     <script src="js/plugins/plugins.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/ajaxCalls.js"></script>
     <!-- Active js -->
     <script src="js/active.js"></script>
+    <script src="js/index.js"></script>
+
 </body>
 
 </html>

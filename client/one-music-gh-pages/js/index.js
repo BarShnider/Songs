@@ -15,8 +15,7 @@ $(document).ready(() => {
         return
     }
     let api = currApi + `/Users/Register`;
-    ajaxCall("POST",api,JSON.stringify(user),registerSuccessCB,registerErrorCB
-    );
+    ajaxCall("POST",api,JSON.stringify(user),registerSuccessCB,errorCB);
     return false;
   });
   // check if the password is matching with the validation password, and show a messege if not
@@ -29,32 +28,27 @@ $(document).ready(() => {
       this.setCustomValidity("");
     }
   }
-  $("#reEnterRegisterPassword").on("blur", checkPassword); // check for password validation
-  
-  $("#register-form").submit(() => { // Login form
+  $("#login-form").submit(() => { // Login form
     let user = {
-      name: $("#registerName").val(),
-      email: $("#registerEmail").val().toLowerCase(),
-      password: $("#registerPassword").val(),
+      name: $("#loginEmail").val(),
+      email: $("#loginEmail").val().toLowerCase(),
+      password: $("#loginPassword").val(),
     };
     console.log(user);
-    if($("#registerName").val() == ""){
+    if($("#loginEmail").val() == ""){
         alert("please insert username!")
         return
     }
     let api = currApi + `/Users/Login`;
-    ajaxCall(
-      "POST",
-      api,
-      JSON.stringify(user),
-      registerSuccessCB,
-      registerErrorCB
-    );
+    ajaxCall("POST",api,JSON.stringify(user),loginSuccessCB,errorCB);
     return false;
   });
+
+  $("#reEnterRegisterPassword").on("blur", checkPassword); // check for password validation
+  
 });
 
-function registerErrorCB(err) {
+function errorCB(err) {
   console.log(err);
 }
 
@@ -75,7 +69,40 @@ function registerSuccessCB(data) {
     });
     setTimeout(() => {
       window.location.href = "index.html";
-    console.log("times")
     }, 3000);
   }
+}
+
+function loginSuccessCB(data){
+    console.log(data)
+    switch(data){
+        case 0: // email incorrect
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Email is incorrect, Please try again.",
+          });
+            break;
+        case 1: //email & password correct
+        localStorage.setItem("email", $("registerEmail").val())
+        setTimeout(() => {
+            window.location.href = "index.html";
+          }, 3000);
+            break;
+        case 2: // password incorrect
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Password is incorrect, Please try again.",
+          });
+            break;
+
+            default:
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "somthing went wrong, Please try again.",
+                  });
+            break;
+    }
 }
