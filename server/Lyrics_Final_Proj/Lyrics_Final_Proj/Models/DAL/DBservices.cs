@@ -64,7 +64,9 @@ public class DBservices
     }
 
 
-
+      /////////////////////////////////////////////////////////////////
+     ///////////////////////// SONG /////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
 
     //--------------------------------------------------------------------------------------------------
@@ -512,6 +514,81 @@ public class DBservices
         }
 
     }
+
+    /////////////////////////////////////////////////////////////////
+    ///////////////////////// ARTIST /////////////////////////////////
+    ////////////////////////////////////////////////////////////////
+
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if user is already exist 
+    //--------------------------------------------------------------------------------------------------
+    public int AddRemoveLike(string name, int num)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@artistName", name);
+        paramDic.Add("@functionType", num);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_Like_Artist", con, paramDic);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //--------------------------------------------------------------------------------------------------
