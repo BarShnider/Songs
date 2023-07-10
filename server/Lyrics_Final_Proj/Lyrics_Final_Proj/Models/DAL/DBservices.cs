@@ -489,7 +489,7 @@ public class DBservices
             User u = new User();
             while (dataReader.Read())
             {
-                u.Name = dataReader["name"].ToString();
+                u.Name = dataReader["userName"].ToString();
                 u.Email = dataReader["email"].ToString();
                 u.Password = dataReader["password"].ToString();
                 u.DateRegister = Convert.ToDateTime(dataReader["created_at"]);

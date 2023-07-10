@@ -5,7 +5,7 @@ let currApi = swaggerAPI;
 $(document).ready(() => {
   $("#register-form").submit(() => { // register form
     let user = {
-      name: $("#registerName").val(),
+      name: $("#registerName").val().toLowerCase(),
       email: $("#registerEmail").val().toLowerCase(),
       password: $("#registerPassword").val(),
     };
@@ -30,7 +30,7 @@ $(document).ready(() => {
   }
   $("#login-form").submit(() => { // Login form
     let user = {
-      name: $("#loginEmail").val(),
+      name: "",
       email: $("#loginEmail").val().toLowerCase(),
       password: $("#loginPassword").val(),
     };
@@ -80,11 +80,13 @@ function loginSuccessCB(data){
         Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Email is incorrect, Please try again.",
+            text: "Email or Username is incorrect, Please try again.",
           });
             break;
         case 1: //email & password correct
         localStorage.setItem("email", $("registerEmail").val())
+        ajaxCall("POST",api + `Users/GetUserByEmail`,$("#loginEmail").val().toLowerCase(),emailSuccessCB,errorCB);
+
         setTimeout(() => {
             window.location.href = "index.html";
           }, 3000);
@@ -96,7 +98,6 @@ function loginSuccessCB(data){
             text: "Password is incorrect, Please try again.",
           });
             break;
-
             default:
                 Swal.fire({
                     icon: "error",
@@ -105,4 +106,8 @@ function loginSuccessCB(data){
                   });
             break;
     }
+}
+
+function emailSuccessCB(data){
+    console.log(data);
 }
