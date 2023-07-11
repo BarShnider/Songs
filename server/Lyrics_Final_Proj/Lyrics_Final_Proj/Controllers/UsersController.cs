@@ -25,7 +25,7 @@ namespace Lyrics_Final_Proj.Controllers
 
         [HttpGet]
         [Route("GetUserByEmail")]
-        public User GetUserByEmail(string email)
+        public User GetUserByEmail([FromBody] string email)
         {
            return Lyrics_Final_Proj.Models.User.ReadUserByEmail(email);
         }

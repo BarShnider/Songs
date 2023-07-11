@@ -281,7 +281,7 @@ public class DBservices
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@userName", user.Name);
+        paramDic.Add("@userName", user.Email);
         paramDic.Add("@userPassword", user.Password);
 
 
@@ -480,7 +480,7 @@ public class DBservices
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@email", email);
-        cmd = CreateCommandWithStoredProcedure("SP_ReadUserByEmail_Bar", con, paramDic);             // create the command
+        cmd = CreateCommandWithStoredProcedure("Final_GetUserByEmail", con, paramDic);             // create the command
 
 
 

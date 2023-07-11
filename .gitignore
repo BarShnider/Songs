@@ -6,3 +6,6 @@ server/Lyrics_Final_Proj/Lyrics_Final_Proj/obj
 server/Lyrics_Final_Proj/Lyrics_Final_Proj/Properties
 server/.vs
 *.vsidx
+*.props
+*.cache
+server/Lyrics_Final_Proj/Lyrics_Final_Proj/obj/Lyrics_Final_Proj.csproj.nuget.dgspec.json

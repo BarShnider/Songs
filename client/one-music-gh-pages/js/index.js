@@ -84,12 +84,12 @@ function loginSuccessCB(data){
           });
             break;
         case 1: //email & password correct
-        localStorage.setItem("email", $("registerEmail").val())
-        ajaxCall("POST",api + `Users/GetUserByEmail`,$("#loginEmail").val().toLowerCase(),emailSuccessCB,errorCB);
+        localStorage.setItem("email", $("#loginEmail").val())
+        ajaxCall("GET",currApi + `Users/GetUserByEmail`,$("#loginEmail").val().toLowerCase(),emailSuccessCB,errorCB);
 
-        setTimeout(() => {
-            window.location.href = "index.html";
-          }, 3000);
+        // setTimeout(() => {
+        //     window.location.href = "index.html";
+        //   }, 3000);
             break;
         case 2: // password incorrect
         Swal.fire({
