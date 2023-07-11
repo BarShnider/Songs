@@ -11,9 +11,10 @@ namespace Lyrics_Final_Proj.Controllers
     {
         // GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<string> Get(string mail)
         {
-            return new string[] { "value1", "value2" };
+            User user = new User();
+            return user.ArtistArr(mail);
         }
 
         // GET api/<UsersController>/5
@@ -24,8 +25,8 @@ namespace Lyrics_Final_Proj.Controllers
         }
 
         [HttpGet]
-        [Route("GetUserByEmail/{email}")]
-        public User GetUserByEmail(string email)
+        [Route("GetUserByEmail")]
+        public User GetUserByEmail([FromBody] string email)
         {
            return Lyrics_Final_Proj.Models.User.ReadUserByEmail(email);
         }
