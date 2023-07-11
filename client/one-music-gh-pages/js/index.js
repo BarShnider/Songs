@@ -84,8 +84,14 @@ function loginSuccessCB(data){
           });
             break;
         case 1: //email & password correct
+        Swal.fire({
+            icon: "success",
+            title: "Welcome!",
+            text: "Connected Succefully!",
+          });
         localStorage.setItem("email", $("#loginEmail").val())
-        ajaxCall("GET",currApi + `Users/GetUserByEmail`,$("#loginEmail").val().toLowerCase(),emailSuccessCB,errorCB);
+        let email = $("#loginEmail").val()
+        ajaxCall("GET",currApi + `/Users/GetUserByEmail/${email}`,"",emailSuccessCB,errorCB);
 
         // setTimeout(() => {
         //     window.location.href = "index.html";
