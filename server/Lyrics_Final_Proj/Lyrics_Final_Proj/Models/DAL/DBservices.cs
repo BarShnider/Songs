@@ -363,9 +363,9 @@ public class DBservices
 
 
     //--------------------------------------------------------------------------------------------------
-    // This method checks if user is already exist 
+    // This method checks if user is already exist by email 
     //--------------------------------------------------------------------------------------------------
-    public int CheckUserExist(string email)
+    public int CheckUserExistEmail(string email)
     {
 
         SqlConnection con;
@@ -388,6 +388,55 @@ public class DBservices
 
 
         cmd = CreateCommandWithStoredProcedure("Final_IsUserExist", con, paramDic);             // create the command
+
+        try
+        {
+            //int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if user is already exist by email 
+    //--------------------------------------------------------------------------------------------------
+    public int CheckUserExistName(string name)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@name", name);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_IsUserExistName", con, paramDic);             // create the command
 
         try
         {

@@ -17,14 +17,19 @@ public class User
     public bool Register()
     {
         DBservices dbs = new DBservices();
-        if (dbs.CheckUserExist(this.Email) == 1) // if there is a user with this email will return 1, else return 0
+        if (dbs.CheckUserExistEmail(this.Email) == 1) // if there is a user with this email will return 1, else return 0
         {
             return false;
         }
         else
         {
-            dbs.InsertUser(this);
-            return true;
+            if (dbs.CheckUserExistName(this.Name) == 1) // if there is a user with this email will return 1, else return 0
+                return false;
+            else
+            {
+                dbs.InsertUser(this);
+                return true;
+            }
         }
     }
 
