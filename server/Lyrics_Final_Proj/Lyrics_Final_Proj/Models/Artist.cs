@@ -24,5 +24,11 @@
             return dbs.ReturnTopArtists();
         }
 
+        public List<string> GetArtistsWord(string word)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.SearchArtistsByWord(word);
+        }
+
     }
 }

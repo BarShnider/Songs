@@ -18,8 +18,11 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.ArtistsNames();
         }
 
+
+
         // GET: api/<ArtistsController>
-        [HttpGet("TopArtists")]
+        [HttpGet]
+        [Route("TopArtists")]
         public IEnumerable<string> TopArtistsNames()
         {
             Artist artist = new Artist();
@@ -31,6 +34,15 @@ namespace Lyrics_Final_Proj.Controllers
         public string Get(int id)
         {
             return "value";
+        }
+
+        // GET api/<ArtistsController>/5
+        [HttpGet]
+        [Route("ArtistsByWord")]
+        public List<string> GetArtistsByWord(string word)
+        {
+            Artist artist =new Artist();
+            return artist.GetArtistsWord(word);
         }
 
         // POST api/<ArtistsController>

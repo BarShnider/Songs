@@ -254,6 +254,57 @@ public class DBservices
         }
     }
 
+    public List<string> GetSongsByWord(string word)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@word", word);
+
+        cmd = CreateCommandWithStoredProcedure("Final_Get_Song_By_Word", con, paramDic);             // create the command
+
+        List<string> artistList = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string name = dataReader["name"].ToString();
+                artistList.Add(name);
+            }
+            return artistList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
 
 
     /////////////////////////////////////////////////////////////////
@@ -740,6 +791,57 @@ public class DBservices
 
         cmd = CreateCommandWithStoredProcedure("Final_Top_Artists ", con, null);             // create the command
 
+
+        List<string> artistList = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string name = dataReader["name"].ToString();
+                artistList.Add(name);
+            }
+            return artistList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    public List<string> SearchArtistsByWord(string word)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@word", word);
+
+         cmd = CreateCommandWithStoredProcedure("Final_Get_Artists_By_Word", con, paramDic);             // create the command
 
         List<string> artistList = new List<string>();
 
