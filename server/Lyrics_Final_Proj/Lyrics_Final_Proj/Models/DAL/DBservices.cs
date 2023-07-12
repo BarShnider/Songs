@@ -199,7 +199,7 @@ public class DBservices
     //--------------------------------------------------------------------------------------------------
     // This method returns a list of songs for given Song Name
     //--------------------------------------------------------------------------------------------------
-    public List<Song> GetSongsBySongName(string songName)
+    public Song GetSongsBySongName(string songName)
     {
 
         SqlConnection con;
@@ -219,7 +219,7 @@ public class DBservices
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@songName", songName);
 
-        cmd = CreateCommandWithStoredProcedure("Songs_GetSongsBySongName", con, paramDic);
+        cmd = CreateCommandWithStoredProcedure("Final_GetSongBySongname", con, paramDic);
 
         List<Song> songsList = new List<Song>();
 
@@ -227,17 +227,16 @@ public class DBservices
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
+                Song s = new Song();
             while (dataReader.Read())
             {
-                Song s = new Song();
                 s.Id = Convert.ToInt32(dataReader["Id"]);
                 s.ArtistName = dataReader["artist"].ToString();
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
-                songsList.Add(s);
             }
-            return songsList;
+            return s;
         }
         catch (Exception ex)
         {

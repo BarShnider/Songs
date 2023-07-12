@@ -31,10 +31,10 @@ namespace Lyrics_Final_Proj.Controllers
         }
 
         [HttpGet]
-        [Route("GetSongsBySongName/{songName}")]
-        public IEnumerable<Song> GetSongs(string songName)
+        [Route("GetSongBySongName/{songName}")]
+        public Song GetSongBySongName(string songName)
         {
-            return Song.GetSongsBySongName(songName);
+            return Song.GetSongBySongName(songName);
         }
 
         // GET api/<SongsController>/5

@@ -11,6 +11,7 @@ namespace Lyrics_Final_Proj.Controllers
     {
         // GET: api/<ArtistsController>
         [HttpGet]
+        [Route("GetAllArtists")]
         public IEnumerable<string> ArtistsNames()
         {
             Artist artist = new Artist();

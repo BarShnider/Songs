@@ -1676,3 +1676,15 @@ img {
 /* ====== The End ====== */
 
 /*# sourceMappingURL=style.css.map */
+
+/* Bar & Yoni CSS additions */
+
+#lyricsContainer {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+#artistInfoContainer {
+  font-size: 1rem;
+
+}
