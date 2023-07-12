@@ -23,7 +23,7 @@
 
         }
 
-        public static List<Song> GetSongsBySongName(string songName)
+        public static Song GetSongBySongName(string songName)
         {
             DBservices dbs = new DBservices();
             return dbs.GetSongsBySongName(songName);

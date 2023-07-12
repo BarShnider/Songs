@@ -1,6 +1,7 @@
 const swaggerAPI = `https://localhost:7052/api`;
 let rupAPI;
 let currApi = swaggerAPI;
+const lastfmKEY = "711cd7242581234c484cb8a564931277"
 
 $(document).ready(() => {
 
@@ -160,4 +161,56 @@ function successCB(data) {
   function errorCB(err){
     alert("dont Work");
     console.log(err);
+  }
+//this function will be activaeted when entering lyrics page
+function renderSongPage(){
+  songName = "Factory"
+  ajaxCall("GET",currApi + `/Songs/GetSongBySongName/${songName}`,"",songSuccessCB,errorCB);
+}
+
+function songSuccessCB(data){
+  console.log(data)
+  document.querySelector("#artistName").innerHTML = data.artistName;
+  document.querySelector("#songName").innerHTML = data.title;
+  document.querySelector("#lyricsContainer").innerText = data.lyrics
+
+}
+
+function renderArtistPage(artistName){
+  document.querySelector("#artist").innerHTML = artistName;
+  ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName}&api_key=${lastfmKEY}&format=json`,"",artistInfoSuccessCB,errorCB);
+}
+
+function artistInfoSuccessCB(data) {
+  console.log(data)
+  document.querySelector("#artist-summary").innerText = data.artist.bio.summary;
+  document.querySelector("#artist-content").innerText = data.artist.bio.content;
+}
+
+function renderAllArtistsList(){
+  ajaxCall("GET",currApi + `/Artists/GetAllArtists`,"",artistSuccessCB,errorCB);
+
+}
+
+function artistSuccessCB(data) {
+  console.log(data);
+  let container = document.querySelector("#accordion");
+  for (let i = 0; i < data.length; i++) {
+    let name = data[i];
+    let accordionId = `collapse${i + 1}`; // Generate unique id for each accordion
+
+    container.innerHTML += `
+        <div class="panel single-accordion">
+          <h6>
+            <a role="button" aria-expanded="true" aria-controls="${accordionId}" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#${accordionId}">
+              ${name}
+              <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+              <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+            </a>
+          </h6>
+          <div id="${accordionId}" class="accordion-content collapse">
+            <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum at ipsum ac, dignissim iaculis ante.</p>
+          </div>
+        </div>`;
+  }
 }
