@@ -3,13 +3,29 @@ let rupAPI;
 let currApi = swaggerAPI;
 
 $(document).ready(() => {
+
+    if(localStorage.getItem("userObj")){
+        console.log("ONLOAD USER OBJECT:")
+        let loggedInUser = JSON.parse(localStorage.getItem("userObj"))
+        console.log(loggedInUser);
+        console.log(document.querySelector(".login-register-btn"))
+        document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn mr-50"><a href="login.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><a href="register.html" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
+    }
+    else {
+        console.log("no one is logged in")
+    }
+
+
+
+
+
+
   $("#register-form").submit(() => { // register form
     let user = {
       name: $("#registerName").val().toLowerCase(),
       email: $("#registerEmail").val().toLowerCase(),
       password: $("#registerPassword").val(),
     };
-    console.log(user);
     if($("#registerName").val() == ""){
         alert("please insert username!")
         return
@@ -34,7 +50,6 @@ $(document).ready(() => {
       email: $("#loginEmail").val().toLowerCase(),
       password: $("#loginPassword").val(),
     };
-    console.log(user);
     if($("#loginEmail").val() == ""){
         alert("please insert username!")
         return
@@ -67,6 +82,11 @@ function registerSuccessCB(data) {
       title: "Welcome!",
       text: "New Account Created!",
     });
+    userObj = {
+        username: $("#registerName").val().toLowerCase(),
+        email: $("#registerEmail").val().toLowerCase() 
+    }
+    localStorage.setItem("userObj", JSON.stringify(userObj))
     setTimeout(() => {
       window.location.href = "index.html";
     }, 3000);
@@ -89,13 +109,12 @@ function loginSuccessCB(data){
             title: "Welcome!",
             text: "Connected Succefully!",
           });
-        localStorage.setItem("email", $("#loginEmail").val())
         let email = $("#loginEmail").val()
         ajaxCall("GET",currApi + `/Users/GetUserByEmail/${email}`,"",emailSuccessCB,errorCB);
 
-        // setTimeout(() => {
-        //     window.location.href = "index.html";
-        //   }, 3000);
+        setTimeout(() => {
+            window.location.href = "index.html";
+          }, 3000);
             break;
         case 2: // password incorrect
         Swal.fire({
@@ -116,4 +135,10 @@ function loginSuccessCB(data){
 
 function emailSuccessCB(data){
     console.log(data);
+    userObj = {
+        username: data.name,
+        email: data.email        
+    }
+    localStorage.removeItem("email");
+    localStorage.setItem("userObj", JSON.stringify(userObj));
 }
