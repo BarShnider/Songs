@@ -15,8 +15,7 @@ $(document).ready(() => {
         console.log("no one is logged in")
     }
 
-
-
+    TopTenArtists();
 
 
 
@@ -141,4 +140,24 @@ function emailSuccessCB(data){
     }
     localStorage.removeItem("email");
     localStorage.setItem("userObj", JSON.stringify(userObj));
+}
+
+function TopTenArtists(){
+  const qs = `/Artists/TopArtists`;
+                const api=swaggerAPI+qs;
+                ajaxCall("GET",api,"",successCB,errorCB); 
+}
+
+function successCB(data) {
+  console.log(data);
+  for (let i = 0; i < data.length; i++) {
+    let artistId = `artist${i + 1}`;
+    document.getElementById(artistId).textContent = `${i + 1}. ${data[i]}`;
+  }
+}
+
+
+  function errorCB(err){
+    alert("dont Work");
+    console.log(err);
 }

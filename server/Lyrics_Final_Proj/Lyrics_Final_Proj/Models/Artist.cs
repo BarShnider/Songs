@@ -18,5 +18,11 @@
             return dbs.ReturnAllArtists();
         }
 
+        public List<string> TopArtists()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ReturnTopArtists();
+        }
+
     }
 }

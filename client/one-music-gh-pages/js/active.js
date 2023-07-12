@@ -69,7 +69,7 @@
         });
 
         albumSlides.owlCarousel({
-            items: 5,
+            items: 10,
             margin: 30,
             loop: true,
             nav: true,
@@ -79,23 +79,41 @@
             autoplayTimeout: 5000,
             smartSpeed: 750,
             responsive: {
-                0: {
-                    items: 1
-                },
-                480: {
-                    items: 2
-                },
-                768: {
-                    items: 3
-                },
-                992: {
-                    items: 4
-                },
-                1200: {
-                    items: 5
-                }
+              0: {
+                items: 1
+              },
+              480: {
+                items: 2
+              },
+              600: {
+                items: 3
+              },
+              768: {
+                items: 4
+              },
+              992: {
+                items: 5
+              },
+              1200: {
+                items: 6
+              },
+              1440: {
+                items: 7
+              },
+              1600: {
+                items: 8
+              },
+              1800: {
+                items: 9
+              },
+              2000: {
+                items: 10
+              },
+              2200: {
+                items: 10
+              } // Add a new breakpoint for 2200px or higher
             }
-        });
+          });
     }
 
     // :: 4.0 Masonary Gallery Active Code
