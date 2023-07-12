@@ -239,3 +239,4 @@ AppPackages/
 #####
 server/Lyrics_Final_Proj/.vs/ProjectEvaluation/lyrics_final_proj.metadata.v2
 server/Lyrics_Final_Proj/.vs/ProjectEvaluation/lyrics_final_proj.projects.v2
+*.editorconfig
