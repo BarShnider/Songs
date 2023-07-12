@@ -11,9 +11,10 @@ namespace Lyrics_Final_Proj.Controllers
     {
         // GET: api/<ArtistsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<string> ArtistsNames()
         {
-            return new string[] { "value1", "value2" };
+            Artist artist = new Artist();
+            return artist.ArtistsNames();
         }
 
         // GET api/<ArtistsController>/5

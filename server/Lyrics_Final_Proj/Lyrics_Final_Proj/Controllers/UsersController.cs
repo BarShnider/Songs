@@ -11,7 +11,7 @@ namespace Lyrics_Final_Proj.Controllers
     {
         // GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<string> Get(string mail)
+        public IEnumerable<string> GetFavArtists(string mail)
         {
             User user = new User();
             return user.ArtistArr(mail);

@@ -12,5 +12,11 @@
 
         }
 
+        public List<string> ArtistsNames()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ReturnAllArtists();
+        }
+
     }
 }
