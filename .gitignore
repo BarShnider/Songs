@@ -240,3 +240,4 @@ AppPackages/
 server/Lyrics_Final_Proj/.vs/ProjectEvaluation/lyrics_final_proj.metadata.v2
 server/Lyrics_Final_Proj/.vs/ProjectEvaluation/lyrics_final_proj.projects.v2
 *.editorconfig
+server/Lyrics_Final_Proj/Lyrics_Final_Proj/obj/Debug/net6.0/Lyrics_Final_Proj.GeneratedMSBuildEditorConfig.editorconfig
