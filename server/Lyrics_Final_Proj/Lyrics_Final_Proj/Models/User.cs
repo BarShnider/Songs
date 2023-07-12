@@ -48,4 +48,10 @@ public class User
         }
         return false;
     }
+
+    public List<string> ArtistArr(string mail)
+    {
+        DBservices dbs = new DBservices();
+        return dbs.ReturnArtistList(mail);
+    }
 }

@@ -29,15 +29,15 @@ namespace Lyrics_Final_Proj.Controllers
         {
         }
 
-        // Adds like to an artist 
+        // Adds/removes like from an artist 
         [HttpPost]
         [Route("Add/remove Like")]
-        public int AddLike(string name, int num)
+        public int AddRemove(string mail, string name)
         {
             try
             {
                 Artist artist = new Artist();
-                return artist.AddRemoveLike(name,num);
+                return artist.AddRemoveLike(mail,name);
             }
             catch (Exception ex)
             {
