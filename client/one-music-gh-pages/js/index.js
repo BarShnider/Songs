@@ -269,10 +269,6 @@ function artistSelectedFromList(artistName){
 window.location.href = 'artist-page.html'
 }
 
-$("#artistListContainer").on("load", (() => {
-  renderAllArtistsList()
-}))
-
 $(".events-area").ready(() => {
   let artistName = localStorage.getItem('selectedArtist');
   localStorage.removeItem('selectedArtist');
@@ -284,4 +280,41 @@ $(".events-area").ready(() => {
 function signout(){
   localStorage.removeItem("userObj");
   window.location.href = "login.html"
+}
+
+$(document).ready (() => {
+  $("#search-form").submit(() => {
+    let toSearch = $("#search").val();
+    document.querySelector("#artist-title").innerHTML = ""
+    document.querySelector("#artist-result").innerHTML = ""
+    document.querySelector("#song-title").innerHTML = ""
+    document.querySelector("#song-result").innerHTML = ""
+
+    ajaxCall("GET",currApi + `/Artists/ArtistsByWord/${toSearch}`,"",searchArtistSuccessCB,errorCB);
+    ajaxCall("GET",currApi + `/Songs/GetSongByWord/${toSearch}`,"",searchSongSuccessCB,errorCB);
+    return false;
+  })
+
+})
+
+
+function searchArtistSuccessCB(data){
+  console.log(data)
+  if(data.length > 0){
+    document.querySelector("#artist-title").innerHTML = "Artists:"
+    for(let artist of data){
+      document.querySelector("#artist-result").innerHTML += `${artist}<br>` 
+    }
+  }
+
+}
+
+function searchSongSuccessCB(data){
+  console.log(data)
+  if(data.length > 0){
+    document.querySelector("#song-title").innerHTML = "Songs:"
+    for(let song of data){
+      document.querySelector("#song-result").innerHTML += `${song}<br>` 
+    }
+  }
 }

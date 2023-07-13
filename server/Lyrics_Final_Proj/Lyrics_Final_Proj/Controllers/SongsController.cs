@@ -31,7 +31,7 @@ namespace Lyrics_Final_Proj.Controllers
         }
 
         [HttpGet]
-        [Route("ASongsByWord")]
+        [Route("GetSongByWord/{word}")]
         public List<string> GetSongsByWord(string word)
         {
             Song song = new Song();

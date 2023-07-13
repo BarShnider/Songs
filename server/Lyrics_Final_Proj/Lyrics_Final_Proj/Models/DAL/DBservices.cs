@@ -283,7 +283,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string name = dataReader["name"].ToString();
+                string name = dataReader["song"].ToString();
                 artistList.Add(name);
             }
             return artistList;

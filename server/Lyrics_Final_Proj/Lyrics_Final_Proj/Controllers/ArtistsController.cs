@@ -38,7 +38,7 @@ namespace Lyrics_Final_Proj.Controllers
 
         // GET api/<ArtistsController>/5
         [HttpGet]
-        [Route("ArtistsByWord")]
+        [Route("ArtistsByWord/{word}")]
         public List<string> GetArtistsByWord(string word)
         {
             Artist artist =new Artist();
