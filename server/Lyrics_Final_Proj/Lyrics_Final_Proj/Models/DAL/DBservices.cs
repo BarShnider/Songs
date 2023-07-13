@@ -286,9 +286,10 @@ public class DBservices
                 Song song = new Song();
                  song.Id= Convert.ToInt32(dataReader["id"]);
                 song.ArtistName= dataReader["artist"].ToString();
+                song.Lyrics = dataReader["text"].ToString();
                 song.Title = dataReader["song"].ToString();
                 song.Link= dataReader["link"].ToString();
-                song.FavoriteCount= Convert.ToInt32(dataReader["favorite"]);
+                song.FavoriteCount= Convert.ToInt32(dataReader["favourite"]);
 
                 artistList.Add(song);
             }

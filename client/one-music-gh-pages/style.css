@@ -1751,3 +1751,11 @@ color: #980000;
   margin-top: 50px;
 
 }
+
+.search-res-container {
+  height: 300px;
+  width: 10%;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  margin-top: 50px;
+}

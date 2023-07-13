@@ -34,7 +34,7 @@ $(document).ready(() => {
     ajaxCall("POST",api,JSON.stringify(user),registerSuccessCB,errorCB);
     return false;
   });
-  // check if the password is matching with the validation password, and show a messege if not
+  // check if the password is matching with the validation password, and show a message if not
   function checkPassword() {
     if (this.value != $("#registerPassword").val()) {
       this.validity.valid = false;
@@ -169,8 +169,7 @@ function successCB(data) {
 
 
 //this function will be activaeted when entering lyrics page
-function renderSongPage(){
-  songName = "Factory"
+function renderSongPage(songName){
   ajaxCall("GET",currApi + `/Songs/GetSongBySongName/${songName}`,"",songSuccessCB,errorCB);
 }
 
@@ -228,18 +227,7 @@ for (let i = 0; i < clickHereForInfoElements.length; i++) {
 
   for(let name of data){
     fillArtistListInfo(name)
-   
-    // document.querySelector("#clickHereForInfo").innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList(${name})>Visit ${name} Page</a>`
-
   }
-
-  // let infoFill = document.querySelectorAll("#clickHereForInfo")
-  // console.log(infoFill)
-  // for(let el of infoFill){
-  //   console.log(el)
-  //   // el.innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList(${name})>Visit ${name} Page</a>`
-  // }
-
 }
 
 function fillArtistListInfo(artistName){
@@ -268,7 +256,18 @@ function artistSelectedFromList(artistName){
   localStorage.setItem('selectedArtist', artistName);
 window.location.href = 'artist-page.html'
 }
+function songSelectedFromList(songName){
+  localStorage.setItem('selectedSong', songName);
+window.location.href = 'song-page.html'
+}
 
+$("#lyricsContainer").ready(() => {
+  let songName = localStorage.getItem('selectedSong');
+  localStorage.removeItem('selectedSong');
+  if (songName) {
+    renderSongPage(songName);
+  }  
+})
 $(".events-area").ready(() => {
   let artistName = localStorage.getItem('selectedArtist');
   localStorage.removeItem('selectedArtist');
@@ -303,7 +302,8 @@ function searchArtistSuccessCB(data){
   if(data.length > 0){
     document.querySelector("#artist-title").innerHTML = "Artists:"
     for(let artist of data){
-      document.querySelector("#artist-result").innerHTML += `${artist}<br>` 
+      // document.querySelector("#artist-result").innerHTML += `${artist}<br>` 
+      document.querySelector("#artist-result").innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="artistSelectedFromList('${artist}')">${artist}</a>` 
     }
   }
 
@@ -314,7 +314,8 @@ function searchSongSuccessCB(data){
   if(data.length > 0){
     document.querySelector("#song-title").innerHTML = "Songs:"
     for(let song of data){
-      document.querySelector("#song-result").innerHTML += `${song}<br>` 
+      // document.querySelector("#song-result").innerHTML += `${song.artistName} - ${song.title}<br>` 
+      document.querySelector("#song-result").innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>` 
     }
   }
 }
