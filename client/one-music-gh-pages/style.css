@@ -1688,3 +1688,9 @@ img {
   font-size: 1rem;
 
 }
+
+.visitPage {
+display: block;
+font-size: 1.3rem;
+color: #980000;
+}

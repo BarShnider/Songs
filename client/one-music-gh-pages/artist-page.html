@@ -128,13 +128,14 @@
         <div class="container" id="artistInfoContainer">
             <h3>Summary:</h3>
             <p id="artist-summary"></p>
+            
             <div class="accordions mb-100" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel single-accordion">
-                    <h6><a role="button" class="" aria-expanded="true" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Click here for the full summary
+                    <h6><a role="button" class="collapsed" aria-expanded="false" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Click here for the full summary
                         <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
                     </a></h6>
-                    <div id="collapseOne" class="accordion-content collapse show">
+                    <div id="collapseOne" class="accordion-content collapse">
                         <p id="artist-content"></p>
                     </div>
                 </div>

@@ -151,15 +151,15 @@ function TopTenArtists(){
 
 function successCB(data) {
   console.log(data);
-  for (let i = 0; i < data.length; i++) {
-    let artistId = `artist${i + 1}`;
-    document.getElementById(artistId).textContent = `${i + 1}. ${data[i]}`;
-  }
+  // for (let i = 0; i < data.length; i++) {
+  //   let artistId = `artist${i + 1}`;
+  //   document.getElementById(artistId).textContent = `${i + 1}. ${data[i]}`;
+  // }
 }
 
 
   function errorCB(err){
-    alert("dont Work");
+    // alert("dont Work");
     console.log(err);
   }
 //this function will be activaeted when entering lyrics page
@@ -183,7 +183,7 @@ function renderArtistPage(artistName){
 
 function artistInfoSuccessCB(data) {
   console.log(data)
-  document.querySelector("#artist-summary").innerText = data.artist.bio.summary;
+  document.querySelector("#artist-summary").innerHTML = data.artist.bio.summary;
   document.querySelector("#artist-content").innerText = data.artist.bio.content;
 }
 
@@ -194,7 +194,7 @@ function renderAllArtistsList(){
 
 function artistSuccessCB(data) {
   console.log(data);
-  let container = document.querySelector("#accordion");
+  let container = document.querySelector(".list-accordion");
   for (let i = 0; i < data.length; i++) {
     let name = data[i];
     let accordionId = `collapse${i + 1}`; // Generate unique id for each accordion
@@ -209,8 +209,68 @@ function artistSuccessCB(data) {
             </a>
           </h6>
           <div id="${accordionId}" class="accordion-content collapse">
-            <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum at ipsum ac, dignissim iaculis ante.</p>
+            <p id="${name.split(" ") == 1? name.toLowerCase() : name.split(" ").join("-").toLowerCase()}-list-item-summary"></p>
+            <p class="clickHereForInfo"></p>
           </div>
         </div>`;
   }
+
+  let clickHereForInfoElements = document.querySelectorAll(".clickHereForInfo");
+for (let i = 0; i < clickHereForInfoElements.length; i++) {
+  clickHereForInfoElements[i].innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList('${data[i]}')">Visit ${data[i]} Page</a>`;
 }
+
+  for(let name of data){
+    fillArtistListInfo(name)
+   
+    // document.querySelector("#clickHereForInfo").innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList(${name})>Visit ${name} Page</a>`
+
+  }
+
+  // let infoFill = document.querySelectorAll("#clickHereForInfo")
+  // console.log(infoFill)
+  // for(let el of infoFill){
+  //   console.log(el)
+  //   // el.innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList(${name})>Visit ${name} Page</a>`
+  // }
+
+}
+
+function fillArtistListInfo(artistName){
+  ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName.toLowerCase()}&api_key=${lastfmKEY}&format=json`,"",fillSuccessCB,errorCB);
+  // ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName.split(" ") == 1 ? artistName : artistName.split(" ").join("-")}&api_key=${lastfmKEY}&format=json`,"",fillSuccessCB,errorCB);
+
+}
+
+function fillSuccessCB(data){
+  console.log(data)
+  console.log("artist" in data)
+  if("artist" in data){
+      // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML =  data.artist.bio.summary
+      document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase()}-list-item-summary`).innerHTML =  data.artist.bio.summary
+
+  }
+  
+  document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase()}-list-item-summary`).innerHTML +=  `<a class="visitPage" onclick="artistSelectedFromList(${data.artist.name}) >Visit ${data.artist.name} Page</a>`
+  // else{
+    // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML += `<a href="index.html">click here for artist page</a>`
+  // }
+}
+
+
+function artistSelectedFromList(artistName){
+  localStorage.setItem('selectedArtist', artistName);
+window.location.href = 'artist-page.html'
+}
+
+$("#artistListContainer").ready(() => {
+  renderAllArtistsList()
+})
+
+$(document).ready(() => {
+  let artistName = localStorage.getItem('selectedArtist');
+  localStorage.removeItem('selectedArtist');
+  if (artistName) {
+    renderArtistPage(artistName);
+  }
+})
