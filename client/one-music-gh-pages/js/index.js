@@ -143,6 +143,7 @@ function emailSuccessCB(data){
     localStorage.setItem("userObj", JSON.stringify(userObj));
 }
 
+// this function returns 10 most liked artists
 function TopTenArtists(){
   const qs = `/Artists/TopArtists`;
                 const api=swaggerAPI+qs;
@@ -151,17 +152,22 @@ function TopTenArtists(){
 
 function successCB(data) {
   console.log(data);
-  // for (let i = 0; i < data.length; i++) {
-  //   let artistId = `artist${i + 1}`;
-  //   document.getElementById(artistId).textContent = `${i + 1}. ${data[i]}`;
-  // }
+  console.log(data.length);
+  for (let i = 0; i < data.length; i++) {
+    let artistId = `artist${i + 1}`;
+    document.getElementById(artistId).innerHTML = `${i + 1}. ${data[i]}`;
+  }
+  let check=document.getElementById("a6");
+  let header=document.createElement("h");
+  header.innertext=data[5];
+  check.appendChild(header);
 }
-
-
   function errorCB(err){
     // alert("dont Work");
     console.log(err);
   }
+
+
 //this function will be activaeted when entering lyrics page
 function renderSongPage(){
   songName = "Factory"

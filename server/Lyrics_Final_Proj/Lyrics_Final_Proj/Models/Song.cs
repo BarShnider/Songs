@@ -29,6 +29,12 @@
             return dbs.GetSongsBySongName(songName);
 
         }
+        public List<string> GetSongsWord(string word)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetSongsByWord(word);
+
+        }
     }
 
 }
