@@ -10,13 +10,13 @@ $(document).ready(() => {
         let loggedInUser = JSON.parse(localStorage.getItem("userObj"))
         console.log(loggedInUser);
         console.log(document.querySelector(".login-register-btn"))
-        document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn mr-50"><a href="login.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><a href="register.html" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
+        document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn mr-50"><a href="login.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
     }
     else {
         console.log("no one is logged in")
     }
 
-    TopTenArtists();
+    // TopTenArtists();
 
 
 
@@ -111,10 +111,10 @@ function loginSuccessCB(data){
           });
         let email = $("#loginEmail").val()
         ajaxCall("GET",currApi + `/Users/GetUserByEmail/${email}`,"",emailSuccessCB,errorCB);
-
         setTimeout(() => {
-            window.location.href = "index.html";
-          }, 3000);
+          window.location.href = "index.html";
+        }, 3000);
+
             break;
         case 2: // password incorrect
         Swal.fire({
@@ -141,7 +141,7 @@ function emailSuccessCB(data){
     }
     localStorage.removeItem("email");
     localStorage.setItem("userObj", JSON.stringify(userObj));
-}
+  }
 
 // this function returns 10 most liked artists
 function TopTenArtists(){
@@ -269,14 +269,19 @@ function artistSelectedFromList(artistName){
 window.location.href = 'artist-page.html'
 }
 
-$("#artistListContainer").ready(() => {
+$("#artistListContainer").on("load", (() => {
   renderAllArtistsList()
-})
+}))
 
-$(document).ready(() => {
+$(".events-area").ready(() => {
   let artistName = localStorage.getItem('selectedArtist');
   localStorage.removeItem('selectedArtist');
   if (artistName) {
     renderArtistPage(artistName);
   }
 })
+
+function signout(){
+  localStorage.removeItem("userObj");
+  window.location.href = "login.html"
+}
