@@ -45,6 +45,15 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.GetArtistsWord(word);
         }
 
+        // GET api/<ArtistsController>/5
+        [HttpGet]
+        [Route("ArtistsLikes/{name}")]
+        public int GetArtistsLikes(string name)
+        {
+            Artist artist = new Artist();
+            return artist.ArtistsLikes(name);
+        }
+
         // POST api/<ArtistsController>
         [HttpPost]
         public void Post([FromBody] string value)
