@@ -29,6 +29,12 @@
             DBservices dbs = new DBservices();
             return dbs.SearchArtistsByWord(word);
         }
+        
+        public int ArtistsLikes(string name)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetArtistLikes(name);
+        }
 
     }
 }
