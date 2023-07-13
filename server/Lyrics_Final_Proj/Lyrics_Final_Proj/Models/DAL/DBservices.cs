@@ -254,7 +254,7 @@ public class DBservices
         }
     }
 
-    public List<string> GetSongsByWord(string word)
+    public List<Song> GetSongsByWord(string word)
     {
 
         SqlConnection con;
@@ -275,7 +275,7 @@ public class DBservices
 
         cmd = CreateCommandWithStoredProcedure("Final_Get_Song_By_Word", con, paramDic);             // create the command
 
-        List<string> artistList = new List<string>();
+        List<Song> artistList = new List<Song>();
 
         try
         {
@@ -283,8 +283,14 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string name = dataReader["song"].ToString();
-                artistList.Add(name);
+                Song song = new Song();
+                 song.Id= Convert.ToInt32(dataReader["id"]);
+                song.ArtistName= dataReader["artist"].ToString();
+                song.Title = dataReader["song"].ToString();
+                song.Link= dataReader["link"].ToString();
+                song.FavoriteCount= Convert.ToInt32(dataReader["favorite"]);
+
+                artistList.Add(song);
             }
             return artistList;
         }
