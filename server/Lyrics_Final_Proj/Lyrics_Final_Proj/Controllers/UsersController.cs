@@ -40,7 +40,7 @@ namespace Lyrics_Final_Proj.Controllers
 
         [HttpGet]
         [Route("GetUserLikedSongs/{email}")]
-        public List<Song> GetUserLikedSongs(string email)
+        public List<Object> GetUserLikedSongs(string email)
         {
             return Lyrics_Final_Proj.Models.User.GetUserLikedSongs(email);
         }

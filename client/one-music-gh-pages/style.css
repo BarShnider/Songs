@@ -1887,3 +1887,8 @@ width: 150px;
   margin: auto;
   width: 90%;
 }
+
+.admin-panel-song-links{
+  display: inline;
+  font-weight: 500;
+}

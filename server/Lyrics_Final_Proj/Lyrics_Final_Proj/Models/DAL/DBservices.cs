@@ -365,7 +365,7 @@ public class DBservices
     //--------------------------------------------------------------------------------------------------
     // This method returns a list of liked songs of a user
     //--------------------------------------------------------------------------------------------------
-    public List<Song> GetUserLikedSongs(string email)
+    public List<Object> GetUserLikedSongs(string email)
     {
 
         SqlConnection con;
@@ -387,8 +387,8 @@ public class DBservices
 
         cmd = CreateCommandWithStoredProcedure("Final_GetUserLikedSongs", con, paramDic);
 
-        List<Song> songsList = new List<Song>();
-
+        List<Object> songsList = new List<Object>();
+        songsList.Add(email);
         try
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
