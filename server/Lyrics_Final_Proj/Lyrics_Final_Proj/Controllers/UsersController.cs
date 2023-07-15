@@ -45,6 +45,12 @@ namespace Lyrics_Final_Proj.Controllers
             return Lyrics_Final_Proj.Models.User.GetUserLikedSongs(email);
         }
 
+        [HttpGet]
+        [Route("GetUserLikedArtists/{email}")]
+        public List<Object> GetUserLikedArtists(string email)
+        {
+            return Lyrics_Final_Proj.Models.User.GetUserLikedArtists(email);
+        }
         // Check if user exists
         [HttpPost]
         [Route("Login")]
