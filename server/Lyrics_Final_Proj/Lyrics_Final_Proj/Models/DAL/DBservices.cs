@@ -362,6 +362,64 @@ public class DBservices
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of liked songs of a user
+    //--------------------------------------------------------------------------------------------------
+    public List<Song> GetUserLikedSongs(string email)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@email", email);
+
+        cmd = CreateCommandWithStoredProcedure("Final_GetUserLikedSongs", con, paramDic);
+
+        List<Song> songsList = new List<Song>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Song s = new Song();
+                s.ArtistName = dataReader["artistName"].ToString();
+                s.Title = dataReader["song"].ToString();
+                s.Link = dataReader["link"].ToString();
+                s.Lyrics = dataReader["text"].ToString();
+                songsList.Add(s); 
+            }
+            return songsList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
 
 
     /////////////////////////////////////////////////////////////////
