@@ -60,4 +60,10 @@ public class User
         DBservices dbs = new DBservices();
         return dbs.GetAllUsers();
     }
+
+    public static List<Song> GetUserLikedSongs(string email)
+    {
+        DBservices dbs = new DBservices();
+        return dbs.GetUserLikedSongs(email);
+    }
 }

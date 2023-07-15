@@ -398,7 +398,7 @@ function getAllUsersSuccessCB(data) {
                 <div class="tab-pane fade" id="tab2-${collapseCounter}" role="tabpanel" aria-labelledby="tab--2-${collapseCounter}">
                   <div class="oneMusic-tab-content">
                     <!-- Tab Text -->
-                    <div class="oneMusic-tab-text liked-songs">
+                    <div class="oneMusic-tab-text ${user.name}-liked-songs">
                     </div>
                   </div>
                 </div>
@@ -416,5 +416,18 @@ function getAllUsersSuccessCB(data) {
       </div>`;
 
     collapseCounter++;
+    localStorage.setItem("tempUsername", user.name)
+    ajaxCall("GET",currApi + `/Users/GetUserLikedSongs/${user.email}`,"",getUserLikedSongSuccessCB,errorCB);
   }
+}
+
+function getUserLikedSongSuccessCB(data){
+  console.log(data)
+  let username = localStorage.getItem("tempUsername")
+  console.log(username)
+  let likedSongsCont = document.querySelector(`.${username}-liked-songs`)
+  for(let song of data){
+    likedSongsCont.innerHTML += `<span>${song.artistName} - ${song.title}</span><br>`
+  }
+  // localStorage.removeItem("tempUsername")
 }
