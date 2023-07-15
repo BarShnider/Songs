@@ -31,6 +31,13 @@ namespace Lyrics_Final_Proj.Controllers
            return Lyrics_Final_Proj.Models.User.ReadUserByEmail(email);
         }
 
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public List<User> GetAllUsers()
+        {
+            return Lyrics_Final_Proj.Models.User.GetAllUsers();
+        }
+
         // Check if user exists
         [HttpPost]
         [Route("Login")]

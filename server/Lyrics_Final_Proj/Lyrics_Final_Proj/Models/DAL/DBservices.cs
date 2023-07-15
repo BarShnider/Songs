@@ -101,8 +101,6 @@ public class DBservices
             while (dataReader.Read())
             {
                 Song s = new Song();
-                s.Id = Convert.ToInt32(dataReader["Id"]);
-                s.ArtistName = dataReader["artist"].ToString();
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
@@ -170,8 +168,63 @@ public class DBservices
             while (dataReader.Read())
             {
                 Song s = new Song();
-                s.Id = Convert.ToInt32(dataReader["Id"]);
-                s.ArtistName = dataReader["artist"].ToString();
+                s.Title = dataReader["song"].ToString();
+                s.Link = dataReader["link"].ToString();
+                s.Lyrics = dataReader["text"].ToString();
+                songsList.Add(s);
+            }
+            return songsList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of songs for given Username
+    //--------------------------------------------------------------------------------------------------
+    public List<Song> GetSongsLikedByUsername(string artistName)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@artistName", artistName);
+
+        cmd = CreateCommandWithStoredProcedure("Final_GetUsersList", con, paramDic);
+
+        List<Song> songsList = new List<Song>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Song s = new Song();
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
@@ -230,8 +283,6 @@ public class DBservices
                 Song s = new Song();
             while (dataReader.Read())
             {
-                s.Id = Convert.ToInt32(dataReader["Id"]);
-                s.ArtistName = dataReader["artist"].ToString();
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
@@ -284,8 +335,7 @@ public class DBservices
             while (dataReader.Read())
             {
                 Song song = new Song();
-                 song.Id= Convert.ToInt32(dataReader["id"]);
-                song.ArtistName= dataReader["artist"].ToString();
+                song.ArtistName = dataReader["artistName"].ToString();
                 song.Lyrics = dataReader["text"].ToString();
                 song.Title = dataReader["song"].ToString();
                 song.Link= dataReader["link"].ToString();
@@ -563,7 +613,60 @@ public class DBservices
             }
         }
     }
+    //--------------------------------------------------------------------------------------------------
+    // This method returns all the users registerd
+    //--------------------------------------------------------------------------------------------------
+    public List<User> GetAllUsers()
+    {
 
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_GetUsersList ", con, null);             // create the command
+
+
+        List<User> usersList = new List<User>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            while (dataReader.Read())
+            {
+            User u = new User();
+                u.Name = dataReader["userName"].ToString();
+                u.Email = dataReader["email"].ToString();
+                u.DateRegister = Convert.ToDateTime(dataReader["created_at"]);
+                usersList.Add(u);
+            }
+            return usersList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
     //--------------------------------------------------------------------------------------------------
     // This method Read user by email
     //--------------------------------------------------------------------------------------------------
@@ -678,6 +781,8 @@ public class DBservices
     ///////////////////////// ARTIST /////////////////////////////////
     ////////////////////////////////////////////////////////////////
 
+
+
     //--------------------------------------------------------------------------------------------------
     // Adds or removes like from artists and adds/removes from UserAtrist table
     //--------------------------------------------------------------------------------------------------
@@ -757,7 +862,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string name = dataReader["name"].ToString();
+                string name = dataReader["artistName"].ToString();
                 artistList.Add(name);
             }
             return artistList;
@@ -807,7 +912,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string name = dataReader["name"].ToString();
+                string name = dataReader["artistName"].ToString();
                 artistList.Add(name);
             }
             return artistList;
@@ -858,7 +963,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string name = dataReader["name"].ToString();
+                string name = dataReader["artistName"].ToString();
                 artistList.Add(name);
             }
             return artistList;
