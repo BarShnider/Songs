@@ -925,7 +925,56 @@ public class DBservices
         }
     }
 
+    public List<string> GetTopArtistsByUser(string username)
+    {
 
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@username", username);
+
+        cmd = CreateCommandWithStoredProcedure("Final_Get_Artists_By_Username", con, paramDic);             // create the command
+
+        List<string> artistList = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string name = dataReader["artist"].ToString();
+                artistList.Add(name);
+            }
+            return artistList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 

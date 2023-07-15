@@ -18,7 +18,14 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.ArtistsNames();
         }
 
-
+        // GET: api/<ArtistsController>
+        [HttpGet]
+        [Route("TopArtistsByUsername/{username}")]
+        public IEnumerable<string> TopArtistsNames(string username)
+        {
+            Artist artist = new Artist();
+            return artist.TopArtistsByUsername(username);
+        }
 
         // GET: api/<ArtistsController>
         [HttpGet]

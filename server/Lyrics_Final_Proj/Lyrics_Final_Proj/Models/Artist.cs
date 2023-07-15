@@ -36,5 +36,10 @@
             return dbs.GetArtistLikes(name);
         }
 
+        public List<string> TopArtistsByUsername(string username)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetTopArtistsByUser(username);
+        }
     }
 }
