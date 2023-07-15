@@ -146,7 +146,7 @@ function emailSuccessCB(data){
 // this function returns 10 most liked artists
 function TopTenArtists(){
   const qs = `/Artists/TopArtists`;
-                const api=swaggerAPI+qs;
+                const api=currAPI+qs;
                 ajaxCall("GET",api,"",successCB,errorCB); 
 }
 
@@ -435,4 +435,45 @@ function getUserLikedSongSuccessCB(data){
     likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[i].title}')">${data[i].title}</a><br> `
     // likedSongsCont.innerHTML += `<span>${data[i].artistName} - ${data[i].title}</span><br>`
   }
+}
+
+function getTopArtists(){
+  let userObjString=localStorage.getItem('userObj');
+  let userObj = JSON.parse(userObjString);
+  document.getElementById("userName").innerHTML=userObj.username
+  let api = currApi + `/Artists/TopArtistsByUsername/${userObj.email}`;
+  ajaxCall("GET",api,"",TopArtistsSuccessCB,errorCB);
+}
+
+function TopArtistsSuccessCB(data){
+  let elements = document.querySelectorAll('#fav-artist');
+  for (let i=0; i<5;i++){
+      elements[i].innerHTML=`<a class="ppp" href="#" onclick="artistSelectedFromList('${data[i]}')">${data[i]}</a>`;
+  }
+}
+
+function getFiveSongsByUser(){
+  let userObjString=localStorage.getItem('userObj');
+  let userObj = JSON.parse(userObjString);
+  let api = currApi + `/Users/GetUserLikedSongs/${userObj.email}`;
+  ajaxCall("GET",api,"",TopSongsSuccessCB,errorCB);
+}
+
+function TopSongsSuccessCB(data){
+  let elements = document.querySelectorAll('#fav-song');
+  let numbers=[];
+  while(numbers.length<5){
+      let number=Math.floor(Math.random()*data.length) + 1
+      if (!numbers.includes(number)) {
+          numbers.push(number);
+      }
+  }
+  for (let i=0; i<5;i++){
+      elements[i].innerHTML= `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[numbers[i]].title}')">${data[numbers[i]].title}</a>`
+  }
+}
+
+function renderUserProfile(){
+  getTopArtists();
+  getFiveSongsByUser();
 }

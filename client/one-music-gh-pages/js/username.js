@@ -3,39 +3,36 @@ $(document).ready(() => {
     getFiveSongsByUser();
         function getTopArtists(){
             let userObjString=localStorage.getItem('userObj');
-            var userObj = JSON.parse(userObjString);
+            let userObj = JSON.parse(userObjString);
             document.getElementById("userName").innerHTML=userObj.username
-            console.log(userObj.email);
-            let api = swaggerAPI + `/Artists/TopArtistsByUsername/${userObj.email}`;
+            let api = currApi + `/Artists/TopArtistsByUsername/${userObj.email}`;
             ajaxCall("GET",api,"",TopArtistsSuccessCB,errorCB);
         }
 
         function TopArtistsSuccessCB(data){
-            console.log(data);
             let elements = document.querySelectorAll('#fav-artist');
             for (let i=0; i<5;i++){
                 elements[i].innerHTML=data[i];
             }
         }
-
-        function errorCB(err) {
-            console.log(err);
-          }
 
         function getFiveSongsByUser(){
             let userObjString=localStorage.getItem('userObj');
-            var userObj = JSON.parse(userObjString);
-            let api = swaggerAPI + `/User/GetUserLikedSongs/${userObj.email}`;
+            let userObj = JSON.parse(userObjString);
+            let api = currApi + `/Users/GetUserLikedSongs/${userObj.email}`;
             ajaxCall("GET",api,"",TopSongsSuccessCB,errorCB);
         }
-        function TopArtistsSuccessCB(data){
-            console.log(data);
-            let elements = document.querySelectorAll('#fav-artist');
+        function TopSongsSuccessCB(data){
+            let elements = document.querySelectorAll('#fav-song');
+            let numbers=[];
+            while(numbers.length<5){
+                let number=Math.floor(Math.random()*data.length) + 1
+                if (!numbers.includes(number)) {
+                    numbers.add(number);
+                }
+            }
             for (let i=0; i<5;i++){
-                elements[i].innerHTML=data[i];
+                elements[i].innerHTML= `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[randomNumbers[i]].title}')"></a>`
             }
         }
-
-
-        
-    });
+    }

@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body onload="renderUserProfile()">
     <!-- Preloader -->
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="lds-ellipsis">
@@ -176,13 +176,13 @@
 
      <!-- ##### user songs Area starts ##### -->
     <section class="favourite-songs section-padding-100">
-        <h1 style="text-align: center;">Top 5 favourite songs</h1>
+        <h1 style="text-align: center;">favourite songs</h1>
 
         <div class="container user-container" id="userContainer">
             <div class="single-song">
                 <img  id="user-img" src="img/bg-img/a4.jpg" alt="">
                 <div class="album-info">
-                    <a href="#">
+                    <a id="a-song" href="#">
                         <h5 id="fav-song"> artist</h5>
                     </a>
                 </div>
@@ -191,7 +191,7 @@
                 <div class="single-song">
                     <img  id="user-img" src="img/bg-img/a4.jpg" alt="">
                     <div class="album-info">
-                        <a href="#">
+                        <a id="a-song" href="#">
                             <h5 id="fav-song"> artist</h5>
                         </a>
                     </div>
@@ -200,7 +200,7 @@
                     <div class="single-song">
                         <img  id="user-img" src="img/bg-img/a4.jpg" alt="">
                         <div class="album-info">
-                            <a href="#">
+                            <a id="a-song" href="#">
                                 <h5 id="fav-song"> artist</h5>
                             </a>
                         </div>
@@ -208,7 +208,7 @@
                     <div class="single-song">
                         <img  id="user-img" src="img/bg-img/a4.jpg" alt="">
                         <div class="album-info">
-                            <a href="#">
+                            <a id="a-song" href="#">
                                 <h5 id="fav-song"> artist</h5>
                             </a>
                         </div>
@@ -216,7 +216,7 @@
                     <div class="single-song">
                         <img  id="user-img" src="img/bg-img/a4.jpg" alt="">
                         <div class="album-info">
-                            <a href="#">
+                            <a id="a-song" href="#">
                                 <h5 id="fav-song"> artist</h5>
                             </a>
                         </div>
@@ -269,7 +269,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="js/index.js"></script>
 
     <!-- js for this page -->
-        <script src="js/username.js"></script>
 </body>
 
 </html>
