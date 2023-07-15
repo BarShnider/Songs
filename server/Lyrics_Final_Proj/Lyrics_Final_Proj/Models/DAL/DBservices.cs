@@ -1059,7 +1059,7 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string name = dataReader["artist"].ToString();
+                string name = dataReader["artistName"].ToString();
                 artistList.Add(name);
             }
             return artistList;
