@@ -62,7 +62,7 @@ namespace Lyrics_Final_Proj.Controllers
 
         // Adds/removes like from an artist 
         [HttpPost]
-        [Route("Add/remove Like")]
+        [Route("AddRemoveLike/{mail}/{name}")]
         public int AddRemove(string mail, string name)
         {
             try

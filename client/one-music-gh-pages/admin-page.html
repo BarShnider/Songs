@@ -13,13 +13,13 @@
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-thin-rounded/css/uicons-thin-rounded.css'>
+
     <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
 
 </head>
 
-<body>
+<body  onload="renderAllArtistsList()">
     <!-- Preloader -->
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="lds-ellipsis">
@@ -117,29 +117,24 @@
     <!-- ##### Breadcumb Area Start ##### -->
     <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
         <div class="bradcumbContent">
-            <p id="artistName">Learn More About</p>
-            <h2 id="artist"></h2>
+            <p id="admin-page-header">Admin Page</p>
+            <h2 id="adminName">Barshnider</h2>
         </div>
     </section>
     <!-- ##### Breadcumb Area End ##### -->
 
     <!-- ##### Events Area Start ##### -->
     <section class="events-area section-padding-100">
-        <div class="container" id="artistInfoContainer">
-            <div class="heart" id="heart-button" onclick="likePressedArtist()">
-                <span class="counter"></span>
-                <i class="fa fa-heart"></i>
-            </div>    
-            <h3>Summary:</h3>
+        <div class="container" id="artistListContainer">
+            <h3>Users:</h3>
             <p id="artist-summary"></p>
-            
             <div class="accordions mb-100" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel single-accordion">
-                    <h6><a role="button" class="collapsed" aria-expanded="false" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Click here for the full summary
+                    <h6><a role="button" class="" aria-expanded="true" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Click here for the full summary
                         <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
                     </a></h6>
-                    <div id="collapseOne" class="accordion-content collapse">
+                    <div id="collapseOne" class="accordion-content collapse show">
                         <p id="artist-content"></p>
                     </div>
                 </div>

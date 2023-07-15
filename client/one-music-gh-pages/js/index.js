@@ -273,6 +273,7 @@ $(".events-area").ready(() => {
   localStorage.removeItem('selectedArtist');
   if (artistName) {
     renderArtistPage(artistName);
+    addRemoveLikeSuccessCB()
   }
 })
 
@@ -314,8 +315,29 @@ function searchSongSuccessCB(data){
   if(data.length > 0){
     document.querySelector("#song-title").innerHTML = "Songs:"
     for(let song of data){
-      // document.querySelector("#song-result").innerHTML += `${song.artistName} - ${song.title}<br>` 
       document.querySelector("#song-result").innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>` 
     }
   }
+}
+
+function likePressedArtist(){
+  let artistName = document.querySelector("#artist").innerHTML
+  console.log(artistName)
+  let user = JSON.parse(localStorage.getItem("userObj"))
+  console.log(user)
+  ajaxCall("POST",currApi + `/Artists/AddRemoveLike/${user.email}/${artistName}`,"",addRemoveLikeSuccessCB,errorCB);
+  
+}
+
+function artistLikeSuccessCB(data){
+  console.log(data)
+ console.log("succcess1")
+  document.querySelector(".counter").innerHTML = data
+  
+}
+
+function addRemoveLikeSuccessCB(){
+  let artistName = document.querySelector("#artist").innerHTML
+  ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",artistLikeSuccessCB,errorCB);
+  
 }

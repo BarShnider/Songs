@@ -1759,3 +1759,86 @@ color: #980000;
   overflow-y: scroll;
   margin-top: 50px;
 }
+
+/* .like-btn-wrapper {
+text-align: center;
+display: flex;
+justify-content: space-evenly;
+}
+
+.like-btn {
+  background-color: #ffffff;
+  padding: 5px 15px;
+  border-radius: 5%;
+
+}
+
+#like-count {
+  border: 1px solid black;
+  padding: 3px 8px;
+  border-radius: 15%;
+  color: #ffffff;
+  background-color: #000000;
+} */
+
+*{
+  margin:0;
+  padding:0;
+}
+
+
+.heart{
+  background-color:#DDDDDD;
+  height:40px;
+  width:40px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:10px;
+  font-size:19px;
+  cursor:pointer;
+  transition:all 0.5s;
+  position:relative;
+  
+ 
+}
+
+.heart:hover{
+  color:#FB076D;
+  background-color:#fb076d40;
+}
+
+.heart .counter{
+  position:absolute;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  border-radius:10px;
+  z-index:-1;
+  font-size:16px;
+  height:30px;
+  width:30px;
+  background-color:#FB076D;
+   
+  
+}
+
+
+
+.heart:hover .counter{
+  animation: anim 1s forwards; 
+  z-index:1;
+  
+}
+
+@keyframes anim{
+  from{
+      top:0px;
+  }
+  
+  to{
+      top:-48px;
+  }
+  
+}
