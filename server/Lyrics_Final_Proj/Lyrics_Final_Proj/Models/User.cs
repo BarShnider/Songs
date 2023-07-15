@@ -66,4 +66,10 @@ public class User
         DBservices dbs = new DBservices();
         return dbs.GetUserLikedSongs(email);
     }
+
+    public static List<Object> GetUserLikedArtists(string email)
+    {
+        DBservices dbs = new DBservices();
+        return dbs.GetUserLikedArtist(email);
+    }
 }

@@ -404,7 +404,7 @@ function getAllUsersSuccessCB(data) {
                 <div class="tab-pane fade " id="tab3-${collapseCounter}" role="tabpanel" aria-labelledby="tab--3-${collapseCounter}">
                   <div class="oneMusic-tab-content">
                     <!-- Tab Text -->
-                    <div class="oneMusic-tab-text liked-artists">
+                    <div class="oneMusic-tab-text liked-artists" id="${user.email.split("@")[0]}-liked-artists">
                     </div>
                   </div>
                 </div>
@@ -416,23 +416,24 @@ function getAllUsersSuccessCB(data) {
 
     collapseCounter++;
     ajaxCall("GET",currApi + `/Users/GetUserLikedSongs/${user.email}`,"",getUserLikedSongSuccessCB,errorCB);
+    ajaxCall("GET",currApi + `/Users/GetUserLikedArtists/${user.email}`,"",getUserLikedArtistsSuccessCB,errorCB);
   }
 }
 
 function getUserLikedSongSuccessCB(data){
   console.log(data)
-  // let likedSongs = document.querySelectorAll(".liked-songs")
-  // console.log(likedSongs)
-  // for(let likedSongsCont of likedSongs )
-  // {
-  //   console.log(likedSongsCont)
-  //   console.log(likedSongsCont.id)
-  
-  // }
   let likedSongsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-songs`)
   console.log(likedSongsCont)
   for(let i = 1; i<data.length; i++){
     likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[i].title}')">${data[i].title}</a><br> `
-    // likedSongsCont.innerHTML += `<span>${data[i].artistName} - ${data[i].title}</span><br>`
+  }
+}
+
+function getUserLikedArtistsSuccessCB(data){
+  console.log(data)
+  let likedArtistsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-artists`)
+  console.log(likedArtistsCont)
+  for(let i = 1; i<data.length; i++){
+    likedArtistsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].name}')">${data[i].name}</a><br> `
   }
 }
