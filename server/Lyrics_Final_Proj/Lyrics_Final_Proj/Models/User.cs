@@ -54,4 +54,10 @@ public class User
         DBservices dbs = new DBservices();
         return dbs.ReturnArtistList(mail);
     }
+
+    public static List<User> GetAllUsers()
+    {
+        DBservices dbs = new DBservices();
+        return dbs.GetAllUsers();
+    }
 }

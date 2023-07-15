@@ -19,7 +19,7 @@
 
 </head>
 
-<body  onload="renderAllArtistsList()">
+<body onload="renderAdminPage()">
     <!-- Preloader -->
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="lds-ellipsis">
@@ -124,17 +124,46 @@
     <!-- ##### Breadcumb Area End ##### -->
 
     <!-- ##### Events Area Start ##### -->
-    <section class="events-area section-padding-100">
+    <section class="admin-area section-padding-100">
         <div class="container" id="artistListContainer">
-            <h3>Users:</h3>
+            <!-- <h3>Users:</h3> -->
             <p id="artist-summary"></p>
-            <div class="accordions mb-100" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="accordions mb-50" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel single-accordion">
-                    <h6><a role="button" class="" aria-expanded="true" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Click here for the full summary
+                    <h6><a role="button" class="collapsed" aria-expanded="false" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Users
                         <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
                     </a></h6>
-                    <div id="collapseOne" class="accordion-content collapse show">
+                    <div id="collapseOne" class="accordion-content collapse">
+                        <!-- <p id="artist-content"></p> -->
+                        <div class="accordions mb-100 users-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <h3>Songs:</h3> -->
+            <div class="accordions mb-50" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel single-accordion">
+                    <h6><a role="button" class="collapsed" aria-expanded="false" aria-controls="collapseTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Songs
+                        <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                    </a></h6>
+                    <div id="collapseTwo" class="accordion-content collapse">
+                        <p id="artist-content"></p>
+                    </div>
+                </div>
+            </div>
+            <!-- <h3>Artists:</h3> -->
+
+            <div class="accordions mb-50" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel single-accordion">
+                    <h6><a role="button" class="collapsed" aria-expanded="false" aria-controls="collapseThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Artists
+                        <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                    </a></h6>
+                    <div id="collapseThree" class="accordion-content collapse">
                         <p id="artist-content"></p>
                     </div>
                 </div>

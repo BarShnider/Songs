@@ -341,3 +341,80 @@ function addRemoveLikeSuccessCB(){
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",artistLikeSuccessCB,errorCB);
   
 }
+
+function renderAdminPage(){
+  ajaxCall("GET",currApi + `/Users/GetAllUsers`,"",getAllUsersSuccessCB,errorCB);
+
+}
+
+
+function getAllUsersSuccessCB(data) {
+  console.log(data);
+  let accordionCont = document.querySelector(".users-accordion");
+  let collapseCounter = 1;
+
+  for (let user of data) {
+    let registerDate = new Date(user.dateRegister)
+    const formattedDate = registerDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+    accordionCont.innerHTML += `
+      <div class="panel single-accordion">
+        <h6>
+          <a role="button" class="collapsed inner-accordion" aria-expanded="false" aria-controls="collapse${collapseCounter}" data-toggle="collapse" data-parent="#accordion" href="#collapse${collapseCounter}">
+            ${user.name}
+            <span class="accor-open"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
+          </a>
+        </h6>
+        <div id="collapse${collapseCounter}" class="accordion-content collapse">
+          <div class="col-12">
+            <div class="oneMusic-tabs-content">
+              <ul class="nav nav-tabs tabs-container" id="myTab${collapseCounter}" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="tab--1-${collapseCounter}" data-toggle="tab" href="#tab1-${collapseCounter}" role="tab" aria-controls="tab1-${collapseCounter}" aria-selected="true">User Details</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="tab--2-${collapseCounter}" data-toggle="tab" href="#tab2-${collapseCounter}" role="tab" aria-controls="tab2-${collapseCounter}" aria-selected="false">Liked Songs</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " id="tab--3-${collapseCounter}" data-toggle="tab" href="#tab3-${collapseCounter}" role="tab" aria-controls="tab3-${collapseCounter}" aria-selected="false">Liked Artists</a>
+                </li>
+              </ul>
+
+              <div class="tab-content mb-100" id="myTabContent${collapseCounter}">
+                <div class="tab-pane fade show active" id="tab1-${collapseCounter}" role="tabpanel" aria-labelledby="tab--1-${collapseCounter}">
+                  <div class="oneMusic-tab-content">
+                    <!-- Tab Text -->
+                    <div class="oneMusic-tab-text">
+                      <p class="user-details-tab"><span class="user-details-titles">Username:</span> ${user.name}</p>
+                      <p class="user-details-tab"><span class="user-details-titles">Email:</span> ${user.email}</p>
+                      <p class="user-details-tab"><span class="user-details-titles">Date Created:</span> ${(formattedDate)}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="tab2-${collapseCounter}" role="tabpanel" aria-labelledby="tab--2-${collapseCounter}">
+                  <div class="oneMusic-tab-content">
+                    <!-- Tab Text -->
+                    <div class="oneMusic-tab-text liked-songs">
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade " id="tab3-${collapseCounter}" role="tabpanel" aria-labelledby="tab--3-${collapseCounter}">
+                  <div class="oneMusic-tab-content">
+                    <!-- Tab Text -->
+                    <div class="oneMusic-tab-text liked-artists">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    collapseCounter++;
+  }
+}
