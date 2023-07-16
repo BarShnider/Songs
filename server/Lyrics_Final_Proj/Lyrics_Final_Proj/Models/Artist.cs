@@ -41,5 +41,11 @@
             DBservices dbs = new DBservices();
             return dbs.GetTopArtistsByUser(username);
         }
+
+        public static List<Artist> GetAllArtistsWithLikes()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetAllArtistsWithLikes();
+        }
     }
 }

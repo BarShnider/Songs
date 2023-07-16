@@ -190,6 +190,7 @@ function artistInfoSuccessCB(data) {
   console.log(data)
   document.querySelector("#artist-summary").innerHTML = data.artist.bio.summary;
   document.querySelector("#artist-content").innerText = data.artist.bio.content;
+  addRemoveLikeSuccessCB();
 }
 
 function renderAllArtistsList(){
@@ -252,17 +253,19 @@ function fillSuccessCB(data){
 
 function artistSelectedFromList(artistName){
   localStorage.setItem('selectedArtist', artistName);
+  sessionStorage.setItem("tempArtist", artistName)
 window.location.href = 'artist-page.html'
 }
 
 function songSelectedFromList(songName){
   localStorage.setItem('selectedSong', songName);
+  sessionStorage.setItem("tempSong",songName);
 window.location.href = 'song-page.html'
 }
 
 $("#lyricsContainer").ready(() => {
   let songName = localStorage.getItem('selectedSong');
-  localStorage.removeItem('selectedSong');
+  // localStorage.removeItem('selectedSong');
   if (songName) {
     renderSongPage(songName);
   }  
@@ -272,7 +275,7 @@ $(".events-area").ready(() => {
   localStorage.removeItem('selectedArtist');
   if (artistName) {
     renderArtistPage(artistName);
-    addRemoveLikeSuccessCB() //CHECKKKK
+    // addRemoveLikeSuccessCB() //CHECKKKK
   }
 })
 
@@ -343,7 +346,26 @@ function addRemoveLikeSuccessCB(){
 
 function renderAdminPage(){
   ajaxCall("GET",currApi + `/Users/GetAllUsers`,"",getAllUsersSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Artists/GetAllArtistsWithLikes`,"",getAllArtistsSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Songs/GetAllSongs`,"",getAllSongsSuccessCB,errorCB);
 
+}
+
+function getAllSongsSuccessCB(data){
+  console.log(data)
+  let songsCont = document.querySelector("#songs-list-content");
+  for (let song of data){
+    songsCont.innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
+  }
+}
+
+function getAllArtistsSuccessCB(data){
+  console.log(data);
+  let artistCont = document.querySelector("#artist-list-content") 
+  console.log(artistCont)
+  for(let artist of data){
+    artistCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${artist.name}')">${artist.name} - ${artist.favoriteCount} Likes</a><br> `
+  }
 }
 
 
@@ -421,18 +443,16 @@ function getAllUsersSuccessCB(data) {
 }
 
 function getUserLikedSongSuccessCB(data){
-  console.log(data)
+  // console.log(data)
   let likedSongsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-songs`)
-  console.log(likedSongsCont)
   for(let i = 1; i<data.length; i++){
     likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[i].title}')">${data[i].title}</a><br> `
   }
 }
 
 function getUserLikedArtistsSuccessCB(data){
-  console.log(data)
+  // console.log(data)
   let likedArtistsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-artists`)
-  console.log(likedArtistsCont)
   for(let i = 1; i<data.length; i++){
     likedArtistsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].name}')">${data[i].name}</a><br> `
   }
@@ -477,4 +497,17 @@ function TopSongsSuccessCB(data){
 function renderUserProfile(){
   getTopArtists();
   getFiveSongsByUser();
+}
+
+function renderArtistFromStorage(){
+  if(sessionStorage.getItem("tempArtist")){
+    let artist = sessionStorage.getItem("tempArtist");
+    renderArtistPage(artist);
+  }
+}
+function renderSongFromStorage(){
+  if(sessionStorage.getItem("tempSong")){
+    let song = sessionStorage.getItem("tempSong");
+    renderSongPage(song);
+  }
 }

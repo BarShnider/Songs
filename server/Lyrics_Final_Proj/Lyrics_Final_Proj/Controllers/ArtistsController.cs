@@ -61,6 +61,14 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.ArtistsLikes(name);
         }
 
+
+        [HttpGet]
+        [Route("GetAllArtistsWithLikes")]
+        public List<Artist> GetArtistsLikes()
+        {
+            return Artist.GetAllArtistsWithLikes();
+        }
+
         // POST api/<ArtistsController>
         [HttpPost]
         public void Post([FromBody] string value)

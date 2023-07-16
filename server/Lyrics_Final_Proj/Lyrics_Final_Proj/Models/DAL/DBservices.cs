@@ -101,10 +101,11 @@ public class DBservices
             while (dataReader.Read())
             {
                 Song s = new Song();
+                s.ArtistName = dataReader["artistName"].ToString();
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
-
+                s.FavoriteCount = Convert.ToInt32(dataReader["favourite"]);
 
 
 
@@ -283,6 +284,7 @@ public class DBservices
                 Song s = new Song();
             while (dataReader.Read())
             {
+                s.ArtistName = dataReader["artistName"].ToString();
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
@@ -1194,6 +1196,61 @@ public class DBservices
     }
 
 
+
+    //--------------------------------------------------------------------------------------------------
+    // this method returns all the artists with their likes count
+    //--------------------------------------------------------------------------------------------------
+    public List<Artist> GetAllArtistsWithLikes()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_GetAllArtists ", con, null);             // create the command
+
+
+        List<Artist> artistList = new List<Artist>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Artist a = new Artist();
+                a.Name = dataReader["artistName"].ToString();
+                a.FavoriteCount = Convert.ToInt32(dataReader["likes"].ToString());
+                artistList.Add(a);
+            }
+            return artistList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
 
 
