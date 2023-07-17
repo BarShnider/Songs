@@ -1810,6 +1810,7 @@ justify-content: space-evenly;
   background-color:#fb076d40;
 }
 
+
 .heart .counter{
   position:absolute;
   display:flex;
@@ -1903,4 +1904,16 @@ width: 150px;
 
 .counter-items {
   text-align: center;
+}
+
+#heart-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+#counter-container {
+  margin-left: 5px;
 }

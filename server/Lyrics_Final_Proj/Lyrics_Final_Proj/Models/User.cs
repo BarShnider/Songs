@@ -39,15 +39,6 @@ public class User
         return dbs.ReadUserByEmail(email);
     }
 
-    public bool AddSongToFav(string email, string songName)
-    {
-        DBservices dbs = new DBservices();
-        if (dbs.UserSong(email, songName) == 1)
-        {
-            return true;
-        }
-        return false;
-    }
 
     public List<string> ArtistArr(string mail)
     {

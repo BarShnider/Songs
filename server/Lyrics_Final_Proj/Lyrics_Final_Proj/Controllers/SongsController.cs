@@ -52,10 +52,26 @@ namespace Lyrics_Final_Proj.Controllers
             return "value";
         }
 
+        [HttpGet]
+        [Route("GetIfUserLikedSong/{email}/{songName}")]
+        public bool GetIfUserLikedSong(string email,string songName)
+        {
+            return Song.GetIfUserLikedSong(email,songName);
+        }
+
         // POST api/<SongsController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
+        }
+
+        // POST api/<UsersController>
+        [HttpPost]
+        [Route("UserLikesSong/{email}/{songName}")]
+        public int Post(string email, string songName)
+        {
+            return Song.AddSongToFav(email, songName);
+
         }
 
         // PUT api/<SongsController>/5

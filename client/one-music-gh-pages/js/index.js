@@ -170,20 +170,52 @@ function successCB(data) {
 
 //this function will be activaeted when entering lyrics page
 function renderSongPage(songName){
+  let user = JSON.parse(localStorage.getItem("userObj"));
   ajaxCall("GET",currApi + `/Songs/GetSongBySongName/${songName}`,"",songSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
 }
 
 function songSuccessCB(data){
   console.log(data)
+
   document.querySelector("#artistName").innerHTML = data.artistName;
   document.querySelector("#songName").innerHTML = data.title;
   document.querySelector("#lyricsContainer").innerText = data.lyrics
+  document.querySelector("#song-likes-count").innerHTML = data.favoriteCount
+  
 
+}
+
+function ifUserLikedSongSuccessCB(data){
+  console.log(data)
+  let likeHeart = document.querySelector("#heart-button")
+  if(data){
+  likeHeart.style.color = "#FB076D"
+  likeHeart.style.backgroundColor = "#fb076d40"
+
+  }
+  else{
+    likeHeart.style.color = "#000000"
+    likeHeart.style.backgroundColor = "#DDDDDD"
+  }
 }
 
 function renderArtistPage(artistName){
   document.querySelector("#artist").innerHTML = artistName;
   ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName}&api_key=${lastfmKEY}&format=json`,"",artistInfoSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
+  
+
+}
+
+function songByArtistSuccessCB(data){
+  console.log(data)
+  songsCont = document.querySelector("#songs-content");
+  console.log(songsCont)
+  for(let song of data){
+    songsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
+  }
 }
 
 function artistInfoSuccessCB(data) {
@@ -263,13 +295,13 @@ function songSelectedFromList(songName){
 window.location.href = 'song-page.html'
 }
 
-$("#lyricsContainer").ready(() => {
-  let songName = localStorage.getItem('selectedSong');
-  // localStorage.removeItem('selectedSong');
-  if (songName) {
-    renderSongPage(songName);
-  }  
-})
+// $(".lyricsContainer").ready(() => {
+//   let songName = localStorage.getItem('selectedSong');
+//   // localStorage.removeItem('selectedSong');
+//   if (songName) {
+//     renderSongPage(songName);
+//   }  
+// })
 $(".events-area").ready(() => {
   let artistName = localStorage.getItem('selectedArtist');
   localStorage.removeItem('selectedArtist');
@@ -306,7 +338,7 @@ function searchArtistSuccessCB(data){
     document.querySelector("#artist-title").innerHTML = "Artists:"
     for(let artist of data){
       // document.querySelector("#artist-result").innerHTML += `${artist}<br>` 
-      document.querySelector("#artist-result").innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="artistSelectedFromList('${artist}')">${artist}</a>` 
+      document.querySelector("#artist-result").innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="artistSelectedFromList('${artist}')">${artist}</a><br>` 
     }
   }
 
@@ -327,18 +359,36 @@ function likePressedArtist(){
   console.log(artistName)
   let user = JSON.parse(localStorage.getItem("userObj"))
   console.log(user)
-  ajaxCall("POST",currApi + `/Artists/AddRemoveLike/${user.email}/${artistName}`,"",addRemoveLikeSuccessCB,errorCB);
+  ajaxCall("POST",currApi + `/Artists/AddRemoveLike/${user.email}/${artistName}`,"",artistAddRemoveLikeSuccessCB,errorCB);
+  
+}
+function likePressedSong(){
+  let songName = document.querySelector("#songName").innerHTML
+  console.log(songName)
+  let user = JSON.parse(localStorage.getItem("userObj"))
+  console.log(user)
+  ajaxCall("POST",currApi + `/Songs/UserLikesSong/${user.email}/${songName}`,"",songAddRemoveLikeSuccessCB,errorCB);
   
 }
 
 function artistLikeSuccessCB(data){
   console.log(data)
- console.log("succcess1")
   document.querySelector(".counter").innerHTML = data
   
 }
 
-function addRemoveLikeSuccessCB(){
+function songAddRemoveLikeSuccessCB(data){
+  console.log(data)
+  let user  = JSON.parse(localStorage.getItem("userObj"))
+  document.querySelector("#song-likes-count").innerHTML = data
+  let songName = document.querySelector("#songName").innerHTML
+  console.log("Entered ADD REmove")
+  ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
+
+
+}
+
+function artistAddRemoveLikeSuccessCB(){
   let artistName = document.querySelector("#artist").innerHTML
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",artistLikeSuccessCB,errorCB);
   
@@ -355,7 +405,7 @@ function getAllSongsSuccessCB(data){
   console.log(data)
   let songsCont = document.querySelector("#songs-list-content");
   for (let song of data){
-    songsCont.innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
+    songsCont.innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
   }
 }
 
@@ -446,7 +496,7 @@ function getUserLikedSongSuccessCB(data){
   // console.log(data)
   let likedSongsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-songs`)
   for(let i = 1; i<data.length; i++){
-    likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[i].title}')">${data[i].title}</a><br> `
+    likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList("${data[i].title}")">${data[i].title}</a><br> `
   }
 }
 
@@ -511,3 +561,4 @@ function renderSongFromStorage(){
     renderSongPage(song);
   }
 }
+

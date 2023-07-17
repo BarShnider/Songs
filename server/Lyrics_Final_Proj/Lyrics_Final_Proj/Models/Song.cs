@@ -35,6 +35,19 @@
             return dbs.GetSongsByWord(word);
 
         }
+
+        public static int AddSongToFav(string email, string songName)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.UserSong(email, songName);
+        }
+        public static bool GetIfUserLikedSong(string email, string songName)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetIfUserLikedSong(email, songName);
+
+        }
     }
+
 
 }

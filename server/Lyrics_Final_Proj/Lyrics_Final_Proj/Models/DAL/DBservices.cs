@@ -250,6 +250,7 @@ public class DBservices
     }
 
 
+
     //--------------------------------------------------------------------------------------------------
     // This method returns a list of songs for given Song Name
     //--------------------------------------------------------------------------------------------------
@@ -288,6 +289,7 @@ public class DBservices
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
+                s.FavoriteCount = Convert.ToInt32(dataReader["favourite"]);
             }
             return s;
         }
@@ -363,6 +365,62 @@ public class DBservices
         }
 
     }
+
+
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if user exists 
+    //--------------------------------------------------------------------------------------------------
+    public bool GetIfUserLikedSong(string email, string songName)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@email", email);
+        paramDic.Add("@songName", songName);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_IsUserLikeSongExist", con, paramDic);             // create the command
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            int numOfResults = 0;
+            while (dataReader.Read())
+            {
+                numOfResults++;
+            }
+            return numOfResults > 0;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
 
     //--------------------------------------------------------------------------------------------------
     // This method returns a list of liked songs of a user
@@ -562,9 +620,15 @@ public class DBservices
 
         try
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
-            return numEffected;
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            int numOfLikes = 0;
+            while (dataReader.Read())
+            {
+                numOfLikes++;
+
+            }
+            return numOfLikes;
         }
         catch (Exception ex)
         {

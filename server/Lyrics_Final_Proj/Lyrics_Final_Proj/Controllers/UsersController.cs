@@ -73,15 +73,7 @@ namespace Lyrics_Final_Proj.Controllers
             return user.Register();
         }
 
-        // POST api/<UsersController>
-        [HttpPost]
-        [Route("UserLikesSong")]
-        public bool Post(string email, string songName)
-        {
-            User user = new User();
-            return user.AddSongToFav(email, songName);
 
-        }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
