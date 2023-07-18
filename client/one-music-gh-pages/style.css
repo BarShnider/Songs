@@ -1850,13 +1850,26 @@ justify-content: space-evenly;
 width: 150px;
 }
 
-#userContainerArtists, #userContainerSongs{
+#userContainerArtists,
+#userContainerSongs {
   margin-top: 30px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   justify-content: center;
   align-items: center;
+}
+
+.ppp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+
+
+#userContainerArtists .single-artist,
+#userContainerSongs .single-song {
+  margin-right: 20px;
 }
 #noArtistsForUser, #noSongsForUser{
   font-size: 50px;
