@@ -368,7 +368,7 @@ public class DBservices
 
 
     //--------------------------------------------------------------------------------------------------
-    // This method checks if user exists 
+    // This method checks if user liked song
     //--------------------------------------------------------------------------------------------------
     public bool GetIfUserLikedSong(string email, string songName)
     {
@@ -1314,6 +1314,60 @@ public class DBservices
             }
         }
 
+    }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if user liked artist
+    //--------------------------------------------------------------------------------------------------
+    public bool GetIfUserLikedArtist(string email, string artistName)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@email", email);
+        paramDic.Add("@artistName", artistName);
+
+
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_isUserLikeArtistExist", con, paramDic);             // create the command
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            int numOfResults = 0;
+            while (dataReader.Read())
+            {
+                numOfResults++;
+            }
+            return numOfResults > 0;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
     }
 
     /////////////////////////////////////////////////////////////////

@@ -1922,3 +1922,32 @@ width: 150px;
 #counter-container {
   margin-left: 5px;
 }
+
+.line {
+  width: 2px;
+  display: inline-block;
+  height: 17px;
+  background-color: #fff;
+  top: 4px;
+  position: relative;
+  margin-left: 6px;
+}
+
+.artist-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+/* .container-audio {
+  width: 66% !important;
+  height: auto !important;
+  padding: 20px !important;
+  border-radius: 5px !important;
+  background-color: #eee !important;
+  color: #444 !important;
+  margin: 20px auto !important;
+  overflow: hidden !important;
+}
+
+ */
