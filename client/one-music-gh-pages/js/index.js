@@ -508,19 +508,31 @@ function getUserLikedArtistsSuccessCB(data){
   }
 }
 
+
+
+
+
+
 function getTopArtists(){
   let userObjString=localStorage.getItem('userObj');
   let userObj = JSON.parse(userObjString);
+  console.log(userObj);
   document.getElementById("userName").innerHTML=userObj.username
-  let api = currApi + `/Artists/TopArtistsByUsername/${userObj.email}`;
+  let api = currApi + `/Users/GetUserLikedArtists/${userObj.email}`;
   ajaxCall("GET",api,"",TopArtistsSuccessCB,errorCB);
 }
 
 function TopArtistsSuccessCB(data){
   let elements = document.querySelectorAll('#fav-artist');
-  for (let i=0; i<5;i++){
-      elements[i].innerHTML=`<a class="ppp" href="#" onclick="artistSelectedFromList('${data[i]}')">${data[i]}</a>`;
+  if(data.length>=2){
+    document.getElementById("noArtistsForUser").remove();
   }
+  for (let i=0; i<data.length-1;i++){
+    let div=document.createElement("div");
+    div.className="single-artist".
+    div.innerHTML=` <img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info">'<a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1]}')">${data[i+1]}</a>'<h5 id="fav-artist"> ${data[i+1]}</h5></div>`
+    document.getElementById("userContainerArtists").appendChild(div);
+    }
 }
 
 function getFiveSongsByUser(){
@@ -531,16 +543,22 @@ function getFiveSongsByUser(){
 }
 
 function TopSongsSuccessCB(data){
+  if(data.length>=2){
+    document.getElementById("noSongsForUser").remove();
+  }
   let elements = document.querySelectorAll('#fav-song');
   let numbers=[];
-  while(numbers.length<5){
-      let number=Math.floor(Math.random()*data.length) + 1
+  while(numbers.length<data.length-1 && numbers.length<5){
+      let number=Math.floor(Math.random() * (data.length - 1 - 1)) + 1;
       if (!numbers.includes(number)) {
           numbers.push(number);
       }
   }
-  for (let i=0; i<5;i++){
-      elements[i].innerHTML= `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[numbers[i]].title}')">${data[numbers[i]].title}</a>`
+  for (let i=0; i<data.length-1;i++){
+    let div=document.createElement("div");
+    div.className="single-song";
+    div.innerHTML=`<img id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info">'<a class="ppp" href="#" onclick="songSelectedFromList('${data[i+1].title}')"></a>'<h5 id="fav-artist"> ${data[i+1].title}</h5></div>`
+    document.getElementById("userContainerSongs").appendChild(div);  
   }
 }
 
@@ -548,6 +566,9 @@ function renderUserProfile(){
   getTopArtists();
   getFiveSongsByUser();
 }
+
+
+
 
 function renderArtistFromStorage(){
   if(sessionStorage.getItem("tempArtist")){

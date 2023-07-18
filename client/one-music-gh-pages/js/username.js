@@ -35,4 +35,4 @@ $(document).ready(() => {
                 elements[i].innerHTML= `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${data[randomNumbers[i]].title}')"></a>`
             }
         }
-    }
+    });

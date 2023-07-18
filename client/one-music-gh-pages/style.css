@@ -1850,11 +1850,16 @@ justify-content: space-evenly;
 width: 150px;
 }
 
-#userContainer{
+#userContainerArtists, #userContainerSongs{
   margin-top: 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+}
+#noArtistsForUser, #noSongsForUser{
+  font-size: 50px;
 }
 
 #fav-artist,#fav-song{
