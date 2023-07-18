@@ -551,6 +551,9 @@ function TopArtistsSuccessCB(data){
     document.getElementById("noArtistsForUser").remove();
   }
   for (let i=0; i<data.length-1;i++){
+    if(i==5){
+      break;
+    }
     let div=document.createElement("div");
     div.className="single-artist";
     div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name}')"></a><h5 id="fav-artist">${data[i+1].name}</h5></div>`;
