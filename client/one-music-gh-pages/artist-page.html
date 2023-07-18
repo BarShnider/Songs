@@ -125,11 +125,17 @@
 
     <!-- ##### Events Area Start ##### -->
     <section class="events-area section-padding-100">
+        
         <div class="container" id="artistInfoContainer">
-            <div class="heart" id="heart-button" onclick="likePressedArtist()">
-                <span class="counter"></span>
-                <i class="fa fa-heart"></i>
-            </div>    
+            <div class="artist-image-container">
+                <img id="artist-image" src="" alt="">
+            </div>
+            <div id="heart-container">
+                <div class="heart" id="heart-button" onclick="likePressedArtist()">
+                    <i class="fa fa-heart"></i>
+                </div>  
+                <div id="counter-container"><span id="artist-likes-count"></span> Likes</div>
+            </div>   
             <h3>Summary:</h3>
             <p id="artist-summary"></p>
             
@@ -151,7 +157,12 @@
                         <span class="accor-close"><i class="fa fa-minus" aria-hidden="true"></i></span>
                     </a></h6>
                     <div id="collapseSongs" class="accordion-content collapse">
-                        <p id="songs-content"></p>
+                        <!-- <div class="audio-cont">
+                            Listen To A Preview:
+                            <audio id="artist-preview" src=""></audio>
+                        </div> -->
+                        <p id="songs-content">
+                        </p>
                     </div>
                 </div>
             </div>

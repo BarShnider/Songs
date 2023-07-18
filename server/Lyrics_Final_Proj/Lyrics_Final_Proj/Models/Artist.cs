@@ -47,5 +47,49 @@
             DBservices dbs = new DBservices();
             return dbs.GetAllArtistsWithLikes();
         }
+
+        public static bool GetIfUserLikedArtist(string email, string artistName)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetIfUserLikedArtist(email,artistName);
+        }
+
+        public static async Task<string> GetArtistInfo(string artistName)
+        {
+            //string artistName = "Queen";
+            string apiUrl = $"https://api.deezer.com/search?q={artistName}";
+
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    // Make a GET request to the Deezer API
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                    // Check if the request was successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Read the response content as a string
+                        string responseBody = await response.Content.ReadAsStringAsync();
+
+                        // Process the response data (you can use JSON deserialization if needed)
+                        Console.WriteLine(responseBody);
+                        return responseBody;
+                    }
+                    else
+                    {
+                        // Handle the case when the request fails
+                        Console.WriteLine($"Request failed with status code: {response.StatusCode}");
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that might occur during the request
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
     }
 }

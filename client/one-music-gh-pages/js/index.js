@@ -2,6 +2,7 @@ const swaggerAPI = `https://localhost:7052/api`;
 let rupAPI;
 let currApi = swaggerAPI;
 const lastfmKEY = "711cd7242581234c484cb8a564931277"
+const deezerSecret = "b5d9a7955fc9a8b367bebcd125339bb6"
 
 $(document).ready(() => {
 
@@ -10,8 +11,12 @@ $(document).ready(() => {
         let loggedInUser = JSON.parse(localStorage.getItem("userObj"))
         console.log(loggedInUser);
         console.log(document.querySelector(".login-register-btn"))
-        document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn mr-50"><a href="login.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
-    }
+        document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn logged-user-div mr-50">
+        <a href="login.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><span class="line"></span><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
+        if(loggedInUser.email == "admin@gmail.com"){
+          document.querySelector(".logged-user-div").innerHTML += `<span class="line"></span><a href="admin-page.html" id="">&nbsp;&nbsp;Admin Panel</a>`
+        }
+      }
     else {
         console.log("no one is logged in")
     }
@@ -201,18 +206,33 @@ function ifUserLikedSongSuccessCB(data){
 }
 
 function renderArtistPage(artistName){
+  let user = JSON.parse(localStorage.getItem("userObj"))
   document.querySelector("#artist").innerHTML = artistName;
   ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName}&api_key=${lastfmKEY}&format=json`,"",artistInfoSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
-  ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
-  
-
+  ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",getArtistLikesSuccessCB,errorCB);
+  // ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
+}
+function getArtistLikesSuccessCB(data){
+console.log(data)
+document.querySelector("#artist-likes-count").innerHTML = data
 }
 
 function songByArtistSuccessCB(data){
   console.log(data)
+  let artistName = document.querySelector("#artist").innerHTML
+  // console.log(artistName)
+  getDeezerDetails(artistName)
   songsCont = document.querySelector("#songs-content");
   console.log(songsCont)
+  // songsCont.innerHTML += `<div class="audioplayer audioplayer-mini"><embed id="embed-src" src="" width="0" height="0" volume="100" autostart="false" loop="false"><div class="audioplayer-playpause" title=""><a href="#"></a></div></div>`
+//   songsCont.innerHTML += `   <div class="container-audio">
+//   <audio controls>
+//              <source id="audio-tag" src="" type="audio/mpeg">
+//              Your browser dose not Support the audio Tag
+//          </audio>
+// </div>`
   for(let song of data){
     songsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
   }
@@ -222,7 +242,6 @@ function artistInfoSuccessCB(data) {
   console.log(data)
   document.querySelector("#artist-summary").innerHTML = data.artist.bio.summary;
   document.querySelector("#artist-content").innerText = data.artist.bio.content;
-  addRemoveLikeSuccessCB();
 }
 
 function renderAllArtistsList(){
@@ -276,7 +295,7 @@ function fillSuccessCB(data){
 
   }
   
-  document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase()}-list-item-summary`).innerHTML +=  `<a class="visitPage" onclick="artistSelectedFromList(${data.artist.name}) >Visit ${data.artist.name} Page</a>`
+  document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase()}-list-item-summary`).innerHTML +=  `<a class="visitPage" onclick="artistSelectedFromList(${data.artist.name}) >Visit ${data.artist.name} Page</audio>`
   // else{
     // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML += `<a href="index.html">click here for artist page</a>`
   // }
@@ -373,7 +392,7 @@ function likePressedSong(){
 
 function artistLikeSuccessCB(data){
   console.log(data)
-  document.querySelector(".counter").innerHTML = data
+  document.querySelector("#artist-likes-count").innerHTML = data
   
 }
 
@@ -389,8 +408,11 @@ function songAddRemoveLikeSuccessCB(data){
 }
 
 function artistAddRemoveLikeSuccessCB(){
+  let user  = JSON.parse(localStorage.getItem("userObj"))
   let artistName = document.querySelector("#artist").innerHTML
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",artistLikeSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
+
   
 }
 
@@ -562,3 +584,19 @@ function renderSongFromStorage(){
   }
 }
 
+function getDeezerDetails(artistName){
+  https://api.deezer.com/search?q=queen
+  // ajaxCall("GET",`https://api.deezer.com/search?q=${artistName}`,"",deezerSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${artistName}`,"",deezerSuccessCB,errorCB);
+
+}
+
+function deezerSuccessCB(data){
+console.log(data.data[0])
+let top1res = data.data[0]
+console.log(top1res.artist)
+document.querySelector("#artist-image").src =  top1res.artist.picture_medium
+// document.querySelector("#artist-preview").src =  top1res.preview
+// document.querySelector("#audio-tag").src = top1res.preview
+// console.log(document.querySelector(".audioplayer").embed.src)
+}

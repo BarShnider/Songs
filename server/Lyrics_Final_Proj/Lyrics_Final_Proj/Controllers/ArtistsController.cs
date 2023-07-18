@@ -69,6 +69,20 @@ namespace Lyrics_Final_Proj.Controllers
             return Artist.GetAllArtistsWithLikes();
         }
 
+        [HttpGet]
+        [Route("GetIfUserLikedArtist/{email}/{artistName}")]
+        public bool GetIfUserLikedArtist(string email, string artistName)
+        {
+            return Artist.GetIfUserLikedArtist(email,artistName);
+        }
+
+        [HttpGet]
+        [Route("GetDeezerInfo/{artist}")]
+        public Task<string> GetDeezerInfo(string artist)
+        {
+            return Artist.GetArtistInfo(artist);
+        }
+
         // POST api/<ArtistsController>
         [HttpPost]
         public void Post([FromBody] string value)
