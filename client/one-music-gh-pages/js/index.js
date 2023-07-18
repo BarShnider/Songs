@@ -12,7 +12,7 @@ $(document).ready(() => {
         console.log(loggedInUser);
         console.log(document.querySelector(".login-register-btn"))
         document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn logged-user-div mr-50">
-        <a href="login.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><span class="line"></span><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
+        <a href="user-page.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><span class="line"></span><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
         if(loggedInUser.email == "admin@gmail.com"){
           document.querySelector(".logged-user-div").innerHTML += `<span class="line"></span><a href="admin-page.html" id="">&nbsp;&nbsp;Admin Panel</a>`
         }
