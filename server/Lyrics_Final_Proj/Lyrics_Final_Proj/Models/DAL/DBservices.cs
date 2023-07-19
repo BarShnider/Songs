@@ -1854,10 +1854,10 @@ public class DBservices
 
             while (dataReader.Read())
             {
-                string Q = dataReader["song"].ToString();
                 string A = dataReader["Lyrics"].ToString();
-                questionANDanswer.Add(Q);
+                string Q = dataReader["song"].ToString();
                 questionANDanswer.Add(A);
+                questionANDanswer.Add(Q);             
             };
             return questionANDanswer;
         }

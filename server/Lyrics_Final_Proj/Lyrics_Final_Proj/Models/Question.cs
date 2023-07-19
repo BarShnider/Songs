@@ -43,9 +43,6 @@
             Question question = new Question();
             DBservices dbs = new DBservices();
             List<string> Q = dbs.QandALyric();
-            string temp = Q[0];
-            Q[0] = Q[1];//Q[0] = lyric
-            Q[1] = temp;//Q[1] = song
             List<string> A = dbs.ThreeAnswersLyric(Q[1]);
             Q.Add(A[0]);
             Q.Add(A[1]);
@@ -54,7 +51,7 @@
             int randomNumber = random.Next(1, 5);
             if (randomNumber != 1)
             {
-                temp = Q[1];
+                string temp = Q[1];
                 Q[1] = Q[randomNumber];
                 Q[randomNumber] = temp;
             }
