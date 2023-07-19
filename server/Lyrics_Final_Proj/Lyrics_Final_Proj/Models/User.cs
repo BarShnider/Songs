@@ -63,4 +63,10 @@ public class User
         DBservices dbs = new DBservices();
         return dbs.GetUserLikedArtist(email);
     }
+
+    public static int[] GetStatisticsAdmin()
+    {
+        DBservices dbs = new DBservices();
+        return dbs.GetStatisticsAdmin();
+    }
 }

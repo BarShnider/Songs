@@ -902,6 +902,62 @@ public class DBservices
 
     }
 
+
+    //--------------------------------------------------------------------------------------------------
+    // This method gets the data statistic for the admin
+    //--------------------------------------------------------------------------------------------------
+    public int[] GetStatisticsAdmin()
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+       cmd = CreateCommandWithStoredProcedure("Final_GetAdminPanelCounts", con, null);             // create the command
+
+
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            int[] statList = new int[3];
+            int stat;
+            while (dataReader.Read())
+            {
+                statList[0] = Convert.ToInt32(dataReader["SongsCount"]);
+                statList[1] = Convert.ToInt32(dataReader["ArtistsCount"]);
+                statList[2] = Convert.ToInt32(dataReader["UsersCount"]);
+
+            }
+            return statList;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
     //--------------------------------------------------------------------------------------------------
     // This method returns all the artists that the user liked
     //--------------------------------------------------------------------------------------------------
