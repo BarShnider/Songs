@@ -1797,19 +1797,21 @@ public class DBservices
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@artist", artist);
-        paramDic.Add("@song", song);
+        paramDic.Add("@artistName", artist);
+        paramDic.Add("@songName", song);
 
         cmd = CreateCommandWithStoredProcedure("Final_CheckSongRightToArtist", con, paramDic);             // create the command
 
         try
         {
-            //int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
-            if(numEffected == 1) {
-                return true;
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            int rowCount = 0;
+            while (dataReader.Read())
+            {
+                rowCount++;
             }
-            return false;
+            return rowCount > 0;
+
         }
         catch (Exception ex)
         {

@@ -38,8 +38,8 @@ namespace Lyrics_Final_Proj.Controllers
 
         // POST api/<QuestionsController>
         [HttpPost]
-        [Route("CheckAnswerSongForArtist")]
-        public bool Post([FromBody] string artist, string song)
+        [Route("CheckAnswerSongForArtist/{artist}/{song}")]
+        public bool Post( string artist, string song)
         {
             return Question.checkQuestionByArtist(artist, song);
 
