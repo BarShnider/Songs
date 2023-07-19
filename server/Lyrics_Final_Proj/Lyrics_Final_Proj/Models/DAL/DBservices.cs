@@ -64,8 +64,8 @@ public class DBservices
     }
 
 
-      /////////////////////////////////////////////////////////////////
-     ///////////////////////// SONG /////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+    ///////////////////////// SONG /////////////////////////////////
     ////////////////////////////////////////////////////////////////
 
 
@@ -282,7 +282,7 @@ public class DBservices
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-                Song s = new Song();
+            Song s = new Song();
             while (dataReader.Read())
             {
                 s.ArtistName = dataReader["artistName"].ToString();
@@ -342,8 +342,8 @@ public class DBservices
                 song.ArtistName = dataReader["artistName"].ToString();
                 song.Lyrics = dataReader["text"].ToString();
                 song.Title = dataReader["song"].ToString();
-                song.Link= dataReader["link"].ToString();
-                song.FavoriteCount= Convert.ToInt32(dataReader["favourite"]);
+                song.Link = dataReader["link"].ToString();
+                song.FavoriteCount = Convert.ToInt32(dataReader["favourite"]);
 
                 artistList.Add(song);
             }
@@ -460,7 +460,7 @@ public class DBservices
                 s.Title = dataReader["song"].ToString();
                 s.Link = dataReader["link"].ToString();
                 s.Lyrics = dataReader["text"].ToString();
-                songsList.Add(s); 
+                songsList.Add(s);
             }
             return songsList;
         }
@@ -821,7 +821,7 @@ public class DBservices
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             while (dataReader.Read())
             {
-            User u = new User();
+                User u = new User();
                 u.Name = dataReader["userName"].ToString();
                 u.Email = dataReader["email"].ToString();
                 u.DateRegister = Convert.ToDateTime(dataReader["created_at"]);
@@ -1131,7 +1131,7 @@ public class DBservices
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@word", word);
 
-         cmd = CreateCommandWithStoredProcedure("Final_Get_Artists_By_Word", con, paramDic);             // create the command
+        cmd = CreateCommandWithStoredProcedure("Final_Get_Artists_By_Word", con, paramDic);             // create the command
 
         List<string> artistList = new List<string>();
 
@@ -1162,7 +1162,7 @@ public class DBservices
         }
 
     }
-    
+
 
     public int GetArtistLikes(string name)
     {
@@ -1555,696 +1555,178 @@ public class DBservices
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /////////////////////////////////////////////////////////////////
+    ///////////////////////// Question //////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
     //--------------------------------------------------------------------------------------------------
-    // This method returns a user by email
+    // This method generates name for question and right answer 
     //--------------------------------------------------------------------------------------------------
-    //public User ReadUser(string email)
-    //{
 
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@email", email);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Get_User_By_Email", con, paramDic);
-    //    SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //    try
-    //    {
-    //        User s = new User();
-    //        while (dataReader.Read())
-    //        {
-    //            s.Id = Convert.ToInt32(dataReader["Id"]);
-    //            s.Country = dataReader["countrt"].ToString();
-    //            s.Email = dataReader["email"].ToString();
-    //            s.Password = dataReader["email"].ToString();
-    //            s.Phone = Convert.ToInt32(dataReader["Phone"]);
-    //        }
-    //        return s;
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Inserts a user to the Users table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int InsertUser(User user)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@country", user.Country);
-    //    paramDic.Add("@email", user.Email);
-    //    paramDic.Add("@password", user.Password);
-    //    paramDic.Add("@phone", user.Phone);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Add_User", con, paramDic);             // create the command
-
-    //    try
-    //    {
-    //        // int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method checks if user exists 
-    ////--------------------------------------------------------------------------------------------------
-    //public int LoginUser(User user)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@email", user.Email);
-    //    paramDic.Add("@password", user.Password);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Login_User", con, paramDic);             // create the command
-
-    //    try
-    //    {
-    //        // int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method returns user 
-    ////--------------------------------------------------------------------------------------------------
-    //public User ReturnUser(User user)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@email", user.Email);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Return_User", con, paramDic);
-    //    SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //    try
-    //    {
-    //        User s = new User();
-    //        while (dataReader.Read())
-    //        {
-    //            s.Id = Convert.ToInt32(dataReader["Id"]);
-    //            s.Country = dataReader["countrt"].ToString();
-    //            s.Email = dataReader["email"].ToString();
-    //            s.Password = dataReader["email"].ToString();
-    //            s.Phone = Convert.ToInt32(dataReader["Phone"]);
-
-
-    //        }
-    //        return s;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Update a user details 
-    ////--------------------------------------------------------------------------------------------------
-    //public int UpdateUser(User user)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@country", user.Country);
-    //    paramDic.Add("@email", user.Email);
-    //    paramDic.Add("@password", user.Password);
-    //    paramDic.Add("@phone", user.Phone);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Update_User", con, paramDic);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-
-    ///////////////////////////////////////////////////////////////////
-    /////////////////////////// Flat /////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Inserts a flat to the Flats table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int InsertFlat(Flat flat)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@id", flat.Id);
-    //    paramDic.Add("@city", flat.City);
-    //    paramDic.Add("@address", flat.Address);
-    //    paramDic.Add("@price", flat.Price);
-    //    paramDic.Add("@bedRooms", flat.BedRooms);
-    //    paramDic.Add("@imgUrl", flat.ImgUrl);
-    //    paramDic.Add("@apartment", flat.ApartmentName);
-    //    paramDic.Add("@reviewScore", flat.ReviewScore);
-    //    paramDic.Add("@description", flat.Description);
-
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Add_Flat", con, paramDic);             // create the command
-
-    //    try
-    //    {
-    //        // int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Reads all Flats
-    ////--------------------------------------------------------------------------------------------------
-    //public List<Flat> ReadFlats()
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Read_Flat", con, null);             // create the command
-
-
-    //    List<Flat> flatsList = new List<Flat>();
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Flat s = new Flat();
-    //            s.Id = Convert.ToInt32(dataReader["Id"]);
-    //            s.City = dataReader["city"].ToString();
-    //            s.Address = dataReader["address"].ToString();
-    //            s.Price = (float)Convert.ToDouble(dataReader["price"]);
-    //            s.BedRooms = Convert.ToInt32(dataReader["bedRooms"]);
-    //            s.ImgUrl = dataReader["imgUrl"].ToString();
-    //            s.ApartmentName = dataReader["ApartmentName"].ToString();
-    //            s.ReviewScore = (float)Convert.ToDouble(dataReader["ReviewScore"]);
-    //            s.Description = dataReader["description"].ToString();
-    //            flatsList.Add(s);
-    //        }
-    //        return flatsList;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Delets Flat by id
-    ////--------------------------------------------------------------------------------------------------
-    //public int DeleteFlat(int id)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@id", id);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Remove_Flat", con, paramDic);             // create the command
-
-    //    try
-    //    {
-    //        // int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method get Flat by price
-    ////--------------------------------------------------------------------------------------------------
-    //public List<Flat> PriceFlat(float price)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@price", price);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Flat_by_Price", con, paramDic);
-
-    //    List<Flat> flatsList = new List<Flat>();
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Flat s = new Flat();
-    //            s.Id = Convert.ToInt32(dataReader["Id"]);
-    //            s.City = dataReader["city"].ToString();
-    //            s.Address = dataReader["address"].ToString();
-    //            s.Price = (float)Convert.ToDouble(dataReader["price"]);
-    //            s.BedRooms = Convert.ToInt32(dataReader["bedRooms"]);
-    //            s.ImgUrl = dataReader["imgUrl"].ToString();
-    //            s.ApartmentName = dataReader["apartmentName"].ToString();
-    //            s.ReviewScore = (float)Convert.ToDouble(dataReader["reviewScore"]);
-    //            s.Description = dataReader["description"].ToString();
-    //            flatsList.Add(s);
-    //        }
-    //        return flatsList;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-
-    ///////////////////////////////////////////////////////////////////
-    /////////////////////////// Order /////////////////////////////////
-    //////////////////////////////////////////////////////////////////
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Inserts a order to the Orders table 
-    ////--------------------------------------------------------------------------------------------------
-    //public int InsertOrder(Order order)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@id", order.Id);
-    //    paramDic.Add("@UserId", order.UserId);
-    //    paramDic.Add("@FlatId", order.FlatId);
-    //    paramDic.Add("@StartDate", order.StartDate);
-    //    paramDic.Add("@EndDate", order.EndDate);
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Insert_Orders_Yoni", con, paramDic);             // create the command
-
-    //    try
-    //    {
-    //        // int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-    //}
-
-    ////--------------------------------------------------------------------------------------------------
-    //// This method Reads all Orders
-    ////--------------------------------------------------------------------------------------------------
-    //public List<Order> ReadOrders()
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-
-    //    cmd = CreateCommandWithStoredProcedure("SP_Read_Orders ", con, null);             // create the command
-
-
-    //    List<Order> OrdersList = new List<Order>();
-
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Order s = new Order();
-    //            s.Id = Convert.ToInt32(dataReader["Id"]);
-    //            s.StartDate = Convert.ToDateTime(dataReader["startDate"]);
-    //            s.EndDate = Convert.ToDateTime(dataReader["endDate"]);
-    //            s.FlatId = Convert.ToInt32(dataReader["flatID"]);
-    //            s.UserId = Convert.ToInt32(dataReader["userID"]);
-    //            OrdersList.Add(s);
-    //        }
-    //        return OrdersList;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-
+    public List<string> QandA()
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_GenerateQuestionCorrect", con, null);             // create the command
+
+
+        List<string> questionANDanswer = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string Q = dataReader["artistName"].ToString();
+                string A = dataReader["song"].ToString();
+                questionANDanswer.Add(Q);
+                questionANDanswer.Add(A);
+            };
+                return questionANDanswer;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+    //--------------------------------------------------------------------------------------------------
+    // This method generates 3 incorrect answers for question 
+    //--------------------------------------------------------------------------------------------------
+
+    public List<string> ThreeAnswers(string artistName)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@artistName", artistName);
+
+        cmd = CreateCommandWithStoredProcedure("Final_GenerateQuestionWrong", con, paramDic);             // create the command
+
+
+        List<string> answers = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string answer = dataReader["song"].ToString();
+                answers.Add(answer);
+            };
+            return answers;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
 
     //--------------------------------------------------------------------------------------------------
-    // This method Reads all students above a certain age
-    // This method uses the return value mechanism
+    // This method generates 3 incorrect answers (songs) for question
     //--------------------------------------------------------------------------------------------------
-    //public List<Student> ReadAboveAge(double age)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("myProjDB"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
 
 
-    //    Dictionary<string, object> paramDic = new Dictionary<string, object>();
-    //    paramDic.Add("@age", age);
-    //    paramDic.Add("@maxAllowedAge", 40);
+    public List<string> ThreeAnswersSong(string artistName, string songName)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@artistName", artistName);
+        paramDic.Add("@songName", songName);
+
+        cmd = CreateCommandWithStoredProcedure("Final_GenerateQuestionWrongSong", con, paramDic);             // create the command
 
 
-    //    cmd = CreateCommandWithStoredProcedure("spReadStudentsAboveAge", con, paramDic);             // create the command
-    //    var returnParameter = cmd.Parameters.Add("@returnValue", SqlDbType.Int);
+        List<string> answers = new List<string>();
 
-    //    returnParameter.Direction = ParameterDirection.ReturnValue;
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
+            while (dataReader.Read())
+            {
+                string answer = dataReader["artistName"].ToString();
+                answers.Add(answer);
+            };
+            return answers;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
 
-    //    List<Student> studentList = new List<Student>();
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
 
-    //    try
-    //    {
-    //        SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-    //        while (dataReader.Read())
-    //        {
-    //            Student s = new Student();
-    //            s.Id = Convert.ToInt32(dataReader["Id"]);
-    //            s.Name = dataReader["Name"].ToString();
-    //            s.Age = Convert.ToDouble(dataReader["Age"]);
-    //            studentList.Add(s);
-    //        }
-
-
-
-    //        return studentList;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //        // note that the return value appears only after closing the connection
-    //        var result = returnParameter.Value;
-    //    }
-
-    //}
-
-
-
-
-
-
-
+    }
 }
+
+
+
+
+
