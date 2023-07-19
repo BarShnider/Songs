@@ -31,6 +31,15 @@
             this.AnswerC = Q[3]; //2
             this.AnswerD = Q[4]; //3
         }
+        public static bool checkQuestionByArtist(string artist ,string song)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.CheckAnswerArtist(artist, song);
+        }
+
+
+
+
         public void makeQuestionBySong()
         {
             Question question = new Question();
