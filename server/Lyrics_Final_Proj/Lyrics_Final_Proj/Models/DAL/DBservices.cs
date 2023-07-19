@@ -1616,7 +1616,7 @@ public class DBservices
     ////////////////////////////////////////////////////////////////
 
     //--------------------------------------------------------------------------------------------------
-    // This method generates name for question and right answer 
+    // This method generates artist name for question and right answer as song 
     //--------------------------------------------------------------------------------------------------
 
     public List<string> QandA()
@@ -1670,10 +1670,10 @@ public class DBservices
 
     }
     //--------------------------------------------------------------------------------------------------
-    // This method generates 3 incorrect answers for question 
+    // This method generates 3 incorrect answers as songs for question 
     //--------------------------------------------------------------------------------------------------
 
-    public List<string> ThreeAnswers(string artistName)
+    public List<string> ThreeIncorrectAnswersSongs(string artistName)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -1725,11 +1725,11 @@ public class DBservices
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method generates 3 incorrect answers (songs) for question
+    // This method generates 3 incorrect answers (artist) for question
     //--------------------------------------------------------------------------------------------------
 
 
-    public List<string> ThreeAnswersSong(string artistName, string songName)
+    public List<string> ThreeIncorrectAnswersArtist(string artistName, string songName)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -1812,6 +1812,107 @@ public class DBservices
             }
             return rowCount > 0;
 
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
+    public List<string> QandALyric()
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+
+        cmd = CreateCommandWithStoredProcedure("Final_QuestionPartitionLyric", con, null);             // create the command
+
+
+        List<string> questionANDanswer = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string A = dataReader["Lyrics"].ToString();
+                string Q = dataReader["song"].ToString();
+                questionANDanswer.Add(A);
+                questionANDanswer.Add(Q);             
+            };
+            return questionANDanswer;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    public List<string> ThreeAnswersLyric(string songName)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@songName", songName);
+
+        cmd = CreateCommandWithStoredProcedure("Final_ThreeSongsForQ", con, paramDic);             // create the command
+
+
+        List<string> answers = new List<string>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                string answer = dataReader["song"].ToString();
+                answers.Add(answer);
+            };
+            return answers;
         }
         catch (Exception ex)
         {

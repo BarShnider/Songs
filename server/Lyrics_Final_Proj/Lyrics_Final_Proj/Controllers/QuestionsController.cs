@@ -36,6 +36,16 @@ namespace Lyrics_Final_Proj.Controllers
             return question;
         }
 
+        // GET api/<QuestionsController>/5
+        [HttpGet]
+        [Route("GetQuestionLyrics")]
+        public Question GetQByLyric()
+        {
+            Question question = new Question();
+            question.makeQuestionByLyric();
+            return question;
+        }
+
         // POST api/<QuestionsController>
         [HttpPost]
         [Route("CheckAnswerSongForArtist/{artist}/{song}")]
