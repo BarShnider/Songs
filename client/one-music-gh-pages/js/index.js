@@ -250,7 +250,7 @@ function renderAllArtistsList(){
 }
 
 function artistSuccessCB(data) {
-  onsole.log(data);
+  console.log(data);
   let container = document.querySelector(".list-accordion");
   for (let i = 0; i < data.length; i++) {
     let name = data[i];
@@ -270,7 +270,7 @@ function artistSuccessCB(data) {
             <p class="clickHereForInfo"></p>
           </div>
         </div>`;
-  }c
+  }
 
   let clickHereForInfoElements = document.querySelectorAll(".clickHereForInfo");
 for (let i = 0; i < clickHereForInfoElements.length; i++) {
@@ -418,9 +418,21 @@ function artistAddRemoveLikeSuccessCB(){
 
 function renderAdminPage(){
   ajaxCall("GET",currApi + `/Users/GetAllUsers`,"",getAllUsersSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Users/GetStatisticsAdmin`,"",getStatisticSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/GetAllArtistsWithLikes`,"",getAllArtistsSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Songs/GetAllSongs`,"",getAllSongsSuccessCB,errorCB);
 
+}
+
+function getStatisticSuccessCB(data){
+  console.log(data)
+  console.log(data[0])
+  console.log(data[1])
+  console.log(data[2])
+  console.log(document.querySelectorAll(".counter"))
+document.querySelectorAll(".counter")[0].innerHTML = data[0]
+document.querySelectorAll(".counter")[1].innerHTML = data[1]
+document.querySelectorAll(".counter")[2].innerHTML = data[2]
 }
 
 function getAllSongsSuccessCB(data){
