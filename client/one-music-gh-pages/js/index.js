@@ -250,7 +250,7 @@ function renderAllArtistsList(){
 }
 
 function artistSuccessCB(data) {
-  console.log(data);
+  onsole.log(data);
   let container = document.querySelector(".list-accordion");
   for (let i = 0; i < data.length; i++) {
     let name = data[i];
@@ -270,7 +270,7 @@ function artistSuccessCB(data) {
             <p class="clickHereForInfo"></p>
           </div>
         </div>`;
-  }
+  }c
 
   let clickHereForInfoElements = document.querySelectorAll(".clickHereForInfo");
 for (let i = 0; i < clickHereForInfoElements.length; i++) {
@@ -321,14 +321,14 @@ window.location.href = 'song-page.html'
 //     renderSongPage(songName);
 //   }  
 // })
-$(".events-area").ready(() => {
-  let artistName = localStorage.getItem('selectedArtist');
-  localStorage.removeItem('selectedArtist');
-  if (artistName) {
-    renderArtistPage(artistName);
-    // addRemoveLikeSuccessCB() //CHECKKKK
-  }
-})
+// $(".events-area").ready(() => {
+//   let artistName = localStorage.getItem('selectedArtist');
+//   localStorage.removeItem('selectedArtist');
+//   if (artistName) {
+//     renderArtistPage(artistName);
+//     // addRemoveLikeSuccessCB() //CHECKKKK
+//   }
+// })
 
 function signout(){
   localStorage.removeItem("userObj");
@@ -436,7 +436,7 @@ function getAllArtistsSuccessCB(data){
   let artistCont = document.querySelector("#artist-list-content") 
   console.log(artistCont)
   for(let artist of data){
-    artistCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${artist.name}')">${artist.name} - ${artist.favoriteCount} Likes</a><br> `
+    artistCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${artist.name}')">${artist.name}</a> - ${artist.favoriteCount} Likes<br> `
   }
 }
 
@@ -625,4 +625,31 @@ document.querySelector("#artist-image").src =  top1res.artist.picture_medium
 // document.querySelector("#artist-preview").src =  top1res.preview
 // document.querySelector("#audio-tag").src = top1res.preview
 // console.log(document.querySelector(".audioplayer").embed.src)
+}
+
+function renderAllSongsList(){
+  ajaxCall("GET",currApi + `/Songs/GetAllSongs`,"",allSongsSuccessCB,errorCB);
+}
+
+function allSongsSuccessCB(data){
+  console.log(data);
+  let container = document.querySelector(".song-list-accordion");
+  for (let i = 0; i < data.length; i++) {
+    let songName = data[i].title;
+    let artistName = data[i].artistName;
+    let accordionId = `collapse${i + 1}`; // Generate unique id for each accordion
+
+    container.innerHTML += `
+        <div class="panel single-accordion">
+          <h6>
+            <a role="button" aria-expanded="true" aria-controls="${accordionId}" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#" onclick="songSelectedFromList('${data[i].title}')">
+              ${artistName} - ${songName}
+            </a>
+          </h6>
+          <div id="${accordionId}" class="accordion-content collapse">
+            <p id="${name.split(" ") == 1? name.toLowerCase() : name.split(" ").join("-").toLowerCase()}-list-item-summary"></p>
+            <p class="clickHereForInfo"></p>
+          </div>
+        </div>`;
+  }
 }

@@ -1964,3 +1964,7 @@ width: 150px;
 }
 
  */
+
+ .classy-navbar {
+  justify-content: space-around !important;
+ }
