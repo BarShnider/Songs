@@ -1118,7 +1118,7 @@ public class DBservices
 
     }
 
-    public List<string> ReturnTopArtists()
+    public List<Artist> ReturnTopArtists()
     {
 
         SqlConnection con;
@@ -1138,16 +1138,17 @@ public class DBservices
         cmd = CreateCommandWithStoredProcedure("Final_Top_Artists ", con, null);             // create the command
 
 
-        List<string> artistList = new List<string>();
+        List<Artist> artistList = new List<Artist>();
 
         try
         {
             SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
             while (dataReader.Read())
             {
-                string name = dataReader["artistName"].ToString();
-                artistList.Add(name);
+            Artist a = new Artist();
+                a.Name = dataReader["artistName"].ToString();
+                a.FavoriteCount = Convert.ToInt32(dataReader["likes"]);
+                artistList.Add(a);
             }
             return artistList;
         }

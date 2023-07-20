@@ -18,7 +18,7 @@
             return dbs.ReturnAllArtists();
         }
 
-        public List<string> TopArtists()
+        public List<Artist> TopArtists()
         {
             DBservices dbs = new DBservices();
             return dbs.ReturnTopArtists();

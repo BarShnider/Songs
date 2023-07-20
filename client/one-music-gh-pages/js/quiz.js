@@ -3,7 +3,7 @@ var quiz = {}
     
     quiz.hQn = document.createElement("div");
     quiz.hQn.id = "quizQn";
-    quiz.hQn.innerHTML = "Press Start To Play";
+    quiz.hQn.innerHTML = "Press Start Or Select Game To Play";
     quiz.hWrap.appendChild(quiz.hQn);
     
     quiz.hAns = document.createElement("div");
@@ -56,6 +56,7 @@ var quiz = {}
     }
 
     function getArtistQuestion(){
+        document.querySelector(".quiz-header").innerHTML = "Guess The Artist!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";
         if(matchSongsToArtistCounter == 10){
@@ -86,10 +87,23 @@ var quiz = {}
     }
 
 
-    // {
-    //     "contentQ": "Alison Krauss",
-    //     "answerA": "Andy",
-    //     "answerB": "Get Back",
-    //     "answerC": "Missing You",
-    //     "answerD": "Before And After"
-    // }
+    function getSongQuestion(){
+        document.querySelector(".quiz-header").innerHTML = "Guess The Song!"
+        document.querySelector("#getArtistQ-play-again").style.display = "none"
+        document.querySelector("#quizAns").style.display = "grid";
+        if(matchSongsToArtistCounter == 10){
+            document.querySelector("#getArtistQ-play-again").innerHTML = "Play Again";
+            document.querySelector("#getArtistQ-play-again").style.display = "block"
+            document.querySelector("#quizAns").style.display = "none";
+            document.querySelector("#quizQn").innerHTML = `you got ${matchSongsToArtistCorrectAnswers}/10 correct!`;
+            matchSongsToArtistCorrectAnswers = 0;
+            matchSongsToArtistCounter = 0;
+            return;
+        }
+
+        ajaxCall("GET",currApi + `/Questions/GetQuestionSong`,"",artistQuestionSuccessCB,errorCB);
+        for(let i = 1; i<5;i++){
+            document.querySelector(`#label${i}`).style.backgroundColor = "#fff"
+        }
+
+    }

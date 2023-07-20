@@ -1965,9 +1965,9 @@ width: 150px;
 
  */
 
- .classy-navbar {
+ /* .classy-navbar {
   justify-content: space-around !important;
- }
+ } */
 
  #quizWrap {
   max-width: 600px;
@@ -2056,4 +2056,27 @@ width: 150px;
 .play-again:hover {
   transition: 200ms ease-in;
   box-shadow: none;
+}
+
+.games-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px !important;
+}
+
+.homepage-tops {
+  color: black;
+  /* font-weight: 600; */
+  /* font-size: 20px; */
+}
+
+.top-likes-count {
+  font-weight: 400;
+  text-transform: capitalize;
+  font-size: 14px;
+}
+
+.top-cont {
+  justify-content: center !important;
 }

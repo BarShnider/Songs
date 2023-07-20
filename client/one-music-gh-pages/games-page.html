@@ -59,38 +59,10 @@
                             <div class="classynav">
                                 <ul>
                                     <li><a href="index.html">Home</a></li>
-                                    <li><a href="albums-store.html">Albums</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="albums-store.html">Albums</a></li>
-                                            <li><a href="event.html">Events</a></li>
-                                            <li><a href="blog.html">News</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="elements.html">Elements</a></li>
-                                            <li><a href="login.html">Login</a></li>
-                                            <li><a href="#">Dropdown</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="event.html">Events</a></li>
-                                    <li><a href="blog.html">News</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="artists-list.html">Artists</a></li>
+                                    <li><a href="songs-list.html">Songs</a></li>
+                                    <li><a href="games-page.html">Games</a></li>
+                                    <!-- <li><a href="contact.html">Contact</a></li> -->
                                 </ul>
 
                                 <!-- Login/Register & Cart Button -->
@@ -101,9 +73,6 @@
                                     </div>
 
                                     <!-- Cart Button -->
-                                    <div class="cart-btn">
-                                        <p><span class="icon-shopping-cart"></span> <span class="quantity">1</span></p>
-                                    </div>
                                 </div>
                             </div>
                             <!-- Nav End -->
@@ -128,6 +97,32 @@
     <!-- ##### Events Area Start ##### -->
     <section class="events-area section-padding-100">
         <div class="container">
+            <div class="col-12 col-lg-12 games-tabs">
+                <div class="oneMusic-tabs-content">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="tab--1" data-toggle="tab" onclick="getArtistQuestion()" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Guess The Song 🎤</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab--2" data-toggle="tab" href="#tab2" onclick="getSongQuestion()" role="tab" aria-controls="tab2" aria-selected="false">Guess The Artist 🎸</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab--3" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Guess The Lyrics 📄</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content mb-50" id="myTabContent">
+                        <div class="tab-pane fade" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                        </div>
+                        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab--2">
+                        </div>
+                        <div class="tab-pane fade show active" id="tab3" role="tabpanel" aria-labelledby="tab--3">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row quiz-container">
                 <div class="widget-wrap">
                     <h4 class="quiz-header">Music Detective: Whose Song Is This?</h4>
@@ -161,6 +156,9 @@
             <div class="row">
                 <div class="col-12">
                     <!-- Contact Form Area -->
+                    <div class="row">
+
+                    </div>
                     <div class="contact-form-area">
                         <form action="#" method="post">
                             <div class="row">

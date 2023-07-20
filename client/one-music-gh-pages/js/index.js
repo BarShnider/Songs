@@ -665,3 +665,38 @@ function allSongsSuccessCB(data){
         </div>`;
   }
 }
+
+function renderHomepageTop(){
+  ajaxCall("GET",currApi + `/Artists/TopArtists`,"",homepageTopSuccessCB,errorCB);
+
+}
+
+function homepageTopSuccessCB(data){
+  console.log(data)
+  let i = 1;
+  for(let artist of data){
+    if(i >5 || artist.favoriteCount == 0){
+      return;    
+    }
+    document.querySelector(".top-cont").innerHTML+=
+     `
+     <div class="col-2">
+     <div class="single-album">
+    <div class="album-info">
+        <a  onclick="artistSelectedFromList('${artist.name}'})">
+            <h5 id="artist${i}" class="homepage-tops">${artist.name}<br><span class="top-likes-count"> ${artist.favoriteCount} Likes </span></h5>
+        </a>
+        <p >#${i}</p>
+    </div>
+</div>
+</div>
+`
+i++;
+  }
+}
+
+
+// {
+//   "name": "ABBA",
+//   "favoriteCount": 2
+// }

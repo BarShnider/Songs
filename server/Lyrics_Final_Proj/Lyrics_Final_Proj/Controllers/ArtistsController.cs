@@ -30,7 +30,7 @@ namespace Lyrics_Final_Proj.Controllers
         // GET: api/<ArtistsController>
         [HttpGet]
         [Route("TopArtists")]
-        public IEnumerable<string> TopArtistsNames()
+        public IEnumerable<Artist> TopArtistsNames()
         {
             Artist artist = new Artist();
             return artist.TopArtists();
