@@ -158,12 +158,12 @@
     }
 
     // :: 7.0 CounterUp Active Code
-    if ($.fn.counterUp) {
-        $('.counter').counterUp({
-            delay: 10,
-            time: 2000
-        });
-    }
+    // if ($.fn.counterUp) {
+    //     $('.counter').counterUp({
+    //         delay: 10,
+    //         time: 2000
+    //     });
+    // }
 
     // :: 8.0 Sticky Active Code
     if ($.fn.sticky) {

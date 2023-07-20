@@ -234,7 +234,7 @@ function songByArtistSuccessCB(data){
 //          </audio>
 // </div>`
   for(let song of data){
-    songsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
+    songsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a><br>`
   }
 }
 
@@ -266,7 +266,7 @@ function artistSuccessCB(data) {
             </a>
           </h6>
           <div id="${accordionId}" class="accordion-content collapse">
-            <p id="${name.split(" ") == 1? name.toLowerCase() : name.split(" ").join("-").toLowerCase()}-list-item-summary"></p>
+            <p id="${name.split(" ").join("-").toLowerCase().replace(/'/g, "\\'").split(".").join("").split("'").join("")}-list-item-summary"></p>
             <p class="clickHereForInfo"></p>
           </div>
         </div>`;
@@ -274,7 +274,7 @@ function artistSuccessCB(data) {
 
   let clickHereForInfoElements = document.querySelectorAll(".clickHereForInfo");
 for (let i = 0; i < clickHereForInfoElements.length; i++) {
-  clickHereForInfoElements[i].innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList('${data[i]}')">Visit ${data[i]} Page</a>`;
+  clickHereForInfoElements[i].innerHTML = `<a class="visitPage" href="#" onclick="artistSelectedFromList('${data[i].replace(/'/g, "\\'")}')">Visit ${data[i]} Page</a>`;
 }
 
   for(let name of data){
@@ -291,11 +291,11 @@ function fillSuccessCB(data){
   console.log("artist" in data)
   if("artist" in data){
       // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML =  data.artist.bio.summary
-      document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase()}-list-item-summary`).innerHTML =  data.artist.bio.summary
+      document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase().replace(/'/g, "\\'").split(".").join("").split("'").join("")}-list-item-summary`).innerHTML =  data.artist.bio.summary
 
   }
   
-  document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase()}-list-item-summary`).innerHTML +=  `<a class="visitPage" onclick="artistSelectedFromList(${data.artist.name}) >Visit ${data.artist.name} Page</audio>`
+  document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase().replace(/'/g, "\\'").split(".").join("").split("'").join("")}-list-item-summary`).innerHTML +=  `<a class="visitPage" onclick="artistSelectedFromList(${data.artist.name}) >Visit ${data.artist.name} Page</audio>`
   // else{
     // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML += `<a href="index.html">click here for artist page</a>`
   // }
@@ -357,7 +357,7 @@ function searchArtistSuccessCB(data){
     document.querySelector("#artist-title").innerHTML = "Artists:"
     for(let artist of data){
       // document.querySelector("#artist-result").innerHTML += `${artist}<br>` 
-      document.querySelector("#artist-result").innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="artistSelectedFromList('${artist}')">${artist}</a><br>` 
+      document.querySelector("#artist-result").innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="artistSelectedFromList('${artist.replace(/'/g, "\\'")}')">${artist}</a><br>` 
     }
   }
 
@@ -368,7 +368,7 @@ function searchSongSuccessCB(data){
   if(data.length > 0){
     document.querySelector("#song-title").innerHTML = "Songs:"
     for(let song of data){
-      document.querySelector("#song-result").innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>` 
+      document.querySelector("#song-result").innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a><br>` 
     }
   }
 }
@@ -439,7 +439,7 @@ function getAllSongsSuccessCB(data){
   console.log(data)
   let songsCont = document.querySelector("#songs-list-content");
   for (let song of data){
-    songsCont.innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title}')">${song.title}</a><br>`
+    songsCont.innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a><br>`
   }
 }
 
@@ -448,7 +448,7 @@ function getAllArtistsSuccessCB(data){
   let artistCont = document.querySelector("#artist-list-content") 
   console.log(artistCont)
   for(let artist of data){
-    artistCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${artist.name}')">${artist.name}</a> - ${artist.favoriteCount} Likes<br> `
+    artistCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${artist.name.replace(/'/g, "\\'")}.replace(/'/g, "\\'")')">${artist.name}</a> - ${artist.favoriteCount} Likes<br> `
   }
 }
 
@@ -530,7 +530,7 @@ function getUserLikedSongSuccessCB(data){
   // console.log(data)
   let likedSongsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-songs`)
   for(let i = 1; i<data.length; i++){
-    likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList("${data[i].title}")">${data[i].title}</a><br> `
+    likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName.replace(/'/g, "\\'")}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList("${data[i].title.replace(/'/g, "\\'")}")">${data[i].title}</a><br> `
   }
 }
 
@@ -538,7 +538,7 @@ function getUserLikedArtistsSuccessCB(data){
   // console.log(data)
   let likedArtistsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-artists`)
   for(let i = 1; i<data.length; i++){
-    likedArtistsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].name}')">${data[i].name}</a><br> `
+    likedArtistsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].name.replace(/'/g, "\\'")}')">${data[i].name}</a><br> `
   }
 }
 
@@ -568,7 +568,7 @@ function TopArtistsSuccessCB(data){
     }
     let div=document.createElement("div");
     div.className="single-artist";
-    div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name}')"></a><h5 id="fav-artist">${data[i+1].name}</h5></div>`;
+    div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name.replace(/'/g, "\\'")}')"></a><h5 id="fav-artist">${data[i+1].name}</h5></div>`;
     document.getElementById("userContainerArtists").appendChild(div);
     }
 }
@@ -596,7 +596,7 @@ function TopSongsSuccessCB(data){
   for (let i=0; i<data.length-1;i++){
     let div=document.createElement("div");
     div.className="single-song";
-    div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="songSelectedFromList('${data[i+1].title}')">${data[i+1].title}</a></div>`;
+    div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="songSelectedFromList('${data[i+1].title.replace(/'/g, "\\'")}')">${data[i+1].title}</a></div>`;
     document.getElementById("userContainerSongs").appendChild(div);  
   }
 }
@@ -654,7 +654,7 @@ function allSongsSuccessCB(data){
     container.innerHTML += `
         <div class="panel single-accordion">
           <h6>
-            <a role="button" aria-expanded="true" aria-controls="${accordionId}" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#" onclick="songSelectedFromList('${data[i].title}')">
+            <a role="button" aria-expanded="true" aria-controls="${accordionId}" class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#" onclick="songSelectedFromList('${data[i].title.replace(/'/g, "\\'")}')">
               ${artistName} - ${songName}
             </a>
           </h6>
@@ -671,19 +671,23 @@ function renderHomepageTop(){
 
 }
 
+
+var globalArtistLocationForAjaxCall = 1;
 function homepageTopSuccessCB(data){
   console.log(data)
-  let i = 1;
+  let i = 0;
   for(let artist of data){
     if(i >5 || artist.favoriteCount == 0){
       return;    
     }
+    i++
     document.querySelector(".top-cont").innerHTML+=
      `
      <div class="col-2">
      <div class="single-album">
+     <img id="img${globalArtistLocationForAjaxCall}" src="" alt="">
     <div class="album-info">
-        <a  onclick="artistSelectedFromList('${artist.name}'})">
+        <a  onclick="artistSelectedFromList('${artist.name.replace(/'/g, "\\'")}')">
             <h5 id="artist${i}" class="homepage-tops">${artist.name}<br><span class="top-likes-count"> ${artist.favoriteCount} Likes </span></h5>
         </a>
         <p >#${i}</p>
@@ -691,9 +695,13 @@ function homepageTopSuccessCB(data){
 </div>
 </div>
 `
-i++;
   }
 }
+
+// function imagesTopSuccessCB(data){
+//   console.log(data)
+//   console.log(data.data[0].artist.name.split(" ").join(""))
+// }
 
 
 // {

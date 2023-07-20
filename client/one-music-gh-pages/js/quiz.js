@@ -32,6 +32,43 @@ var quiz = {}
         }
     }
 
+    function songQuizInit(){
+        document.querySelector("#getArtistQ-play-again").style.display = "none"
+        for(let i = 1; i< 5; i++){
+            let label = document.querySelector(`#label${i}`)
+            label.onclick = () => {
+                selectedAnswer = label.innerHTML
+                checkObj = {
+                    artist: document.querySelector("#quizQn").innerHTML,
+                    song: label.innerHTML
+                }
+                
+                ajaxCall("POST",currApi + `/Questions/CheckAnswerSongForArtist/${checkObj.artist}/${checkObj.song}`, JSON.stringify(checkObj),checkQuestionAnswerSuccessCB,errorCB);
+                sessionStorage.setItem("selectedAnswerLabelId",label.id);
+            }
+        }
+    }
+
+    function LyricsQuizInit(){
+        document.querySelector(".quiz-header").innerHTML = "Guess The Lyrics!"
+        document.querySelector("#quizAns").style.display = "none";
+        document.querySelector("#getArtistQ-play-again").style.display = "block"
+        for(let i = 1; i< 5; i++){
+            let label = document.querySelector(`#label${i}`)
+            label.onclick = () => {
+                selectedAnswer = label.innerHTML
+                checkObj = {
+                    artist: document.querySelector("#quizQn").innerHTML,
+                    song: label.innerHTML
+                }
+                
+                ajaxCall("POST",currApi + `/Questions/CheckAnswerSongForArtist/${checkObj.artist}/${checkObj.song}`, JSON.stringify(checkObj),checkQuestionAnswerSuccessCB,errorCB);
+                sessionStorage.setItem("selectedAnswerLabelId",label.id);
+            }
+        }
+    }
+
+
     let matchSongsToArtistCounter = 0
     let matchSongsToArtistCorrectAnswers = 0
     function checkAnswerSuccessCB(data){
@@ -55,8 +92,29 @@ var quiz = {}
         }
     }
 
+    function checkQuestionAnswerSuccessCB(data){
+        console.log(data)
+        let labelID = sessionStorage.getItem("selectedAnswerLabelId")
+        if(data){
+            document.querySelector(`#${labelID}`).style.backgroundColor = "#34c724";
+            matchSongsToArtistCorrectAnswers++;
+            matchSongsToArtistCounter++;
+            setTimeout(() => {
+                getSongQuestion();
+            }, 500);
+        }
+        else{
+            document.querySelector(`#${labelID}`).style.backgroundColor = "#f54a45";
+            matchSongsToArtistCounter++;
+            setTimeout(() => {
+                getSongQuestion();
+            }, 500);
+
+        }
+    }
+
     function getArtistQuestion(){
-        document.querySelector(".quiz-header").innerHTML = "Guess The Artist!"
+        document.querySelector(".quiz-header").innerHTML = "Guess The Song!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";
         if(matchSongsToArtistCounter == 10){
@@ -88,7 +146,9 @@ var quiz = {}
 
 
     function getSongQuestion(){
-        document.querySelector(".quiz-header").innerHTML = "Guess The Song!"
+        songQuizInit();
+        document.querySelector("#getArtistQ-play-again").onclick = () => {getSongQuestion()}
+        document.querySelector(".quiz-header").innerHTML = "Guess The Artist!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";
         if(matchSongsToArtistCounter == 10){
@@ -102,6 +162,29 @@ var quiz = {}
         }
 
         ajaxCall("GET",currApi + `/Questions/GetQuestionSong`,"",artistQuestionSuccessCB,errorCB);
+        for(let i = 1; i<5;i++){
+            document.querySelector(`#label${i}`).style.backgroundColor = "#fff"
+        }
+
+    }
+    //LYRICS QUIZ
+    function getSongLyrics(){
+        lyricsQuizInit();
+        document.querySelector("#getArtistQ-play-again").onclick = () => {getSongLyrics()}
+        document.querySelector(".quiz-header").innerHTML = "Guess The Lyrics!"
+        document.querySelector("#getArtistQ-play-again").style.display = "none"
+        document.querySelector("#quizAns").style.display = "grid";
+        if(matchSongsToArtistCounter == 10){
+            document.querySelector("#getArtistQ-play-again").innerHTML = "Play Again";
+            document.querySelector("#getArtistQ-play-again").style.display = "block"
+            document.querySelector("#quizAns").style.display = "none";
+            document.querySelector("#quizQn").innerHTML = `you got ${matchSongsToArtistCorrectAnswers}/10 correct!`;
+            matchSongsToArtistCorrectAnswers = 0;
+            matchSongsToArtistCounter = 0;
+            return;
+        }
+
+        ajaxCall("GET",currApi + `/Questions/GetQuestionLyrics`,"",artistQuestionSuccessCB,errorCB);
         for(let i = 1; i<5;i++){
             document.querySelector(`#label${i}`).style.backgroundColor = "#fff"
         }
