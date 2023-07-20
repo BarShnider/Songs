@@ -568,7 +568,7 @@ function TopArtistsSuccessCB(data){
     }
     let div=document.createElement("div");
     div.className="single-artist";
-    div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name.replace(/'/g, "\\'")}')"></a><h5 id="fav-artist">${data[i+1].name}</h5></div>`;
+    div.innerHTML = `<img  id="user-img" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name.replace(/'/g, "\\'")}')"><h5 id="fav-artist">${data[i+1].name}</h5></a></div>`;
     document.getElementById("userContainerArtists").appendChild(div);
     }
 }
@@ -623,17 +623,22 @@ function renderSongFromStorage(){
 }
 
 function getDeezerDetails(artistName){
-  https://api.deezer.com/search?q=queen
-  // ajaxCall("GET",`https://api.deezer.com/search?q=${artistName}`,"",deezerSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${artistName}`,"",deezerSuccessCB,errorCB);
-
 }
 
 function deezerSuccessCB(data){
+console.log(data)
 console.log(data.data[0])
 let top1res = data.data[0]
 console.log(top1res.artist)
-document.querySelector("#artist-image").src =  top1res.artist.picture_medium
+for(let i = 0; i<data.data.length;i++){
+  let artistName = document.querySelector("#artist").innerHTML
+ let searchName = data.data[i].artist.name;
+ if(searchName.includes(artistName)){
+   document.querySelector("#artist-image").src =  data.data[i].artist.picture_medium
+   break
+ }
+}
 // document.querySelector("#artist-preview").src =  top1res.preview
 // document.querySelector("#audio-tag").src = top1res.preview
 // console.log(document.querySelector(".audioplayer").embed.src)
@@ -685,7 +690,7 @@ function homepageTopSuccessCB(data){
      `
      <div class="col-2">
      <div class="single-album">
-     <img id="img${globalArtistLocationForAjaxCall}" src="" alt="">
+     <img class="top-image" id="${artist.name.replace(/'/g, "\\'").split(" ").join("")}" src="img/bg-img/a9.jpg" alt="">
     <div class="album-info">
         <a  onclick="artistSelectedFromList('${artist.name.replace(/'/g, "\\'")}')">
             <h5 id="artist${i}" class="homepage-tops">${artist.name}<br><span class="top-likes-count"> ${artist.favoriteCount} Likes </span></h5>
@@ -695,13 +700,37 @@ function homepageTopSuccessCB(data){
 </div>
 </div>
 `
+ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${artist.name}`,"",imagesTopSuccessCB,errorCB);
   }
 }
 
-// function imagesTopSuccessCB(data){
-//   console.log(data)
-//   console.log(data.data[0].artist.name.split(" ").join(""))
-// }
+function imagesTopSuccessCB(data){
+  let topImgElements = document.querySelectorAll(".top-image")
+  console.log(topImgElements)
+  for(let elem of topImgElements){
+    for(let i = 0; i<data.data.length;i++){
+      let dataArtistName = data.data[i].artist.name.replace(/'/g, "\\'").split(" ").join("")
+      if(elem.id.includes(dataArtistName)){
+        // console.log(dataArtistName)
+        // console.log(elem.id)
+        // console.log(data.data[i].artist.name)
+        elem.src = data.data[i].artist.picture_medium
+        break 
+      }
+      
+      
+      
+      // if(elem.src = ""){
+      //   console.log(elem.src)
+      //     // elem.src = "img/bg-img/a9.jpg"
+      // }
+    }
+  }
+  // console.log(data)
+  // console.log(data.data[0].artist.name.split(" ").join(""))
+  // }
+
+}
 
 
 // {
