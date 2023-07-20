@@ -1780,7 +1780,55 @@ public class DBservices
             }
         }
     }
-    
+    public bool CheckAnswerLyric(string lyric, string song)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@lyric", lyric);
+        paramDic.Add("@songName", song);
+
+        cmd = CreateCommandWithStoredProcedure("Final_CheckQuestionLyric", con, paramDic);             // create the command
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            int rowCount = 0;
+            while (dataReader.Read())
+            {
+                rowCount++;
+            }
+            return rowCount > 0;
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
     public bool CheckAnswerArtist(string artist, string song)
     {
 

@@ -36,8 +36,14 @@
             DBservices dbs = new DBservices();
             return dbs.CheckAnswerArtist(artist, song);
         }
+        public static bool checkQuestionLyric(string lyric, string song)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.CheckAnswerLyric(lyric, song);
+        }
 
-        
+
+
         public void makeQuestionByLyric()
         {
             Question question = new Question();
@@ -61,6 +67,8 @@
             this.AnswerC = Q[3];
             this.AnswerD = Q[4];
         }
+
+
 
 
 

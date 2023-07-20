@@ -55,6 +55,15 @@ namespace Lyrics_Final_Proj.Controllers
 
         }
 
+        // POST api/<QuestionsController>
+        [HttpPost]
+        [Route("CheckAnswerLyricSong/{lyric}/{song}")]
+        public bool PostCheckLyric(string lyric, string song)
+        {
+            return Question.checkQuestionLyric(lyric, song);
+
+        }
+
         // PUT api/<QuestionsController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
