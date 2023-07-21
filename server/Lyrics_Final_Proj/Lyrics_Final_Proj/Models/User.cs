@@ -19,12 +19,12 @@ public class User
         DBservices dbs = new DBservices();
         if (dbs.CheckUserExistEmail(this.Email) == 1) // if there is a user with this email will return 1, else return 0
         {
-            throw new Exception("email taken");
+            throw new Exception("$email taken$");
         }
         else
         {
             if (dbs.CheckUserExistName(this.Name) == 1) // if there is a user with this email will return 1, else return 0
-                throw new Exception("Username taken");
+                throw new Exception("$Username taken$");
             else
             {
                 dbs.InsertUser(this);

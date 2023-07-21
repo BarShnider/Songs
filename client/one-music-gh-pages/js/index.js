@@ -4,6 +4,10 @@ let currApi = swaggerAPI;
 const lastfmKEY = "711cd7242581234c484cb8a564931277"
 const deezerSecret = "b5d9a7955fc9a8b367bebcd125339bb6"
 
+
+//this function mostly deals with the state of the connected user (or if there is no connected user). when the DOM is loaded it checks if there is 
+// a connected user (by checking the local storage), and present it to the navbar alongside to signout option. if the connected user is an admin, it
+// also present a "Admin Panel" button.
 $(document).ready(() => {
 
     if(localStorage.getItem("userObj")){
@@ -21,10 +25,7 @@ $(document).ready(() => {
         console.log("no one is logged in")
     }
 
-    // TopTenArtists();
-
-
-
+  // handler for register form. takes the parameters from the form and handles the submittion to registration.
   $("#register-form").submit(() => { // register form
     let user = {
       name: $("#registerName").val().toLowerCase(),
@@ -36,9 +37,10 @@ $(document).ready(() => {
         return
     }
     let api = currApi + `/Users/Register`;
-    ajaxCall("POST",api,JSON.stringify(user),registerSuccessCB,errorCB);
+    ajaxCall("POST",api,JSON.stringify(user),registerSuccessCB,registerErrorCB);
     return false;
   });
+
   // check if the password is matching with the validation password, and show a message if not
   function checkPassword() {
     if (this.value != $("#registerPassword").val()) {
@@ -49,6 +51,8 @@ $(document).ready(() => {
       this.setCustomValidity("");
     }
   }
+  
+  // handler for login form. takes the parameters from the form and handles the submittion to login using ajax call.
   $("#login-form").submit(() => { // Login form
     let user = {
       name: "",
@@ -68,19 +72,38 @@ $(document).ready(() => {
   
 });
 
-function errorCB(err) {
-  console.log(err);
+function registerErrorCB(err){
+  // console.log(err.resposeText.split("$"))
+  console.log(err)
+  console.log(err.responseText.split("$"))
+  if(err.responseText.split("$")[1] == "Username taken"){
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Username is taken, try differnet one.",
+    });
+  }
+   if(err.responseText.split("$")[1] == "email taken"){
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Email is taken, try differnet one.",
+    });
+  }
 }
 
+
+// success callback to the regsiter form submission. if there were no errors, it returns with true or false (whice indicates if the user been able to register or not).
+// if the user registerd successfully (true) - present a success message and change the page to the home page, else -present an alert indicating that the user already exist, else (false)
 function registerSuccessCB(data) {
   console.log(data);
   if (!data) {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "User already exist!",
+      text: "User already exist, try different User or Email combination!",
     });
-    $("#registerEmail").val("")
+    $("#registerEmail").val("") 
   } else if (data == true) {
     Swal.fire({
       icon: "success",
@@ -98,6 +121,9 @@ function registerSuccessCB(data) {
   }
 }
 
+// three options for returned data : "0" - email incorrect, "1" - email and password correct and match, "2" - password incorrect.
+// the function handles the login form success and present a message according to the data that came from the server and SP.
+// if its connected succefully - calls to ajaxCall that will save the user to the localstorage for further use, and change the page to the homepage. 
 function loginSuccessCB(data){
     console.log(data)
     switch(data){
@@ -137,7 +163,7 @@ function loginSuccessCB(data){
             break;
     }
 }
-
+// user to save the registerd/login user to the localstorage for further use in the app.
 function emailSuccessCB(data){
     console.log(data);
     userObj = {
@@ -173,13 +199,15 @@ function successCB(data) {
   }
 
 
-//this function will be activaeted when entering lyrics page
+//this function will be activaeted when entering lyrics page (on load). in gets the song object by the song name, and sets the current like status in th page.
+//in the second ajaxCall use the userObj in local storage to get the user and check if he liked the song.
 function renderSongPage(songName){
   let user = JSON.parse(localStorage.getItem("userObj"));
   ajaxCall("GET",currApi + `/Songs/GetSongBySongName/${songName}`,"",songSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
 }
 
+//fill the song page with relevant data, into pre-built containers.
 function songSuccessCB(data){
   console.log(data)
 
@@ -191,6 +219,7 @@ function songSuccessCB(data){
 
 }
 
+// sets the status of the like button (if the user likes the song - sets the color and background to liked)
 function ifUserLikedSongSuccessCB(data){
   console.log(data)
   let likeHeart = document.querySelector("#heart-button")
@@ -204,14 +233,13 @@ function ifUserLikedSongSuccessCB(data){
     likeHeart.style.backgroundColor = "#DDDDDD"
   }
 }
-
+//renders the artist page.
 function renderArtistPage(artistName){
   let user = JSON.parse(localStorage.getItem("userObj"))
   document.querySelector("#artist").innerHTML = artistName;
   ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName}&api_key=${lastfmKEY}&format=json`,"",artistInfoSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",getArtistLikesSuccessCB,errorCB);
-  // ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
 }
 function getArtistLikesSuccessCB(data){
@@ -226,13 +254,6 @@ function songByArtistSuccessCB(data){
   getDeezerDetails(artistName)
   songsCont = document.querySelector("#songs-content");
   console.log(songsCont)
-  // songsCont.innerHTML += `<div class="audioplayer audioplayer-mini"><embed id="embed-src" src="" width="0" height="0" volume="100" autostart="false" loop="false"><div class="audioplayer-playpause" title=""><a href="#"></a></div></div>`
-//   songsCont.innerHTML += `   <div class="container-audio">
-//   <audio controls>
-//              <source id="audio-tag" src="" type="audio/mpeg">
-//              Your browser dose not Support the audio Tag
-//          </audio>
-// </div>`
   for(let song of data){
     songsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a><br>`
   }
@@ -290,15 +311,10 @@ function fillSuccessCB(data){
   console.log(data)
   console.log("artist" in data)
   if("artist" in data){
-      // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML =  data.artist.bio.summary
       document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase().replace(/'/g, "\\'").split(".").join("").split("'").join("")}-list-item-summary`).innerHTML =  data.artist.bio.summary
-
-  }
-  
+  }  
   document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase().replace(/'/g, "\\'").split(".").join("").split("'").join("")}-list-item-summary`).innerHTML +=  `<a class="visitPage" onclick="artistSelectedFromList(${data.artist.name}) >Visit ${data.artist.name} Page</audio>`
-  // else{
-    // document.querySelector(`#${data.artist.name.split(" ") == 1? data.artist.name : data.artist.name.split(" ").join("-")}-list-item-summary`).innerHTML += `<a href="index.html">click here for artist page</a>`
-  // }
+
 }
 
 
@@ -313,22 +329,6 @@ function songSelectedFromList(songName){
   sessionStorage.setItem("tempSong",songName);
 window.location.href = 'song-page.html'
 }
-
-// $(".lyricsContainer").ready(() => {
-//   let songName = localStorage.getItem('selectedSong');
-//   // localStorage.removeItem('selectedSong');
-//   if (songName) {
-//     renderSongPage(songName);
-//   }  
-// })
-// $(".events-area").ready(() => {
-//   let artistName = localStorage.getItem('selectedArtist');
-//   localStorage.removeItem('selectedArtist');
-//   if (artistName) {
-//     renderArtistPage(artistName);
-//     // addRemoveLikeSuccessCB() //CHECKKKK
-//   }
-// })
 
 function signout(){
   localStorage.removeItem("userObj");
@@ -640,9 +640,6 @@ for(let i = 0; i<data.data.length;i++){
    break
  }
 }
-// document.querySelector("#artist-preview").src =  top1res.preview
-// document.querySelector("#audio-tag").src = top1res.preview
-// console.log(document.querySelector(".audioplayer").embed.src)
 }
 
 function renderAllSongsList(){
@@ -678,7 +675,6 @@ function renderHomepageTop(){
 }
 
 
-var globalArtistLocationForAjaxCall = 1;
 function homepageTopSuccessCB(data){
   console.log(data)
   let i = 0;
@@ -691,9 +687,9 @@ function homepageTopSuccessCB(data){
      `
      <div class="col-2">
      <div class="single-album">
+     <a  onclick="artistSelectedFromList('${artist.name.replace(/'/g, "\\'")}')">
      <img class="top-image" id="${artist.name.replace(/'/g, "\\'").split(" ").join("")}" src="img/bg-img/a9.jpg" alt="">
     <div class="album-info">
-        <a  onclick="artistSelectedFromList('${artist.name.replace(/'/g, "\\'")}')">
             <h5 id="artist${i}" class="homepage-tops">${artist.name}<br><span class="top-likes-count"> ${artist.favoriteCount} Likes </span></h5>
         </a>
         <p >#${i}</p>
@@ -713,29 +709,9 @@ function imagesTopSuccessCB(data){
     for(let i = 0; i<data.data.length;i++){
       let dataArtistName = data.data[i].artist.name.replace(/'/g, "\\'").split(" ").join("")
       if(elem.id.includes(dataArtistName)){
-        // console.log(dataArtistName)
-        // console.log(elem.id)
-        // console.log(data.data[i].artist.name)
         elem.src = data.data[i].artist.picture_medium
         break 
       }
-      
-      
-      
-      // if(elem.src = ""){
-      //   console.log(elem.src)
-      //     // elem.src = "img/bg-img/a9.jpg"
-      // }
     }
   }
-  // console.log(data)
-  // console.log(data.data[0].artist.name.split(" ").join(""))
-  // }
-
 }
-
-
-// {
-//   "name": "ABBA",
-//   "favoriteCount": 2
-// }

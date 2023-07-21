@@ -1866,6 +1866,11 @@ width: 150px;
   font-size: 25px;
 }
 
+.ppp:hover{
+  font-size: 27px;
+  color: #600101;
+}
+
 
 #userContainerArtists .single-artist,
 #userContainerSongs .single-song {
@@ -1965,9 +1970,9 @@ width: 150px;
 
  */
 
- /* .classy-navbar {
-  justify-content: space-around !important;
- } */
+ .classy-navbar {
+  justify-content: space-between !important;
+ }
 
  #quizWrap {
   max-width: 600px;
@@ -2079,4 +2084,13 @@ width: 150px;
 
 .top-cont {
   justify-content: center !important;
+}
+
+.single-album {
+  cursor: pointer;
+}
+
+.user-profile-headers {
+  text-transform: uppercase;
+  color: #600101;
 }

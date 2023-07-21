@@ -78,7 +78,15 @@ namespace Lyrics_Final_Proj.Controllers
         [Route("Register")]
         public bool Register([FromBody] User user)
         {
-            return user.Register();
+            try
+            {
+
+                return user.Register();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
