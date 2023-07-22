@@ -627,17 +627,18 @@ function getTopArtists(){
 function TopArtistsSuccessCB(data){
   if(data.length>=2){
     document.getElementById("noArtistsForUser").remove();
+    for (let i=0; i<data.length-1;i++){
+      if(i==5){
+        break;
+      }
+      let div=document.createElement("div");
+      div.className="single-artist";
+      div.innerHTML = `<img class="top-image" id="=${data[i+1].name.replace(/'/g, "\\'").split(" ").join("")}" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name.replace(/'/g, "\\'")}')"><h5 id="fav-artist">${data[i+1].name}</h5></a></div>`;
+      document.getElementById("userContainerArtists").appendChild(div);
+      ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${data[i+1].name}`,"",imagesTopSuccessCB,errorCB);
+      }
   }
-  for (let i=0; i<data.length-1;i++){
-    if(i==5){
-      break;
-    }
-    let div=document.createElement("div");
-    div.className="single-artist";
-    div.innerHTML = `<img class="top-image" id="=${data[i+1].name.replace(/'/g, "\\'").split(" ").join("")}" src="img/bg-img/a4.jpg" alt=""><div class="album-info"><a class="ppp" href="#" onclick="artistSelectedFromList('${data[i+1].name.replace(/'/g, "\\'")}')"><h5 id="fav-artist">${data[i+1].name}</h5></a></div>`;
-    document.getElementById("userContainerArtists").appendChild(div);
-    ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${data[i+1].name}`,"",imagesTopSuccessCB,errorCB);
-    }
+  
 }
 
 //get 5 songs that the user liked
@@ -652,8 +653,7 @@ function getFiveSongsByUser(){
 function TopSongsSuccessCB(data){
   if(data.length>=2){
     document.getElementById("noSongsForUser").remove();
-  }
-  let numbers=[];
+    let numbers=[];
   while(numbers.length<5){
     if(numbers.length<data.length-1)
     break;
@@ -668,6 +668,8 @@ function TopSongsSuccessCB(data){
     div.innerHTML = `<div class="album-info"><a class="ppp" href="#" onclick="songSelectedFromList('${data[i+1].title.replace(/'/g, "\\'")}')">${data[i+1].title}</a></div>`;
     document.getElementById("userContainerSongs").appendChild(div);  
   }
+  }
+  
 }
 
 // render the user profile with 5 liked artists and 5 liked songs
@@ -736,13 +738,13 @@ function allSongsSuccessCB(data){
   }
 }
 
-
+// render the home page with favorite artists
 function renderHomepageTop(){
   ajaxCall("GET",currApi + `/Artists/TopArtists`,"",homepageTopSuccessCB,errorCB);
 
 }
 
-
+// sets the page with favorite artists and call the Deezer API for images of the artists 
 function homepageTopSuccessCB(data){
   let i = 0;
   for(let artist of data){
@@ -768,6 +770,7 @@ ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${artist.name}`,"",imagesTopSuc
   }
 }
 
+//gets the images for the artists and sets them in place
 function imagesTopSuccessCB(data){
   let topImgElements = document.querySelectorAll(".top-image")
   for(let elem of topImgElements){
@@ -781,6 +784,7 @@ function imagesTopSuccessCB(data){
   }
 }
 
+// sets the comments that were writen on an artist in his page
 function renderCommentsToArtistPageSuccessCB(data){
    let userObj = JSON.parse(localStorage.getItem("userObj"))
   let commentsCont = document.querySelector(".artist-comment-list");
@@ -813,6 +817,8 @@ function renderCommentsToArtistPageSuccessCB(data){
     }
   }
 }
+
+// sets the comments that were writen on a song in its page
 function renderCommentsToSongPageSuccessCB(data){
    let userObj = JSON.parse(localStorage.getItem("userObj"))
   let commentsCont = document.querySelector(".song-comment-list");
@@ -846,6 +852,7 @@ function renderCommentsToSongPageSuccessCB(data){
   }
 }
 
+//////////////////////////////////////////////////////////////////////// BAR
 $(document).ready(() => {
   $("#comment-artist-form").submit(() => {
     let user = JSON.parse(localStorage.getItem("userObj"))
