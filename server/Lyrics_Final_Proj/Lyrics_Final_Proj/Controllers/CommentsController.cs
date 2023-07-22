@@ -1,5 +1,6 @@
 ﻿using Lyrics_Final_Proj.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,6 +65,10 @@ namespace Lyrics_Final_Proj.Controllers
         [Route("ChangeCommentToArtist/{idA}")]
         public bool PutContentArtist(int idA, [FromBody] string content)
         {
+            if (content == "")
+            {
+                throw new Exception("$Comment is empty$");
+            }
             return Comment.ChangeCommentArtist(idA,content); 
         }
 
@@ -71,6 +76,10 @@ namespace Lyrics_Final_Proj.Controllers
         [Route("ChangeCommentToSong/{idS}")]
         public bool PutContentSong(int idS, [FromBody] string content)
         {
+            if (content == "")
+            {
+                throw new Exception("$Comment is empty$");
+            }
             return Comment.ChangeCommentSong(idS, content);
         }
 
