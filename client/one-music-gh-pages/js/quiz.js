@@ -1,3 +1,5 @@
+
+//rendeting quiz object
 var quiz = {}
     quiz.hWrap = document.getElementById("quizWrap");
     
@@ -15,8 +17,8 @@ var quiz = {}
     radio.name = "quiz";
     radio.id = "quizo";
     quiz.hAns.appendChild(radio);
+    //initalize the first quiz design
     for(let i = 1; i<5; i++){
-
         let label = document.createElement("label");
         label.id = `label${i}`
         quiz.hAns.appendChild(label);
@@ -36,6 +38,8 @@ var quiz = {}
         console.log(err)
     }
 
+    //initiallize a game for guessing the artits, sets the button to start and the header to the game name. also set the start "onclick" to the relevant game.
+    //uses an ajax call for a label "onclick" to check the answer and see if its correct.
     function songQuizInit(){
         matchSongsToArtistCounter = 0
         matchSongsToArtistCorrectAnswers = 0
@@ -59,6 +63,8 @@ var quiz = {}
             }
         }
     }
+    //initiallize a game for guessing the song, sets the button to start and the header to the game name. also set the start "onclick" to the relevant game.
+    //uses an ajax call for a label "onclick" to check the answer and see if its correct.
     function artistQuizInit(){
         matchSongsToArtistCounter = 0
         matchSongsToArtistCorrectAnswers = 0
@@ -82,7 +88,8 @@ var quiz = {}
             }
         }
     }
-
+    //initiallize a game for guessing the lyrics, sets the button to start and the header to the game name. also set the start "onclick" to the relevant game.
+    //uses an ajax call for a label "onclick" to check the answer and see if its correct.
     function lyricsQuizInit(){
         matchSongsToArtistCounter = 0
         matchSongsToArtistCorrectAnswers = 0
@@ -107,9 +114,11 @@ var quiz = {}
         }
     }
 
-
+    //counters to check for number of correct answers out of 10/
     let matchSongsToArtistCounter = 0
     let matchSongsToArtistCorrectAnswers = 0
+
+    //answer check success callback' sets the color of the label based of if it was correct or not, wait half seconf and go to next question while counting the score
     function checkAnswerSuccessCB(data){
         let labelID = sessionStorage.getItem("selectedAnswerLabelId")
         if(data){
@@ -130,6 +139,7 @@ var quiz = {}
         }
     }
 
+    //answer check success callback' sets the color of the label based of if it was correct or not, wait half seconf and go to next question while counting the score
     function checkQuestionAnswerSuccessCB(data){
         let labelID = sessionStorage.getItem("selectedAnswerLabelId")
         if(data){
@@ -150,6 +160,7 @@ var quiz = {}
         }
     }
 
+    //answer check success callback' sets the color of the label based of if it was correct or not, wait half seconf and go to next question while counting the score
     function checkLyricsSuccessCB(data){
         let labelID = sessionStorage.getItem("selectedAnswerLabelId")
         if(data){
@@ -170,6 +181,7 @@ var quiz = {}
         }
     }
 
+    //gets a new question for guess the song game
     function getArtistQuestion(){
         document.querySelector(".quiz-header").innerHTML = "Guess The Song!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
@@ -191,6 +203,7 @@ var quiz = {}
 
     }
 
+    // sets the labels with the current questions and possible answers
     function artistQuestionSuccessCB(data){
             document.querySelector(`#quizQn`).innerHTML = data.contentQ;
             document.querySelector(`#label1`).innerHTML = data.answerA;
@@ -200,10 +213,8 @@ var quiz = {}
 
     }
 
-
+    //gets a new question for guess the song artist
     function getSongQuestion(){
-        // songQuizInit();
-        // document.querySelector("#getArtistQ-play-again").onclick = () => {getSongQuestion()}
         document.querySelector(".quiz-header").innerHTML = "Guess The Artist!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";
@@ -223,10 +234,9 @@ var quiz = {}
         }
 
     }
-    //LYRICS QUIZ
+
+    //gets a new question for guess the song artist
     function getSongLyrics(){
-        // lyricsQuizInit();
-        // document.querySelector("#getArtistQ-play-again").onclick = () => {getSongLyrics()}
         document.querySelector(".quiz-header").innerHTML = "Guess The Lyrics!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";

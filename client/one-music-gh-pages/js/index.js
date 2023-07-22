@@ -852,7 +852,8 @@ function renderCommentsToSongPageSuccessCB(data){
   }
 }
 
-//////////////////////////////////////////////////////////////////////// BAR
+//using document ready for the form submitting, first we check if there is a user connected, if not we return a message.
+//else we create a new comment object with the text from the comment element in the page and send it to the server FromBody.
 $(document).ready(() => {
   $("#comment-artist-form").submit(() => {
     let user = JSON.parse(localStorage.getItem("userObj"))
@@ -885,6 +886,7 @@ $(document).ready(() => {
     ajaxCall("POST",currApi + `/Comments/CommentToArtist`,JSON.stringify(newComment),newCommentArtistSuccessCB,emptyCommenterrorCB);
     return false;
   })
+  //same as comment on artist
   $("#comment-song-form").submit(() => {
     let user = JSON.parse(localStorage.getItem("userObj"))
     if(user == null){
@@ -918,6 +920,7 @@ $(document).ready(() => {
   })
 })
 
+// error callback to handle a case where a user tried to submit conmment with no text at all. shows a message indicating he should try again.
 function emptyCommenterrorCB(err){
   let status = err.responseText.split("$")[1];
   if(status == "Comment is empty"){
@@ -940,17 +943,21 @@ function emptyCommenterrorCB(err){
   }
 }
 
+//when adding a new comment, we come here to empty the text box and render all the comments again
 function newCommentArtistSuccessCB(data){
   document.querySelector(".form-control").value = ""
   let artistName = document.querySelector("#artist").innerHTML
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
 }
+
+//when adding a new comment, we come here to empty the text box and render all the comments again
 function newCommentSongSuccessCB(data){
   document.querySelector(".form-control").value = ""
   let songName = document.querySelector("#songName").innerHTML
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsSongs/${songName}`,"",renderCommentsToSongPageSuccessCB,errorCB);
 }
 
+//this function let the user edit his comment. it renders the button to a confirm button and sets the onclick function to submitting an update to the server using "PUT"
 function editCommentArtist(id){
   let currComment = document.querySelector(`#comment-${id}`)
   currCommentContent = currComment.innerText;
@@ -965,6 +972,7 @@ function editCommentArtist(id){
   currComment.innerHTML = `<textarea id="editedTextArea" class="form-control" rows="3">${currCommentContent}</textarea>`
 
 }
+//this function let the user edit his comment. it renders the button to a confirm button and sets the onclick function to submitting an update to the server using "PUT"
 function editCommentSong(id){
   let currComment = document.querySelector(`#comment-${id}`)
   currCommentContent = currComment.innerText;
@@ -979,34 +987,38 @@ function editCommentSong(id){
   currComment.innerHTML = `<textarea id="editedTextArea" class="form-control" rows="3">${currCommentContent}</textarea>`
 
 }
-
+//deletes the comment on a song by given id
 function deleteCommentSong(id){
   ajaxCall("DELETE",currApi + `/Comments/DeleteCommentSongByID/${id}`,"",deleteCommentSongSuccess,errorCB);
-
 }
+
+//deletes the comment on a artist by given id
 function deleteCommentArtist(id){
   ajaxCall("DELETE",currApi + `/Comments/DeleteCommentArtistByID/${id}`,"",deleteCommentArtistSuccess,errorCB);
 
 }
 
+//render all the comments for artist again after deleting
 function deleteCommentArtistSuccess(data){
   let artistName = document.querySelector("#artist")
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",newCommentArtistSuccessCB,errorCB);
 }
+
+//render all the comments for song again after deleting
 function deleteCommentSongSuccess(data){
   let songName = document.querySelector("#songName")
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${songName}`,"",newCommentSongSuccessCB,errorCB);
 }
 
+//deletes a user from the database and all of related likes and comments
 function deleteUser(){
   let user = JSON.parse(localStorage.getItem("userObj"))
   console.log(user.email)
   ajaxCall("DELETE",currApi + `/Users/Delete/${user.email}`,"",deleteUserSuccessCB,errorCB);
   
 }
-
+// if delete suecceded - signing out the user.
 function deleteUserSuccessCB(data){
-  console.log(data)
   signout();
 
 }
