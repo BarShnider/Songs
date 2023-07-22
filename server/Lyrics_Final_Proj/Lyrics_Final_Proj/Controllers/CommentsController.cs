@@ -40,7 +40,11 @@ namespace Lyrics_Final_Proj.Controllers
         [Route("CommentToArtist")]
         public int PostCommentToArtist(Comment comment)
         {
-            return comment.AddCommentArtist();
+            if (comment.Content == "")
+            {
+                throw new Exception("$Comment is empty$");
+            }
+                return comment.AddCommentArtist();
         }
 
         // POST api/<CommentsController>
@@ -48,7 +52,11 @@ namespace Lyrics_Final_Proj.Controllers
         [Route("CommentToSong")]
         public int PostCommentToSong(Comment comment)
         {
-            return comment.AddCommentSong();
+            if (comment.Content == "")
+            {
+                throw new Exception("$Comment is empty$");
+            }
+            return comment.AddCommentArtist();
         }
 
         // PUT api/<CommentsController>/5
