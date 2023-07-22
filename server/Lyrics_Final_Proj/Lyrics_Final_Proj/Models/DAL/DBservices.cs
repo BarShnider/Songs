@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Text;
 using Lyrics_Final_Proj.Models;
-
+using System.Globalization;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -1428,11 +1428,11 @@ public class DBservices
     }
 
     /////////////////////////////////////////////////////////////////
-    ///////////////////////// USER /////////////////////////////////
+    ///////////////////////// Comment //////////////////////////////
     ////////////////////////////////////////////////////////////////
 
     //--------------------------------------------------------------------------------------------------
-    // This method checks if user exists 
+    // This method add comment to artist 
     //--------------------------------------------------------------------------------------------------
 
     public int AddCommentArtist(Comment comment)
@@ -1453,7 +1453,7 @@ public class DBservices
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@email", comment.Email);
-        paramDic.Add("@comment", comment.CommentOn);
+        paramDic.Add("@comment", comment.Content);
         paramDic.Add("@artist", comment.Whom);
 
 
@@ -1481,6 +1481,10 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method add comment to song 
+    //--------------------------------------------------------------------------------------------------
+
     public int AddCommentSong(Comment comment)
     {
 
@@ -1499,7 +1503,7 @@ public class DBservices
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
         paramDic.Add("@email", comment.Email);
-        paramDic.Add("@comment", comment.CommentOn);
+        paramDic.Add("@comment", comment.Content);
         paramDic.Add("@nameSong", comment.Whom);
 
 
@@ -1526,6 +1530,11 @@ public class DBservices
             }
         }
     }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method deletes comment to artist 
+    //--------------------------------------------------------------------------------------------------
+
     public int DeleteCommentArtist(int id)
     {
 
@@ -1568,6 +1577,11 @@ public class DBservices
             }
         }
     }
+
+    //--------------------------------------------------------------------------------------------------
+    // This method deletes comment to song 
+    //--------------------------------------------------------------------------------------------------
+
     public int DeleteCommentSong(int id)
     {
 
@@ -1609,6 +1623,63 @@ public class DBservices
                 con.Close();
             }
         }
+    }
+
+    
+    public List<Comment> ReturnCommentsToArtist(string artisName)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@artistName", artisName);
+
+        cmd = CreateCommandWithStoredProcedure("Final_ReturnCommentsToArtist", con, paramDic);             // create the command
+
+        List<Comment> commentsToArtist = new List<Comment>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Comment comment = new Comment();
+                comment.Email= dataReader["email"].ToString();
+                comment.Content = dataReader["comment"].ToString();
+                comment.Whom= dataReader["artistName"].ToString();
+                comment.date = Convert.ToDateTime(dataReader["created_at"]);
+
+                commentsToArtist.Add(comment);
+            }
+            return commentsToArtist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
     }
 
 

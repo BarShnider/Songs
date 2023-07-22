@@ -11,9 +11,11 @@ namespace Lyrics_Final_Proj.Controllers
     {
         // GET: api/<CommentsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("GetAllCommentsArtists/{artistName}")]
+        public IEnumerable<Comment> GetCommentsToArtist(string artistName)
         {
-            return new string[] { "value1", "value2" };
+            Comment comment = new Comment();
+            return comment.CommentsByArtist(artistName);
         }
 
         // GET api/<CommentsController>/5

@@ -3,8 +3,9 @@
     public class Comment
     {
         public string Email { get; set; }
-        public string CommentOn { get; set; }
+        public string Content { get; set; }
         public string Whom { get; set; }
+        public DateTime date { get; set; }
 
         public int AddCommentArtist()
         {
@@ -26,5 +27,13 @@
             DBservices dbs = new DBservices();
             return dbs.DeleteCommentSong(id);
         }
+
+        public List<Comment> CommentsByArtist(string artistName)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ReturnCommentsToArtist(artistName);
+        }
+
+
     }
 }
