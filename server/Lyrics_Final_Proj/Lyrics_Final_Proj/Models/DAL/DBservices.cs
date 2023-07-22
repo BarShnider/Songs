@@ -309,6 +309,9 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of songs that include word/sentences in the name or lyric 
+    //--------------------------------------------------------------------------------------------------
     public List<Song> GetSongsByWord(string word)
     {
 
@@ -697,7 +700,7 @@ public class DBservices
     }
 
     //--------------------------------------------------------------------------------------------------
-    // This method checks if user is already exist by email 
+    // This method checks if user is already exist by username 
     //--------------------------------------------------------------------------------------------------
     public int CheckUserExistName(string name)
     {
@@ -792,7 +795,7 @@ public class DBservices
         }
     }
     //--------------------------------------------------------------------------------------------------
-    // This method returns all the users registerd
+    // This method returns all the users registered
     //--------------------------------------------------------------------------------------------------
     public List<User> GetAllUsers()
     {
@@ -1014,6 +1017,9 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of artists
+    //--------------------------------------------------------------------------------------------------
     public List<string> ReturnAllArtists()
     {
 
@@ -1064,6 +1070,9 @@ public class DBservices
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a 5 artists with most likes
+    //--------------------------------------------------------------------------------------------------
     public List<Artist> ReturnTopArtists()
     {
 
@@ -1115,6 +1124,9 @@ public class DBservices
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of artists that include word in their name 
+    //--------------------------------------------------------------------------------------------------
     public List<string> SearchArtistsByWord(string word)
     {
 
@@ -1166,7 +1178,9 @@ public class DBservices
 
     }
 
-
+    //--------------------------------------------------------------------------------------------------
+    // This method receives a artist name and returns this amount of likes 
+    //--------------------------------------------------------------------------------------------------
     public int GetArtistLikes(string name)
     {
 
@@ -1211,6 +1225,9 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method returns 5 artists that the user liked 
+    //--------------------------------------------------------------------------------------------------
     public List<string> GetTopArtistsByUser(string username)
     {
 
@@ -1571,8 +1588,10 @@ public class DBservices
         }
     }
 
-    
-    public List<Comment> ReturnCommentsToArtist(string artisName)
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of comments to an artist  
+    //--------------------------------------------------------------------------------------------------
+    public List<Comment> ReturnCommentsToArtist(string artistName)
     {
 
         SqlConnection con;
@@ -1589,7 +1608,7 @@ public class DBservices
         }
 
         Dictionary<string, object> paramDic = new Dictionary<string, object>();
-        paramDic.Add("@artistName", artisName);
+        paramDic.Add("@artistName", artistName);
 
         cmd = CreateCommandWithStoredProcedure("Final_ReturnCommentsToArtist", con, paramDic);             // create the command
 
@@ -1629,7 +1648,9 @@ public class DBservices
         }
 
     }
-
+    //--------------------------------------------------------------------------------------------------
+    // This method returns a list of comments to a song
+    //--------------------------------------------------------------------------------------------------
     public List<Comment> ReturnCommentsToSong(string song)
     {
 
@@ -1958,6 +1979,9 @@ public class DBservices
             }
         }
     }
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if the lyrics belong to the chosen song 
+    //--------------------------------------------------------------------------------------------------
     public bool CheckAnswerLyric(string lyric, string song)
     {
 
@@ -2007,6 +2031,9 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method checks if the artist sings the chosen song 
+    //--------------------------------------------------------------------------------------------------
     public bool CheckAnswerArtist(string artist, string song)
     {
 
@@ -2056,6 +2083,9 @@ public class DBservices
         }
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method creates a question (list) where in the [0] is the question lyrics from song and in [1] the right song as answer  
+    //--------------------------------------------------------------------------------------------------
     public List<string> QandALyric()
     {
         SqlConnection con;
@@ -2107,6 +2137,9 @@ public class DBservices
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method adds 3 answers (songs) to the lyric question 
+    //--------------------------------------------------------------------------------------------------
     public List<string> ThreeAnswersLyric(string songName)
     {
         SqlConnection con;
