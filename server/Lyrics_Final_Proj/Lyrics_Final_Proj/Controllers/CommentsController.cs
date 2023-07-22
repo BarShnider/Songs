@@ -56,7 +56,7 @@ namespace Lyrics_Final_Proj.Controllers
             {
                 throw new Exception("$Comment is empty$");
             }
-            return comment.AddCommentArtist();
+            return comment.AddCommentSong();
         }
 
         // PUT api/<CommentsController>/5
