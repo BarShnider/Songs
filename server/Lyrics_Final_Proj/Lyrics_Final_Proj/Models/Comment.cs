@@ -2,10 +2,12 @@
 {
     public class Comment
     {
+        public int Id { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public string Content { get; set; }
         public string Whom { get; set; }
-        public DateTime date { get; set; }
+        public DateTime Date { get; set; }
 
         public int AddCommentArtist()
         {

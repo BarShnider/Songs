@@ -53,8 +53,9 @@ namespace Lyrics_Final_Proj.Controllers
 
         // PUT api/<CommentsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void PutContent(int id, [FromBody] string value)
         {
+            
         }
 
         // DELETE api/<CommentsController>/5

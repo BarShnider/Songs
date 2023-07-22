@@ -1656,10 +1656,12 @@ public class DBservices
             while (dataReader.Read())
             {
                 Comment comment = new Comment();
+                comment.Id = Convert.ToInt32(dataReader["id"]);
+                comment.Username = dataReader["username"].ToString();
                 comment.Email= dataReader["email"].ToString();
                 comment.Content = dataReader["comment"].ToString();
                 comment.Whom= dataReader["artistName"].ToString();
-                comment.date = Convert.ToDateTime(dataReader["created_at"]);
+                comment.Date = Convert.ToDateTime(dataReader["created_at"]);
 
                 commentsToArtist.Add(comment);
             }
@@ -1703,7 +1705,7 @@ public class DBservices
 
         cmd = CreateCommandWithStoredProcedure("Final_ReturnCommentsToSong", con, paramDic);             // create the command
 
-        List<Comment> commentsToArtist = new List<Comment>();
+        List<Comment> commentsToSong = new List<Comment>();
 
         try
         {
@@ -1712,14 +1714,15 @@ public class DBservices
             while (dataReader.Read())
             {
                 Comment comment = new Comment();
+                comment.Id = Convert.ToInt32(dataReader["id"]);
+                comment.Username = dataReader["username"].ToString();
                 comment.Email = dataReader["email"].ToString();
                 comment.Content = dataReader["comment"].ToString();
                 comment.Whom = dataReader["song"].ToString();
-                comment.date = Convert.ToDateTime(dataReader["created_at"]);
-
-                commentsToArtist.Add(comment);
+                comment.Date = Convert.ToDateTime(dataReader["created_at"]);
+                commentsToSong.Add(comment);
             }
-            return commentsToArtist;
+            return commentsToSong;
         }
         catch (Exception ex)
         {
