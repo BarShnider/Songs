@@ -220,8 +220,10 @@ function successCB(data) {
 function renderSongPage(songName){
   let user = JSON.parse(localStorage.getItem("userObj"));
   ajaxCall("GET",currApi + `/Songs/GetSongBySongName/${songName}`,"",songSuccessCB,errorCB);
-  ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
-  ajaxCall("GET",currApi + `/Comments/GetAllCommentsSongs/${songName}`,"",renderCommentsToSongPageSuccessCB,errorCB);
+  if(user != null){
+    ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
+    ajaxCall("GET",currApi + `/Comments/GetAllCommentsSongs/${songName}`,"",renderCommentsToSongPageSuccessCB,errorCB);
+  }
 
 }
 
@@ -257,8 +259,10 @@ function renderArtistPage(artistName){
   ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName}&api_key=${lastfmKEY}&format=json`,"",artistInfoSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",getArtistLikesSuccessCB,errorCB);
-  ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
-  ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
+  if(user != null){
+    ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
+    ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
+  }
 }
 
 //success callback to render the number of likes the artist have in total.
@@ -408,6 +412,25 @@ function searchSongSuccessCB(data){
 function likePressedArtist(){
   let artistName = document.querySelector("#artist").innerHTML
   let user = JSON.parse(localStorage.getItem("userObj"))
+  if(user == null){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-start',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'error',
+      title: 'No user connected, could not proccess like.'
+    })
+    return
+  }
   ajaxCall("POST",currApi + `/Artists/AddRemoveLike/${user.email}/${artistName}`,"",artistAddRemoveLikeSuccessCB,errorCB);
 }
 
@@ -416,6 +439,25 @@ function likePressedArtist(){
 function likePressedSong(){
   let songName = document.querySelector("#songName").innerHTML
   let user = JSON.parse(localStorage.getItem("userObj"))
+  if(user == null){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-start',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'error',
+      title: 'No user connected, could not proccess like.'
+    })
+    return
+  }
   ajaxCall("POST",currApi + `/Songs/UserLikesSong/${user.email}/${songName}`,"",songAddRemoveLikeSuccessCB,errorCB);
 }
 
@@ -689,8 +731,6 @@ function allSongsSuccessCB(data){
             </a>
           </h6>
           <div id="${accordionId}" class="accordion-content collapse">
-            <p id="${name.split(" ") == 1? name.toLowerCase() : name.split(" ").join("-").toLowerCase()}-list-item-summary"></p>
-            <p class="clickHereForInfo"></p>
           </div>
         </div>`;
   }
@@ -809,6 +849,25 @@ function renderCommentsToSongPageSuccessCB(data){
 $(document).ready(() => {
   $("#comment-artist-form").submit(() => {
     let user = JSON.parse(localStorage.getItem("userObj"))
+    if(user == null){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-start',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'No user connected, could not comment.'
+      })
+      return false;
+    }
     let commentContent = document.querySelector(".form-control").value
     newComment = {
       username: user.username,
@@ -821,6 +880,25 @@ $(document).ready(() => {
   })
   $("#comment-song-form").submit(() => {
     let user = JSON.parse(localStorage.getItem("userObj"))
+    if(user == null){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-start',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'No user connected, could not comment.'
+      })
+      return false;
+    }
     let commentContent = document.querySelector(".form-control").value
     newComment = {
       username: user.username,

@@ -2760,3 +2760,11 @@ justify-content: space-evenly;
 .swal2-toats {
   margin: 30px !important;
 }
+
+.btn, .form-control{
+  font-size: 1.5rem !important;
+}
+
+.comment-title {
+  font-size: 18px !important;
+}
