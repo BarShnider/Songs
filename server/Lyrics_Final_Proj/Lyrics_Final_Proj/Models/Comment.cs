@@ -33,7 +33,12 @@
             DBservices dbs = new DBservices();
             return dbs.ReturnCommentsToArtist(artistName);
         }
-
+        public List<Comment> CommentsBySong(string song)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ReturnCommentsToSong(song);
+        }
+        
 
     }
 }

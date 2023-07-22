@@ -17,6 +17,16 @@ namespace Lyrics_Final_Proj.Controllers
             Comment comment = new Comment();
             return comment.CommentsByArtist(artistName);
         }
+        
+        // GET: api/<CommentsController>
+        [HttpGet]
+        [Route("GetAllCommentsSongs/{songName}")]
+        public IEnumerable<Comment> GetCommentsToSong(string songName)
+        {
+            Comment comment = new Comment();
+            return comment.CommentsBySong(songName);
+        }
+        
 
         // GET api/<CommentsController>/5
         [HttpGet("{id}")]

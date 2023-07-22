@@ -1682,6 +1682,62 @@ public class DBservices
 
     }
 
+    public List<Comment> ReturnCommentsToSong(string song)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@songName", song);
+
+        cmd = CreateCommandWithStoredProcedure("Final_ReturnCommentsToSong", con, paramDic);             // create the command
+
+        List<Comment> commentsToArtist = new List<Comment>();
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            while (dataReader.Read())
+            {
+                Comment comment = new Comment();
+                comment.Email = dataReader["email"].ToString();
+                comment.Content = dataReader["comment"].ToString();
+                comment.Whom = dataReader["song"].ToString();
+                comment.date = Convert.ToDateTime(dataReader["created_at"]);
+
+                commentsToArtist.Add(comment);
+            }
+            return commentsToArtist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
 
     /////////////////////////////////////////////////////////////////
     ///////////////////////// Question //////////////////////////////
