@@ -997,3 +997,9 @@ function deleteCommentSongSuccess(data){
   let songName = document.querySelector("#songName")
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${songName}`,"",newCommentSongSuccessCB,errorCB);
 }
+
+function deleteUser(){
+  let username = JSON.parse(localStorage.getItem("userObj")).
+  ajaxCall("DELETE",currApi + `/Comments/GetAllCommentsArtists/${songName}`,"",newCommentSongSuccessCB,errorCB);
+  
+}

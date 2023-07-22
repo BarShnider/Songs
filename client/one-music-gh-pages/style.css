@@ -2517,6 +2517,7 @@ justify-content: space-evenly;
 
 #counter-container {
   margin-left: 5px;
+  font-size: 14px !important;
 }
 
 .line {
@@ -2761,10 +2762,41 @@ justify-content: space-evenly;
   margin: 30px !important;
 }
 
-.btn, .form-control{
+.btn, textarea.form-control{
   font-size: 1.5rem !important;
 }
 
 .comment-title {
   font-size: 18px !important;
+}
+
+.addition-header, .addition-summ {
+  text-align: center;
+}
+.addition-summ {
+  font-size: 18px;
+}
+
+.addition-img {
+  border: 1px solid black;
+  box-shadow: 2px 2px 20px #00000055;
+  margin-top: 10px;
+}
+
+.addition-wrapper {
+  margin-top: 70px;
+  margin-bottom: 70px;
+  padding: 15px;
+  text-align: center;
+}
+
+.btn-container {
+  margin: auto;
+  margin: 50px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.delete-btn {
+  font-size: 1rem !important;
 }
