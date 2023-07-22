@@ -614,7 +614,7 @@ function getUserLikedArtistsSuccessCB(data){
   }
 }
 
-///////////////////////////////////////////////////////////////// YONI
+//get artists that the user liked
 function getTopArtists(){
   let userObjString=localStorage.getItem('userObj');
   let userObj = JSON.parse(userObjString);
@@ -622,7 +622,8 @@ function getTopArtists(){
   let api = currApi + `/Users/GetUserLikedArtists/${userObj.email}`;
   ajaxCall("GET",api,"",TopArtistsSuccessCB,errorCB);
 }
-///////////////////////////////////////////////////////////////// YONI
+
+// returns the favorite arists of the user (max 5)
 function TopArtistsSuccessCB(data){
   if(data.length>=2){
     document.getElementById("noArtistsForUser").remove();
@@ -639,7 +640,7 @@ function TopArtistsSuccessCB(data){
     }
 }
 
-///////////////////////////////////////////////////////////////// YONI
+//get 5 songs that the user liked
 function getFiveSongsByUser(){
   let userObjString=localStorage.getItem('userObj');
   let userObj = JSON.parse(userObjString);
@@ -647,7 +648,7 @@ function getFiveSongsByUser(){
   ajaxCall("GET",api,"",TopSongsSuccessCB,errorCB);
 }
 
-///////////////////////////////////////////////////////////////// YONI
+// sets 5 random songs that the user liked 
 function TopSongsSuccessCB(data){
   if(data.length>=2){
     document.getElementById("noSongsForUser").remove();
@@ -669,7 +670,7 @@ function TopSongsSuccessCB(data){
   }
 }
 
-///////////////////////////////////////////////////////////////// YONI
+// render the user profile with 5 liked artists and 5 liked songs
 function renderUserProfile(){
   getTopArtists();
   getFiveSongsByUser();
