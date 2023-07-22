@@ -992,7 +992,14 @@ function deleteCommentSongSuccess(data){
 }
 
 function deleteUser(){
-  let username = JSON.parse(localStorage.getItem("userObj")).
-  ajaxCall("DELETE",currApi + `/Comments/GetAllCommentsArtists/${songName}`,"",newCommentSongSuccessCB,errorCB);
+  let user = JSON.parse(localStorage.getItem("userObj"))
+  console.log(user.email)
+  ajaxCall("DELETE",currApi + `/Users/Delete/${user.email}`,"",deleteUserSuccessCB,errorCB);
   
+}
+
+function deleteUserSuccessCB(data){
+  console.log(data)
+  signout();
+
 }

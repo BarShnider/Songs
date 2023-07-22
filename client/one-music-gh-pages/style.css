@@ -2672,6 +2672,7 @@ justify-content: space-evenly;
 .user-profile-headers {
   text-transform: uppercase;
   color: #600101;
+  font-size: 32px;
 }
 
 .widget .panel-body {
@@ -2799,4 +2800,8 @@ justify-content: space-evenly;
 
 .delete-btn {
   font-size: 1rem !important;
+}
+
+.no-data-availibale {
+  font-size: 18px !important;
 }
