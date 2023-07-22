@@ -2476,6 +2476,7 @@ justify-content: space-evenly;
 .user-details-titles {
   font-weight: 800;
   color: #000000;
+  font-family: "Archivo Narrow", sans-serif !important;
 }
 
 .oneMusic-tab-text {
@@ -2486,12 +2487,12 @@ justify-content: space-evenly;
 .admin-panel-song-links {
   display: inline;
   font-weight: 500;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 
   
 }
 .admin-panel-song-links:hover{
-  font-size: 2rem;
+  font-size: 1.3rem;
 
 }
 .latest-albums-area {
@@ -2750,4 +2751,12 @@ justify-content: space-evenly;
 
 #lyricsContainer {
   font-size: 1.6rem !important;
+}
+
+.swal2-title {
+  font-size: 15px !important;
+}
+
+.swal2-toats {
+  margin: 30px !important;
 }

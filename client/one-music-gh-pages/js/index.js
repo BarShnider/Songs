@@ -11,19 +11,14 @@ const deezerSecret = "b5d9a7955fc9a8b367bebcd125339bb6"
 $(document).ready(() => {
 
     if(localStorage.getItem("userObj")){
-        console.log("ONLOAD USER OBJECT:")
         let loggedInUser = JSON.parse(localStorage.getItem("userObj"))
-        console.log(loggedInUser);
-        console.log(document.querySelector(".login-register-btn"))
         document.querySelector(".login-register-btn").innerHTML = `<div class="login-register-btn logged-user-div mr-50">
         <a href="user-page.html" id="loginBtn">Logged in as ${loggedInUser.username}</a><span class="line"></span><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
         if(loggedInUser.email == "admin@gmail.com"){
-          document.querySelector(".logged-user-div").innerHTML += `<span class="line"></span><a href="admin-page.html" id="">&nbsp;&nbsp;Admin Panel</a>`
+          document.querySelector(".logged-user-div").innerHTML = `<a href="admin-page.html" id="">&nbsp;&nbsp;Admin Panel</a><span class="line"></span><a onclick="signout()" id="loginBtn">&nbsp;&nbsp;Signout</a></div>`
         }
       }
-    else {
-        console.log("no one is logged in")
-    }
+
 
   // handler for register form. takes the parameters from the form and handles the submittion to registration.
   $("#register-form").submit(() => { // register form
@@ -33,8 +28,23 @@ $(document).ready(() => {
       password: $("#registerPassword").val(),
     };
     if($("#registerName").val() == ""){
-        alert("please insert username!")
-        return
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-start',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Please enter a username and try again.'
+      })        
+        return false;
     }
     let api = currApi + `/Users/Register`;
     ajaxCall("POST",api,JSON.stringify(user),registerSuccessCB,registerErrorCB);
@@ -60,8 +70,23 @@ $(document).ready(() => {
       password: $("#loginPassword").val(),
     };
     if($("#loginEmail").val() == ""){
-        alert("please insert username!")
-        return
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-start',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'error',
+          title: 'Please enter a username and try again.'
+        })
+        return false;
     }
     let api = currApi + `/Users/Login`;
     ajaxCall("POST",api,JSON.stringify(user),loginSuccessCB,errorCB);
@@ -73,9 +98,6 @@ $(document).ready(() => {
 });
 
 function registerErrorCB(err){
-  // console.log(err.resposeText.split("$"))
-  console.log(err)
-  console.log(err.responseText.split("$"))
   if(err.responseText.split("$")[1] == "Username taken"){
     Swal.fire({
       icon: "error",
@@ -96,7 +118,6 @@ function registerErrorCB(err){
 // success callback to the regsiter form submission. if there were no errors, it returns with true or false (whice indicates if the user been able to register or not).
 // if the user registerd successfully (true) - present a success message and change the page to the home page, else -present an alert indicating that the user already exist, else (false)
 function registerSuccessCB(data) {
-  console.log(data);
   if (!data) {
     Swal.fire({
       icon: "error",
@@ -125,7 +146,6 @@ function registerSuccessCB(data) {
 // the function handles the login form success and present a message according to the data that came from the server and SP.
 // if its connected succefully - calls to ajaxCall that will save the user to the localstorage for further use, and change the page to the homepage. 
 function loginSuccessCB(data){
-    console.log(data)
     switch(data){
         case 0: // email incorrect
         Swal.fire({
@@ -165,7 +185,6 @@ function loginSuccessCB(data){
 }
 // user to save the registerd/login user to the localstorage for further use in the app.
 function emailSuccessCB(data){
-    console.log(data);
     userObj = {
         username: data.name,
         email: data.email        
@@ -182,8 +201,6 @@ function TopTenArtists(){
 }
 
 function successCB(data) {
-  console.log(data);
-  console.log(data.length);
   for (let i = 0; i < data.length; i++) {
     let artistId = `artist${i + 1}`;
     document.getElementById(artistId).innerHTML = `${i + 1}. ${data[i]}`;
@@ -194,7 +211,6 @@ function successCB(data) {
   check.appendChild(header);
 }
   function errorCB(err){
-    // alert("dont Work");
     console.log(err);
   }
 
@@ -233,7 +249,8 @@ function ifUserLikedSongSuccessCB(data){
     likeHeart.style.backgroundColor = "#DDDDDD"
   }
 }
-//renders the artist page.
+//renders the artist page by calling ajax calls the fill the artist page. uses the user object from the stored procedure to get if the connect
+//user liked the artist or not. the function also uses LAST.FM api to rertive data about the artist.
 function renderArtistPage(artistName){
   let user = JSON.parse(localStorage.getItem("userObj"))
   document.querySelector("#artist").innerHTML = artistName;
@@ -243,10 +260,14 @@ function renderArtistPage(artistName){
   ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
 }
+
+//success callback to render the number of likes the artist have in total.
 function getArtistLikesSuccessCB(data){
 document.querySelector("#artist-likes-count").innerHTML = data
 }
 
+//success callback to get all the song related to given artist. renders the result data as links that will redirect to the song page when clicked.
+//used "replace" func to escape single quetes error while rendering dynamiclly.
 function songByArtistSuccessCB(data){
   let artistName = document.querySelector("#artist").innerHTML
   getDeezerDetails(artistName)
@@ -256,18 +277,23 @@ function songByArtistSuccessCB(data){
   }
 }
 
+//last.fm api call success callback. fill the data that came for the artist from last.fm api to its place in the page.
 function artistInfoSuccessCB(data) {
   document.querySelector("#artist-summary").innerHTML = data.artist.bio.summary;
   document.querySelector("#artist-content").innerText = data.artist.bio.content;
 }
 
+//function to ajaxCall the method to fill the artists-list page with all the artists data.
 function renderAllArtistsList(){
   ajaxCall("GET",currApi + `/Artists/GetAllArtists`,"",artistSuccessCB,errorCB);
 
 }
 
+//success callback for get all artists. used to fill the list of artists in artists-list page.
+//uses accordion for each artist so when it gets clicked, it will present a brief summary about the artist, and option to go to his artist page.
+//uses the split and repleace functions to deal with dots and single qoutes in the artist names.
+// after rendering the lists, for each artist a function named "fillArtistListInfo" to fill with last.fm api data.
 function artistSuccessCB(data) {
-  console.log(data);
   let container = document.querySelector(".list-accordion");
   for (let i = 0; i < data.length; i++) {
     let name = data[i];
@@ -299,13 +325,14 @@ for (let i = 0; i < clickHereForInfoElements.length; i++) {
   }
 }
 
+//uses last.fm api to fill data to the artists list
 function fillArtistListInfo(artistName){
   ajaxCall("GET",`http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${artistName.toLowerCase()}&api_key=${lastfmKEY}&format=json`,"",fillSuccessCB,errorCB);
 }
 
+//success callback for last.fm api to handle filling the inforamtion to artist elements in artists list page.
+//split, replace and join used to escape dots, single qoutes and dashes in the names.
 function fillSuccessCB(data){
-  console.log(data)
-  console.log("artist" in data)
   if("artist" in data){
       document.querySelector(`#${data.artist.name.split(" ").join("-").toLowerCase().replace(/'/g, "\\'").split(".").join("").split("'").join("")}-list-item-summary`).innerHTML =  data.artist.bio.summary
   }  
@@ -313,24 +340,30 @@ function fillSuccessCB(data){
 
 }
 
-
+//will be activated "onclick" when clicking an artist. sets the artist name temp to sessionStorage and redirect it 
+//to the artist page, the artist page will get the name from session storage on load and present the artist full page.
 function artistSelectedFromList(artistName){
   localStorage.setItem('selectedArtist', artistName);
   sessionStorage.setItem("tempArtist", artistName)
 window.location.href = 'artist-page.html'
 }
 
+//same as artistSelectedFromList
 function songSelectedFromList(songName){
   localStorage.setItem('selectedSong', songName);
   sessionStorage.setItem("tempSong",songName);
 window.location.href = 'song-page.html'
 }
 
+//handles the signout of a user from the website by removing it from the localstorage.
 function signout(){
   localStorage.removeItem("userObj");
   window.location.href = "login.html"
 }
 
+//a fucntion to handle the search in the home page.
+//resets the containers to empty (to avoid them if there was a previous search)
+//calls the methods with ajaxCall to get the relevant result from the server.
 $(document).ready (() => {
   $("#search-form").submit(() => {
     let toSearch = $("#search").val();
@@ -346,21 +379,22 @@ $(document).ready (() => {
 
 })
 
-
+//handles the data from the server that searched for artists by the search query given.
+//renders it dynamiclly to a specified container for artists result.
 function searchArtistSuccessCB(data){
-  console.log(data)
   if(data.length > 0){
     document.querySelector("#artist-title").innerHTML = "Artists:"
     for(let artist of data){
-      // document.querySelector("#artist-result").innerHTML += `${artist}<br>` 
       document.querySelector("#artist-result").innerHTML += `<a style="display:inline;" class="visitPage" href="#" onclick="artistSelectedFromList('${artist.replace(/'/g, "\\'")}')">${artist}</a><br>` 
     }
   }
 
 }
 
+
+//handles the data from the server that searched for songs by the search query given (songs or lyrics).
+//renders it dynamiclly to a specified container for songs result
 function searchSongSuccessCB(data){
-  console.log(data)
   if(data.length > 0){
     document.querySelector("#song-title").innerHTML = "Songs:"
     for(let song of data){
@@ -369,49 +403,48 @@ function searchSongSuccessCB(data){
   }
 }
 
+//handles the event of pressed like in artist page. call an ajaxCall to add the like to the artist.
+//uses the user object from local storage to indicate which user liked.
 function likePressedArtist(){
   let artistName = document.querySelector("#artist").innerHTML
-  console.log(artistName)
   let user = JSON.parse(localStorage.getItem("userObj"))
-  console.log(user)
   ajaxCall("POST",currApi + `/Artists/AddRemoveLike/${user.email}/${artistName}`,"",artistAddRemoveLikeSuccessCB,errorCB);
-  
-}
-function likePressedSong(){
-  let songName = document.querySelector("#songName").innerHTML
-  console.log(songName)
-  let user = JSON.parse(localStorage.getItem("userObj"))
-  console.log(user)
-  ajaxCall("POST",currApi + `/Songs/UserLikesSong/${user.email}/${songName}`,"",songAddRemoveLikeSuccessCB,errorCB);
-  
 }
 
+//handles the event of pressed like in song page. call an ajaxCall to add the like to the song.
+//uses the user object from local storage to indicate which user liked.
+function likePressedSong(){
+  let songName = document.querySelector("#songName").innerHTML
+  let user = JSON.parse(localStorage.getItem("userObj"))
+  ajaxCall("POST",currApi + `/Songs/UserLikesSong/${user.email}/${songName}`,"",songAddRemoveLikeSuccessCB,errorCB);
+}
+
+//sets the likes count on artist page
 function artistLikeSuccessCB(data){
-  console.log(data)
   document.querySelector("#artist-likes-count").innerHTML = data
   
 }
 
+//handles the event of like pressed by a user.sets the count to new counted liked and calls a function to 
+//check wether it was like or unlike and set the icon to the proper color.
 function songAddRemoveLikeSuccessCB(data){
-  console.log(data)
   let user  = JSON.parse(localStorage.getItem("userObj"))
   document.querySelector("#song-likes-count").innerHTML = data
   let songName = document.querySelector("#songName").innerHTML
-  console.log("Entered ADD REmove")
   ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
-
-
 }
 
+//handles the event of like pressed by a user.sets the count to new counted liked and calls a function to 
+//check wether it was like or unlike and set the icon to the proper color.
 function artistAddRemoveLikeSuccessCB(){
   let user  = JSON.parse(localStorage.getItem("userObj"))
   let artistName = document.querySelector("#artist").innerHTML
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",artistLikeSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
-
-  
 }
 
+//rendred the admin page by calling to get all the full lists of users,songs, and artists.
+//for each user rendering its details, liked songs and liked artists. in addition also render some statistics to the page.
 function renderAdminPage(){
   ajaxCall("GET",currApi + `/Users/GetAllUsers`,"",getAllUsersSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Users/GetStatisticsAdmin`,"",getStatisticSuccessCB,errorCB);
@@ -420,37 +453,38 @@ function renderAdminPage(){
 
 }
 
+//gets the statistics for the top counter in the admin page.
+//sets the number of registerd users, the number of songs and number of artists in the database.
 function getStatisticSuccessCB(data){
-  console.log(data)
-  console.log(data[0])
-  console.log(data[1])
-  console.log(data[2])
-  console.log(document.querySelectorAll(".counter"))
 document.querySelectorAll(".counter")[0].innerHTML = data[0]
 document.querySelectorAll(".counter")[1].innerHTML = data[1]
 document.querySelectorAll(".counter")[2].innerHTML = data[2]
 }
 
+//function to handle success callback when calling to get all the songs. sets all the song as a list in a container
+// with their artist name, the name of the songs and number of total likes.
 function getAllSongsSuccessCB(data){
   console.log(data)
   let songsCont = document.querySelector("#songs-list-content");
   for (let song of data){
-    songsCont.innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a><br>`
+    songsCont.innerHTML += `${song.artistName} - <a style="display:inline;" class="visitPage" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a> - ${song.favoriteCount} Likes<br>`
   }
 }
 
+//function to handle success callback when calling to get all the artists. sets all the artists as a list in a container
+// with their artist name and number of total likes.
 function getAllArtistsSuccessCB(data){
-  console.log(data);
   let artistCont = document.querySelector("#artist-list-content") 
-  console.log(artistCont)
   for(let artist of data){
     artistCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${artist.name.replace(/'/g, "\\'")}.replace(/'/g, "\\'")')">${artist.name}</a> - ${artist.favoriteCount} Likes<br> `
   }
 }
 
-
+//function to handle success callback when calling to get all the users. sets all the artists as a list in a container
+// for each artists renderd 3 tabs that will contain the user details, their liked songs, and their liked artists.
+//each tab will cotnain different info.
+//also calls to get the specific used liked artists and songs with ajaxCall.
 function getAllUsersSuccessCB(data) {
-  console.log(data);
   let accordionCont = document.querySelector(".users-accordion");
   let collapseCounter = 1;
 
@@ -522,39 +556,32 @@ function getAllUsersSuccessCB(data) {
   }
 }
 
+//sets the liked song by a specific user to the matching place in the admin page list of users (inside the liked songs tab)
 function getUserLikedSongSuccessCB(data){
-  // console.log(data)
   let likedSongsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-songs`)
   for(let i = 1; i<data.length; i++){
     likedSongsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].artistName.replace(/'/g, "\\'")}')">${data[i].artistName}</a> - <a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList("${data[i].title.replace(/'/g, "\\'")}")">${data[i].title}</a><br> `
   }
 }
 
+//sets the liked artists by a specific user to the matching place in the admin page list of users (inside the liked artists tab)
 function getUserLikedArtistsSuccessCB(data){
-  // console.log(data)
   let likedArtistsCont = document.querySelector(`#${data[0].split("@")[0]}-liked-artists`)
   for(let i = 1; i<data.length; i++){
     likedArtistsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="artistSelectedFromList('${data[i].name.replace(/'/g, "\\'")}')">${data[i].name}</a><br> `
   }
 }
 
-
-
-
-
-
+///////////////////////////////////////////////////////////////// YONI
 function getTopArtists(){
   let userObjString=localStorage.getItem('userObj');
   let userObj = JSON.parse(userObjString);
-  console.log(userObj);
   document.getElementById("userName").innerHTML=userObj.username
   let api = currApi + `/Users/GetUserLikedArtists/${userObj.email}`;
   ajaxCall("GET",api,"",TopArtistsSuccessCB,errorCB);
 }
-
+///////////////////////////////////////////////////////////////// YONI
 function TopArtistsSuccessCB(data){
-  console.log(data);
-  console.log(data.length);
   if(data.length>=2){
     document.getElementById("noArtistsForUser").remove();
   }
@@ -570,6 +597,7 @@ function TopArtistsSuccessCB(data){
     }
 }
 
+///////////////////////////////////////////////////////////////// YONI
 function getFiveSongsByUser(){
   let userObjString=localStorage.getItem('userObj');
   let userObj = JSON.parse(userObjString);
@@ -577,6 +605,7 @@ function getFiveSongsByUser(){
   ajaxCall("GET",api,"",TopSongsSuccessCB,errorCB);
 }
 
+///////////////////////////////////////////////////////////////// YONI
 function TopSongsSuccessCB(data){
   if(data.length>=2){
     document.getElementById("noSongsForUser").remove();
@@ -598,20 +627,21 @@ function TopSongsSuccessCB(data){
   }
 }
 
+///////////////////////////////////////////////////////////////// YONI
 function renderUserProfile(){
   getTopArtists();
   getFiveSongsByUser();
 }
 
-
-
-
+//used to handle the event of refreshing a page. gets the temp item of the last artist visited from sessionStorage and renders it again to the page.
 function renderArtistFromStorage(){
   if(sessionStorage.getItem("tempArtist")){
     let artist = sessionStorage.getItem("tempArtist");
     renderArtistPage(artist);
   }
 }
+
+//used to handle the event of refreshing a page. gets the temp item of the last song visited from sessionStorage and renders it again to the page.
 function renderSongFromStorage(){
   if(sessionStorage.getItem("tempSong")){
     let song = sessionStorage.getItem("tempSong");
@@ -619,19 +649,23 @@ function renderSongFromStorage(){
   }
 }
 
+//calls a method in the server that calls to Deezer api, and return another info about the artists.
 function getDeezerDetails(artistName){
   ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${artistName}`,"",deezerSuccessCB,errorCB);
 }
 
+//gets the Deezer api info came back from the server and sets the image in designated place in artist profile.
+//iterates the results because the data returnd is 25 results related to the name given.
+//while iterating we check for match with the artist name to be sure it is his image.
 function deezerSuccessCB(data){
-for(let i = 0; i<data.data.length;i++){
-  let artistName = document.querySelector("#artist").innerHTML
- let searchName = data.data[i].artist.name;
- if(searchName.includes(artistName)){
-   document.querySelector("#artist-image").src =  data.data[i].artist.picture_medium
-   break
- }
-}
+  for(let i = 0; i<data.data.length;i++){
+    let artistName = document.querySelector("#artist").innerHTML
+    let searchName = data.data[i].artist.name;
+    if(searchName.includes(artistName)){
+      document.querySelector("#artist-image").src =  data.data[i].artist.picture_medium
+      break
+    }
+  }
 }
 
 function renderAllSongsList(){
@@ -639,7 +673,6 @@ function renderAllSongsList(){
 }
 
 function allSongsSuccessCB(data){
-  console.log(data);
   let container = document.querySelector(".song-list-accordion");
   for (let i = 0; i < data.length; i++) {
     let songName = data[i].title;
@@ -668,7 +701,6 @@ function renderHomepageTop(){
 
 
 function homepageTopSuccessCB(data){
-  console.log(data)
   let i = 0;
   for(let artist of data){
     if(i >5 || artist.favoriteCount == 0){
@@ -694,9 +726,7 @@ ajaxCall("GET",currApi + `/Artists/GetDeezerInfo/${artist.name}`,"",imagesTopSuc
 }
 
 function imagesTopSuccessCB(data){
-  console.log(data.data)
   let topImgElements = document.querySelectorAll(".top-image")
-  console.log(topImgElements)
   for(let elem of topImgElements){
     for(let i = 0; i<data.data.length;i++){
       let dataArtistName = data.data[i].artist.name.replace(/'/g, "\\'").split(" ").join("")
@@ -709,7 +739,6 @@ function imagesTopSuccessCB(data){
 }
 
 function renderCommentsToArtistPageSuccessCB(data){
-  console.log(data)
    let userObj = JSON.parse(localStorage.getItem("userObj"))
   let commentsCont = document.querySelector(".artist-comment-list");
   commentsCont.innerHTML = "";
@@ -719,7 +748,6 @@ function renderCommentsToArtistPageSuccessCB(data){
   }
   else{
     for(let comment of data){
-      console.log(comment)
       commentsCont.innerHTML += `  <li class="list-group-item artist-comment-list">
                             <div class="row">
   <div class="col-xs-10 col-md-11">
@@ -743,7 +771,6 @@ function renderCommentsToArtistPageSuccessCB(data){
   }
 }
 function renderCommentsToSongPageSuccessCB(data){
-  console.log(data)
    let userObj = JSON.parse(localStorage.getItem("userObj"))
   let commentsCont = document.querySelector(".song-comment-list");
   commentsCont.innerHTML = "";
@@ -753,7 +780,6 @@ function renderCommentsToSongPageSuccessCB(data){
   }
   else{
     for(let comment of data){
-      console.log(comment)
       commentsCont.innerHTML += `  <li class="list-group-item artist-comment-list">
                             <div class="row">
   <div class="col-xs-10 col-md-11">
@@ -787,9 +813,7 @@ $(document).ready(() => {
       content: commentContent,
       whom: document.querySelector("#artist").innerHTML
     }
-    console.log(newComment)
-    ajaxCall("POST",currApi + `/Comments/CommentToArtist`,JSON.stringify(newComment),newCommentArtistSuccessCB,errorCB);
-    console.log(commentContent)
+    ajaxCall("POST",currApi + `/Comments/CommentToArtist`,JSON.stringify(newComment),newCommentArtistSuccessCB,emptyCommenterrorCB);
     return false;
   })
   $("#comment-song-form").submit(() => {
@@ -801,21 +825,39 @@ $(document).ready(() => {
       content: commentContent,
       whom: document.querySelector("#songName").innerHTML
     }
-    console.log(newComment)
-    ajaxCall("POST",currApi + `/Comments/CommentToSong`,JSON.stringify(newComment),newCommentSongSuccessCB,errorCB);
-    console.log(commentContent)
+    ajaxCall("POST",currApi + `/Comments/CommentToSong`,JSON.stringify(newComment),newCommentSongSuccessCB,emptyCommenterrorCB);
     return false;
   })
 })
 
+function emptyCommenterrorCB(err){
+  let status = err.responseText.split("$")[1];
+  if(status == "Comment is empty"){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-start',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'error',
+      title: 'Your comment is empty, please fill it and try again.'
+    })
+  }
+}
+
 function newCommentArtistSuccessCB(data){
-  console.log(data)
   document.querySelector(".form-control").value = ""
   let artistName = document.querySelector("#artist").innerHTML
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
 }
 function newCommentSongSuccessCB(data){
-  console.log(data)
   document.querySelector(".form-control").value = ""
   let songName = document.querySelector("#songName").innerHTML
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsSongs/${songName}`,"",renderCommentsToSongPageSuccessCB,errorCB);
@@ -830,7 +872,7 @@ function editCommentArtist(id){
   editBtn.onclick = () => {
   
       let content = document.querySelector("#editedTextArea").value
-    ajaxCall("PUT",currApi + `/Comments/ChangeCommentToArtist/${id}`,JSON.stringify(content),newCommentArtistSuccessCB,errorCB);
+    ajaxCall("PUT",currApi + `/Comments/ChangeCommentToArtist/${id}`,JSON.stringify(content),newCommentArtistSuccessCB,emptyCommenterrorCB);
   }
   currComment.innerHTML = `<textarea id="editedTextArea" class="form-control" rows="3">${currCommentContent}</textarea>`
 
@@ -844,7 +886,7 @@ function editCommentSong(id){
   editBtn.onclick = () => {
   
       let content = document.querySelector("#editedTextArea").value
-    ajaxCall("PUT",currApi + `/Comments/ChangeCommentToSong/${id}`,JSON.stringify(content),newCommentSongSuccessCB,errorCB);
+    ajaxCall("PUT",currApi + `/Comments/ChangeCommentToSong/${id}`,JSON.stringify(content),newCommentSongSuccessCB,emptyCommenterrorCB);
   }
   currComment.innerHTML = `<textarea id="editedTextArea" class="form-control" rows="3">${currCommentContent}</textarea>`
 
@@ -860,12 +902,10 @@ function deleteCommentArtist(id){
 }
 
 function deleteCommentArtistSuccess(data){
-  console.log(data)
   let artistName = document.querySelector("#artist")
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",newCommentArtistSuccessCB,errorCB);
 }
 function deleteCommentSongSuccess(data){
-  console.log(data)
   let songName = document.querySelector("#songName")
   ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${songName}`,"",newCommentSongSuccessCB,errorCB);
 }

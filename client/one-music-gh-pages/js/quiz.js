@@ -32,8 +32,19 @@ var quiz = {}
         }
     }
 
+    function errorCB(err){
+        console.log(err)
+    }
+
     function songQuizInit(){
-        document.querySelector("#getArtistQ-play-again").style.display = "none"
+        matchSongsToArtistCounter = 0
+        matchSongsToArtistCorrectAnswers = 0
+        document.querySelector(".quiz-header").innerHTML = "Guess The Artist!"
+        document.querySelector("#quizAns").style.display = "none";
+        document.querySelector("#quizQn").innerHTML = "Press Start Or Select Game To Play"
+        document.querySelector("#getArtistQ-play-again").style.display = "block"
+        document.querySelector("#getArtistQ-play-again").innerHTML = "Start"
+        document.querySelector("#getArtistQ-play-again").onclick = () => {getSongQuestion()}
         for(let i = 1; i< 5; i++){
             let label = document.querySelector(`#label${i}`)
             label.onclick = () => {
@@ -48,11 +59,15 @@ var quiz = {}
             }
         }
     }
-
-    function LyricsQuizInit(){
-        document.querySelector(".quiz-header").innerHTML = "Guess The Lyrics!"
+    function artistQuizInit(){
+        matchSongsToArtistCounter = 0
+        matchSongsToArtistCorrectAnswers = 0
+        document.querySelector(".quiz-header").innerHTML = "Guess The Song!"
         document.querySelector("#quizAns").style.display = "none";
+        document.querySelector("#quizQn").innerHTML = "Press Start Or Select Game To Play"
         document.querySelector("#getArtistQ-play-again").style.display = "block"
+        document.querySelector("#getArtistQ-play-again").innerHTML = "Start"
+        document.querySelector("#getArtistQ-play-again").onclick = () => {getArtistQuestion()}
         for(let i = 1; i< 5; i++){
             let label = document.querySelector(`#label${i}`)
             label.onclick = () => {
@@ -62,7 +77,31 @@ var quiz = {}
                     song: label.innerHTML
                 }
                 
-                ajaxCall("POST",currApi + `/Questions/CheckAnswerSongForArtist/${checkObj.artist}/${checkObj.song}`, JSON.stringify(checkObj),checkQuestionAnswerSuccessCB,errorCB);
+                ajaxCall("POST",currApi + `/Questions/CheckAnswerSongForArtist/${checkObj.artist}/${checkObj.song}`, JSON.stringify(checkObj),checkAnswerSuccessCB,errorCB);
+                sessionStorage.setItem("selectedAnswerLabelId",label.id);
+            }
+        }
+    }
+
+    function lyricsQuizInit(){
+        matchSongsToArtistCounter = 0
+        matchSongsToArtistCorrectAnswers = 0
+        document.querySelector(".quiz-header").innerHTML = "Guess The Lyrics!"
+        document.querySelector("#quizAns").style.display = "none";
+        document.querySelector("#quizQn").innerHTML = "Press Start Or Select Game To Play"
+        document.querySelector("#getArtistQ-play-again").style.display = "block"
+        document.querySelector("#getArtistQ-play-again").innerHTML = "Start"
+        document.querySelector("#getArtistQ-play-again").onclick = () => {getSongLyrics()}
+        for(let i = 1; i< 5; i++){
+            let label = document.querySelector(`#label${i}`)
+            label.onclick = () => {
+                selectedAnswer = label.innerHTML
+                checkObj = {
+                    lyric: document.querySelector("#quizQn").innerHTML,
+                    song: label.innerHTML
+                }
+                
+                ajaxCall("POST",currApi + `/Questions/CheckAnswerLyricSong/${checkObj.lyric}/${checkObj.song}`, JSON.stringify(checkObj),checkLyricsSuccessCB,errorCB);
                 sessionStorage.setItem("selectedAnswerLabelId",label.id);
             }
         }
@@ -72,7 +111,6 @@ var quiz = {}
     let matchSongsToArtistCounter = 0
     let matchSongsToArtistCorrectAnswers = 0
     function checkAnswerSuccessCB(data){
-        console.log(data)
         let labelID = sessionStorage.getItem("selectedAnswerLabelId")
         if(data){
             document.querySelector(`#${labelID}`).style.backgroundColor = "#34c724";
@@ -93,7 +131,6 @@ var quiz = {}
     }
 
     function checkQuestionAnswerSuccessCB(data){
-        console.log(data)
         let labelID = sessionStorage.getItem("selectedAnswerLabelId")
         if(data){
             document.querySelector(`#${labelID}`).style.backgroundColor = "#34c724";
@@ -108,6 +145,26 @@ var quiz = {}
             matchSongsToArtistCounter++;
             setTimeout(() => {
                 getSongQuestion();
+            }, 500);
+
+        }
+    }
+
+    function checkLyricsSuccessCB(data){
+        let labelID = sessionStorage.getItem("selectedAnswerLabelId")
+        if(data){
+            document.querySelector(`#${labelID}`).style.backgroundColor = "#34c724";
+            matchSongsToArtistCorrectAnswers++;
+            matchSongsToArtistCounter++;
+            setTimeout(() => {
+                getSongLyrics();
+            }, 500);
+        }
+        else{
+            document.querySelector(`#${labelID}`).style.backgroundColor = "#f54a45";
+            matchSongsToArtistCounter++;
+            setTimeout(() => {
+                getSongLyrics();
             }, 500);
 
         }
@@ -135,7 +192,6 @@ var quiz = {}
     }
 
     function artistQuestionSuccessCB(data){
-        console.log(data)
             document.querySelector(`#quizQn`).innerHTML = data.contentQ;
             document.querySelector(`#label1`).innerHTML = data.answerA;
             document.querySelector(`#label2`).innerHTML = data.answerB;
@@ -146,8 +202,8 @@ var quiz = {}
 
 
     function getSongQuestion(){
-        songQuizInit();
-        document.querySelector("#getArtistQ-play-again").onclick = () => {getSongQuestion()}
+        // songQuizInit();
+        // document.querySelector("#getArtistQ-play-again").onclick = () => {getSongQuestion()}
         document.querySelector(".quiz-header").innerHTML = "Guess The Artist!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";
@@ -169,8 +225,8 @@ var quiz = {}
     }
     //LYRICS QUIZ
     function getSongLyrics(){
-        lyricsQuizInit();
-        document.querySelector("#getArtistQ-play-again").onclick = () => {getSongLyrics()}
+        // lyricsQuizInit();
+        // document.querySelector("#getArtistQ-play-again").onclick = () => {getSongLyrics()}
         document.querySelector(".quiz-header").innerHTML = "Guess The Lyrics!"
         document.querySelector("#getArtistQ-play-again").style.display = "none"
         document.querySelector("#quizAns").style.display = "grid";
