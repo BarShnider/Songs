@@ -8,6 +8,12 @@
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
 
+
+        //This function makes a question 
+        //first it takes a question as artist name and the correct answer (song name) - the song belongs to this artist 
+        //second it takes another 3 answer that are wrong for this question
+        //third it shuffles them
+        //** this function checks the song artist quiz as well (the api receives it upsite down)  
         public void makeQuestionByArtist()
         {
             Question question = new Question();
@@ -31,19 +37,18 @@
             this.AnswerC = Q[3]; //2
             this.AnswerD = Q[4]; //3
         }
+
+        // This function receives artist name and song name and checks if it is the right answer
         public static bool checkQuestionByArtist(string artist ,string song)
         {
             DBservices dbs = new DBservices();
             return dbs.CheckAnswerArtist(artist, song);
         }
-        public static bool checkQuestionLyric(string lyric, string song)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.CheckAnswerLyric(lyric, song);
-        }
 
-
-
+        //This function makes a question 
+        //first it takes a question as a string of words (part of lyrics song) and the correct answer (song name) 
+        //second it takes another 3 answer that are wrong for this question
+        //third it shuffles them
         public void makeQuestionByLyric()
         {
             Question question = new Question();
@@ -69,9 +74,17 @@
         }
 
 
+        //This function checks if the words belong to the songs lyrics
+        public static bool checkQuestionLyric(string lyric, string song)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.CheckAnswerLyric(lyric, song);
+        }
 
-
-
+        //This function makes a question 
+        //first it takes a question as song name and the correct answer (artist name) - the song belongs to this artist 
+        //second it takes another 3 answer that are wrong for this question
+        //third it shuffles them
         public void makeQuestionBySong()
         {
             Question question = new Question();

@@ -9,21 +9,7 @@ namespace Lyrics_Final_Proj.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // GET: api/<UsersController>
-        [HttpGet]
-        public IEnumerable<string> GetFavArtists(string mail)
-        {
-            User user = new User();
-            return user.ArtistArr(mail);
-        }
-
-        // GET api/<UsersController>/5
-        [HttpGet("{Email}")]
-        public string Get(string Email)
-        {
-            return "value";
-        }
-
+        //This function receives an email and returns the user
         [HttpGet]
         [Route("GetUserByEmail/{email}")]
         public User GetUserByEmail(string email)
@@ -31,6 +17,7 @@ namespace Lyrics_Final_Proj.Controllers
            return Lyrics_Final_Proj.Models.User.ReadUserByEmail(email);
         }
 
+        //This function returns all users
         [HttpGet]
         [Route("GetAllUsers")]
         public List<User> GetAllUsers()
@@ -38,6 +25,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Lyrics_Final_Proj.Models.User.GetAllUsers();
         }
 
+        //This function receives user email and returns the his favorite songs
         [HttpGet]
         [Route("GetUserLikedSongs/{email}")]
         public List<Object> GetUserLikedSongs(string email)
@@ -45,6 +33,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Lyrics_Final_Proj.Models.User.GetUserLikedSongs(email);
         }
 
+        //This function receives user email and returns the his favorite artists
         [HttpGet]
         [Route("GetUserLikedArtists/{email}")]
         public List<Object> GetUserLikedArtists(string email)
@@ -52,6 +41,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Lyrics_Final_Proj.Models.User.GetUserLikedArtists(email);
         }
 
+        // This function counts how much songs, artists and users are in the database and returns it (for admin)
         [HttpGet]
         [Route("GetStatisticsAdmin")]
         public int[] GetStatisticsAdmin()
@@ -59,7 +49,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Lyrics_Final_Proj.Models.User.GetStatisticsAdmin();
         }
 
-        // Check if user exists
+        // This function receives user and checks if user exists
         [HttpPost]
         [Route("Login")]
         public int Login(User user)
@@ -74,6 +64,7 @@ namespace Lyrics_Final_Proj.Controllers
             }
         }
 
+        //This function receives user details and register him
         [HttpPost]
         [Route("Register")]
         public bool Register([FromBody] User user)
@@ -89,13 +80,6 @@ namespace Lyrics_Final_Proj.Controllers
             }
         }
 
-
-
-        // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]

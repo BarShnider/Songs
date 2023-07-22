@@ -9,13 +9,7 @@ namespace Lyrics_Final_Proj.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
-        // GET: api/<ValuesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
+        //This function creates a question (it returns a name of an artist as the question and 4 answers as name of song - only 1 song is his)
         // GET api/<QuestionsController>/5
         [HttpGet]
         [Route("GetQuestionArtist")]
@@ -26,6 +20,7 @@ namespace Lyrics_Final_Proj.Controllers
             return question;
         }
 
+        //This function creates a question (it returns a name of a song as the question and 4 answers as name of artists - only 1 artist sings this song)
         // GET api/<QuestionsController>/5
         [HttpGet]
         [Route("GetQuestionSong")]
@@ -36,6 +31,7 @@ namespace Lyrics_Final_Proj.Controllers
             return question;
         }
 
+        //This function creates a question (it returns a string of words from a song and 4 answers as name of song - the lyrics belong to 1 song)
         // GET api/<QuestionsController>/5
         [HttpGet]
         [Route("GetQuestionLyrics")]
@@ -46,6 +42,7 @@ namespace Lyrics_Final_Proj.Controllers
             return question;
         }
 
+        // The function receives a name of artist and a name of a song and checks if the answer is right (this function works for artist quiz and song quiz)
         // POST api/<QuestionsController>
         [HttpPost]
         [Route("CheckAnswerSongForArtist/{artist}/{song}")]
@@ -55,6 +52,7 @@ namespace Lyrics_Final_Proj.Controllers
 
         }
 
+        // The function receives a string (words from song) and a name of a song and checks if the answer lyrics of the song include this words 
         // POST api/<QuestionsController>
         [HttpPost]
         [Route("CheckAnswerLyricSong/{lyric}/{song}")]
@@ -62,18 +60,6 @@ namespace Lyrics_Final_Proj.Controllers
         {
             return Question.checkQuestionLyric(lyric, song);
 
-        }
-
-        // PUT api/<QuestionsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<QuestionsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

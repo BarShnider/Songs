@@ -10,6 +10,7 @@ namespace Lyrics_Final_Proj.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
+        // This function receives artist name and returns all the comments he got
         // GET: api/<CommentsController>
         [HttpGet]
         [Route("GetAllCommentsArtists/{artistName}")]
@@ -18,7 +19,8 @@ namespace Lyrics_Final_Proj.Controllers
             Comment comment = new Comment();
             return comment.CommentsByArtist(artistName);
         }
-        
+
+        //This function receives song name and returns all the comments it got
         // GET: api/<CommentsController>
         [HttpGet]
         [Route("GetAllCommentsSongs/{songName}")]
@@ -27,15 +29,9 @@ namespace Lyrics_Final_Proj.Controllers
             Comment comment = new Comment();
             return comment.CommentsBySong(songName);
         }
-        
 
-        // GET api/<CommentsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+        // this function receives a comment object (the email, content of comment and artist name are full)
+        // and enters it to the database
         // POST api/<CommentsController>
         [HttpPost]
         [Route("CommentToArtist")]
@@ -48,6 +44,8 @@ namespace Lyrics_Final_Proj.Controllers
                 return comment.AddCommentArtist();
         }
 
+        // this function receives a comment object (the email, content of comment and song name are full)
+        // and enters it to the database
         // POST api/<CommentsController>
         [HttpPost]
         [Route("CommentToSong")]
@@ -60,6 +58,8 @@ namespace Lyrics_Final_Proj.Controllers
             return comment.AddCommentSong();
         }
 
+        // This function receives an id of comment that the user wants to edit and the new string that the user entered
+        // and changes the content of the comment in the database (for artist)
         // PUT api/<CommentsController>/5
         [HttpPut]
         [Route("ChangeCommentToArtist/{idA}")]
@@ -72,6 +72,8 @@ namespace Lyrics_Final_Proj.Controllers
             return Comment.ChangeCommentArtist(idA,content); 
         }
 
+        // This function receives an id of comment that the user wants to edit and the new string that the user entered
+        // and changes the content of the comment in the database (for song)
         [HttpPut]
         [Route("ChangeCommentToSong/{idS}")]
         public bool PutContentSong(int idS, [FromBody] string content)
@@ -83,6 +85,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Comment.ChangeCommentSong(idS, content);
         }
 
+        //This function receives id of a comment written on an artist and deletes it
         // DELETE api/<CommentsController>/5
         [HttpDelete()]
         [Route("DeleteCommentArtistByID/{idA}")]
@@ -92,6 +95,7 @@ namespace Lyrics_Final_Proj.Controllers
             return comment.DeleteCommentA(idA);
         }
 
+        //This function receives id of a comment written on a song and deletes it
         // DELETE api/<CommentsController>/5
         [HttpDelete()]
         [Route("DeleteCommentSongByID/{idS}")]

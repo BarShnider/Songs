@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lyrics_Final_Proj.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class ArtistsController : ControllerBase
     {
+        //The function returns a list of all artists from the data base      
         // GET: api/<ArtistsController>
         [HttpGet]
         [Route("GetAllArtists")]
@@ -18,6 +20,7 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.ArtistsNames();
         }
 
+        //this function receives a username and returns a list of all his favorite artists
         // GET: api/<ArtistsController>
         [HttpGet]
         [Route("TopArtistsByUsername/{username}")]
@@ -27,6 +30,8 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.TopArtistsByUsername(username);
         }
 
+        // this function returns 5 artists that have the most likes
+        // returns the name of the artist and number of likes he has
         // GET: api/<ArtistsController>
         [HttpGet]
         [Route("TopArtists")]
@@ -36,13 +41,7 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.TopArtists();
         }
 
-        // GET api/<ArtistsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+        //this function receives a string and returns all the artists that has this string in their name
         // GET api/<ArtistsController>/5
         [HttpGet]
         [Route("ArtistsByWord/{word}")]
@@ -52,6 +51,7 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.GetArtistsWord(word);
         }
 
+        // this function receives an artist name and returns the amount of likes he has
         // GET api/<ArtistsController>/5
         [HttpGet]
         [Route("ArtistsLikes/{name}")]
@@ -61,7 +61,7 @@ namespace Lyrics_Final_Proj.Controllers
             return artist.ArtistsLikes(name);
         }
 
-
+        //this function returns all the artists and their number of likes they have
         [HttpGet]
         [Route("GetAllArtistsWithLikes")]
         public List<Artist> GetArtistsLikes()
@@ -69,6 +69,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Artist.GetAllArtistsWithLikes();
         }
 
+        //this function checks if a specific user liked specific artist
         [HttpGet]
         [Route("GetIfUserLikedArtist/{email}/{artistName}")]
         public bool GetIfUserLikedArtist(string email, string artistName)
@@ -76,6 +77,7 @@ namespace Lyrics_Final_Proj.Controllers
             return Artist.GetIfUserLikedArtist(email,artistName);
         }
 
+        //this function receives an artist name, enters a Dezzer API and returns information for this artist  
         [HttpGet]
         [Route("GetDeezerInfo/{artist}")]
         public Task<string> GetDeezerInfo(string artist)
@@ -83,13 +85,9 @@ namespace Lyrics_Final_Proj.Controllers
             return Artist.GetArtistInfo(artist);
         }
 
-        // POST api/<ArtistsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // Adds/removes like from an artist 
+        //This function receives a user email and an artist name and checks if the user liked this artist or not.
+        //if this combination does not exists in the database (this user didn't do like to this artist yet) it will add this combination to the database (the user likes this artist)
+        // else it will delete this combination from the database (the user disliked this artist)
         [HttpPost]
         [Route("AddRemoveLike/{mail}/{name}")]
         public int AddRemove(string mail, string name)
@@ -103,18 +101,6 @@ namespace Lyrics_Final_Proj.Controllers
             {
                 throw new Exception("User not found");
             }
-        }
-
-        // PUT api/<ArtistsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ArtistsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

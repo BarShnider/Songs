@@ -958,64 +958,10 @@ public class DBservices
 
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // This method returns all the artists that the user liked
-    //--------------------------------------------------------------------------------------------------
-    public List<string> ReturnArtistList(string mail)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-
-        cmd = CreateCommandWithStoredProcedure("Final_Return_Fav_Artists ", con, null);             // create the command
-
-
-        List<string> artistList = new List<string>();
-
-        try
-        {
-            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-            while (dataReader.Read())
-            {
-                string name = dataReader["artistName"].ToString();
-                artistList.Add(name);
-            }
-            return artistList;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
 
     /////////////////////////////////////////////////////////////////
     ///////////////////////// ARTIST /////////////////////////////////
     ////////////////////////////////////////////////////////////////
-
-
 
     //--------------------------------------------------------------------------------------------------
     // Adds or removes like from artists and adds/removes from UserAtrist table
