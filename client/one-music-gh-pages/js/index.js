@@ -205,11 +205,12 @@ function renderSongPage(songName){
   let user = JSON.parse(localStorage.getItem("userObj"));
   ajaxCall("GET",currApi + `/Songs/GetSongBySongName/${songName}`,"",songSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Songs/GetIfUserLikedSong/${user.email}/${songName}`,"",ifUserLikedSongSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Comments/GetAllCommentsSongs/${songName}`,"",renderCommentsToSongPageSuccessCB,errorCB);
+
 }
 
 //fill the song page with relevant data, into pre-built containers.
 function songSuccessCB(data){
-  console.log(data)
 
   document.querySelector("#artistName").innerHTML = data.artistName;
   document.querySelector("#songName").innerHTML = data.title;
@@ -221,7 +222,6 @@ function songSuccessCB(data){
 
 // sets the status of the like button (if the user likes the song - sets the color and background to liked)
 function ifUserLikedSongSuccessCB(data){
-  console.log(data)
   let likeHeart = document.querySelector("#heart-button")
   if(data){
   likeHeart.style.color = "#FB076D"
@@ -241,26 +241,22 @@ function renderArtistPage(artistName){
   ajaxCall("GET",currApi + `/Songs/GetSongsByArtist/${artistName}`,"",songByArtistSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/ArtistsLikes/${artistName}`,"",getArtistLikesSuccessCB,errorCB);
   ajaxCall("GET",currApi + `/Artists/GetIfUserLikedArtist/${user.email}/${artistName}`,"",ifUserLikedSongSuccessCB,errorCB);
+  ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
 }
 function getArtistLikesSuccessCB(data){
-console.log(data)
 document.querySelector("#artist-likes-count").innerHTML = data
 }
 
 function songByArtistSuccessCB(data){
-  console.log(data)
   let artistName = document.querySelector("#artist").innerHTML
-  // console.log(artistName)
   getDeezerDetails(artistName)
   songsCont = document.querySelector("#songs-content");
-  console.log(songsCont)
   for(let song of data){
     songsCont.innerHTML += `<a class="visitPage admin-panel-song-links" href="#" onclick="songSelectedFromList('${song.title.replace(/'/g, "\\'")}')">${song.title}</a><br>`
   }
 }
 
 function artistInfoSuccessCB(data) {
-  console.log(data)
   document.querySelector("#artist-summary").innerHTML = data.artist.bio.summary;
   document.querySelector("#artist-content").innerText = data.artist.bio.content;
 }
@@ -628,10 +624,6 @@ function getDeezerDetails(artistName){
 }
 
 function deezerSuccessCB(data){
-console.log(data)
-console.log(data.data[0])
-let top1res = data.data[0]
-console.log(top1res.artist)
 for(let i = 0; i<data.data.length;i++){
   let artistName = document.querySelector("#artist").innerHTML
  let searchName = data.data[i].artist.name;
@@ -714,4 +706,166 @@ function imagesTopSuccessCB(data){
       }
     }
   }
+}
+
+function renderCommentsToArtistPageSuccessCB(data){
+  console.log(data)
+   let userObj = JSON.parse(localStorage.getItem("userObj"))
+  let commentsCont = document.querySelector(".artist-comment-list");
+  commentsCont.innerHTML = "";
+  document.querySelector(".label-info").innerHTML = data.length
+  if(data.length == 0){
+    commentsCont.innerHTML = "No Comments Yet"
+  }
+  else{
+    for(let comment of data){
+      console.log(comment)
+      commentsCont.innerHTML += `  <li class="list-group-item artist-comment-list">
+                            <div class="row">
+  <div class="col-xs-10 col-md-11">
+      <div>
+          <div class="mic-info">
+              By: <a class="comment-username">${comment.username}</a> on ${new Date(comment.date).toLocaleString()}
+          </div>
+      </div>
+      <div id="comment-${comment.id}" class="comment-text">
+          ${comment.content}
+      </div>
+      <div class="action">
+      ${userObj.email == comment.email ? `<button id="edit-btn" onclick="editCommentArtist(${comment.id})" type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-pencil"></span></button>` : ""}
+          ${userObj.email == comment.email ? `<button onclick="deleteCommentArtist(${comment.id})" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="glyphicon glyphicon-trash"></span></button>`: ""}
+      
+      </div>
+  </div>  
+   </div>
+   </li>`
+    }
+  }
+}
+function renderCommentsToSongPageSuccessCB(data){
+  console.log(data)
+   let userObj = JSON.parse(localStorage.getItem("userObj"))
+  let commentsCont = document.querySelector(".song-comment-list");
+  commentsCont.innerHTML = "";
+  document.querySelector(".label-info").innerHTML = data.length
+  if(data.length == 0){
+    commentsCont.innerHTML = "No Comments Yet"
+  }
+  else{
+    for(let comment of data){
+      console.log(comment)
+      commentsCont.innerHTML += `  <li class="list-group-item artist-comment-list">
+                            <div class="row">
+  <div class="col-xs-10 col-md-11">
+      <div>
+          <div class="mic-info">
+              By: <a class="comment-username">${comment.username}</a> on ${new Date(comment.date).toLocaleString()}
+          </div>
+      </div>
+      <div id="comment-${comment.id}" class="comment-text">
+          ${comment.content}
+      </div>
+      <div class="action">
+      ${userObj.email == comment.email ? `<button id="edit-btn" onclick="editCommentSong(${comment.id})" type="button" class="btn btn-primary btn-xs" title="Edit"><span class="glyphicon glyphicon-pencil"></span></button>` : ""}
+          ${userObj.email == comment.email ? `<button onclick="deleteCommentSong(${comment.id})" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="glyphicon glyphicon-trash"></span></button>`: ""}
+      
+      </div>
+  </div>  
+   </div>
+   </li>`
+    }
+  }
+}
+
+$(document).ready(() => {
+  $("#comment-artist-form").submit(() => {
+    let user = JSON.parse(localStorage.getItem("userObj"))
+    let commentContent = document.querySelector(".form-control").value
+    newComment = {
+      username: user.username,
+      email: user.email,
+      content: commentContent,
+      whom: document.querySelector("#artist").innerHTML
+    }
+    console.log(newComment)
+    ajaxCall("POST",currApi + `/Comments/CommentToArtist`,JSON.stringify(newComment),newCommentArtistSuccessCB,errorCB);
+    console.log(commentContent)
+    return false;
+  })
+  $("#comment-song-form").submit(() => {
+    let user = JSON.parse(localStorage.getItem("userObj"))
+    let commentContent = document.querySelector(".form-control").value
+    newComment = {
+      username: user.username,
+      email: user.email,
+      content: commentContent,
+      whom: document.querySelector("#songName").innerHTML
+    }
+    console.log(newComment)
+    ajaxCall("POST",currApi + `/Comments/CommentToSong`,JSON.stringify(newComment),newCommentSongSuccessCB,errorCB);
+    console.log(commentContent)
+    return false;
+  })
+})
+
+function newCommentArtistSuccessCB(data){
+  console.log(data)
+  document.querySelector(".form-control").value = ""
+  let artistName = document.querySelector("#artist").innerHTML
+  ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",renderCommentsToArtistPageSuccessCB,errorCB);
+}
+function newCommentSongSuccessCB(data){
+  console.log(data)
+  document.querySelector(".form-control").value = ""
+  let songName = document.querySelector("#songName").innerHTML
+  ajaxCall("GET",currApi + `/Comments/GetAllCommentsSongs/${songName}`,"",renderCommentsToSongPageSuccessCB,errorCB);
+}
+
+function editCommentArtist(id){
+  let currComment = document.querySelector(`#comment-${id}`)
+  currCommentContent = currComment.innerText;
+  let editBtn = document.querySelector("#edit-btn")
+  editBtn.style.backgroundColor = "green"
+  editBtn.innerHTML = "✅"
+  editBtn.onclick = () => {
+  
+      let content = document.querySelector("#editedTextArea").value
+    ajaxCall("PUT",currApi + `/Comments/ChangeCommentToArtist/${id}`,JSON.stringify(content),newCommentArtistSuccessCB,errorCB);
+  }
+  currComment.innerHTML = `<textarea id="editedTextArea" class="form-control" rows="3">${currCommentContent}</textarea>`
+
+}
+function editCommentSong(id){
+  let currComment = document.querySelector(`#comment-${id}`)
+  currCommentContent = currComment.innerText;
+  let editBtn = document.querySelector("#edit-btn")
+  editBtn.style.backgroundColor = "green"
+  editBtn.innerHTML = "✅"
+  editBtn.onclick = () => {
+  
+      let content = document.querySelector("#editedTextArea").value
+    ajaxCall("PUT",currApi + `/Comments/ChangeCommentToSong/${id}`,JSON.stringify(content),newCommentSongSuccessCB,errorCB);
+  }
+  currComment.innerHTML = `<textarea id="editedTextArea" class="form-control" rows="3">${currCommentContent}</textarea>`
+
+}
+
+function deleteCommentSong(id){
+  ajaxCall("DELETE",currApi + `/Comments/DeleteCommentSongByID/${id}`,"",deleteCommentSongSuccess,errorCB);
+
+}
+function deleteCommentArtist(id){
+  ajaxCall("DELETE",currApi + `/Comments/DeleteCommentArtistByID/${id}`,"",deleteCommentArtistSuccess,errorCB);
+
+}
+
+function deleteCommentArtistSuccess(data){
+  console.log(data)
+  let artistName = document.querySelector("#artist")
+  ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${artistName}`,"",newCommentArtistSuccessCB,errorCB);
+}
+function deleteCommentSongSuccess(data){
+  console.log(data)
+  let songName = document.querySelector("#songName")
+  ajaxCall("GET",currApi + `/Comments/GetAllCommentsArtists/${songName}`,"",newCommentSongSuccessCB,errorCB);
 }

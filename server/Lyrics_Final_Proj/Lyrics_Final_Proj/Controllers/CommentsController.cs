@@ -48,18 +48,18 @@ namespace Lyrics_Final_Proj.Controllers
         [Route("CommentToSong")]
         public int PostCommentToSong(Comment comment)
         {
-            return comment.AddCommentArtist();
+            return comment.AddCommentSong();
         }
 
         // PUT api/<CommentsController>/5
-        [HttpPut()]
+        [HttpPut]
         [Route("ChangeCommentToArtist/{idA}")]
         public bool PutContentArtist(int idA, [FromBody] string content)
         {
             return Comment.ChangeCommentArtist(idA,content); 
         }
 
-        [HttpPut()]
+        [HttpPut]
         [Route("ChangeCommentToSong/{idS}")]
         public bool PutContentSong(int idS, [FromBody] string content)
         {

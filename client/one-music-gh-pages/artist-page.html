@@ -11,10 +11,14 @@
     <!-- Title -->
     <title>One Music - Modern Music HTML5 Template</title>
 
+    <!-- for comments -->
+
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-thin-rounded/css/uicons-thin-rounded.css'>
     <!-- Stylesheet -->
+    
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -142,55 +146,117 @@
         </div>
     </section>
     <!-- ##### Events Area End ##### -->
-    <!-- ##### Contact Area Start ##### -->
-    <section class="contact-area section-padding-100 bg-img bg-overlay bg-fixed has-bg-img" style="background-image: url(img/bg-img/bg-2.jpg);">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-heading white">
-                        <p>See what’s new</p>
-                        <h2>Get In Touch</h2>
+    <div class="container">
+        <div class="row comments-container">
+            <div class="well">
+                <h4><i class="fa fa-paper-plane-o"></i> Leave a Comment:</h4>
+                <form role="form" id="comment-artist-form">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3"></textarea>
                     </div>
-                </div>
+                    <button  type="submit" name="say" value="" class="btn btn-primary comment-btn"><i class="fa fa-reply"></i> Submit</button>
+                </form>
             </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <!-- Contact Form Area -->
-                    <div class="contact-form-area">
-                        <form action="#" method="post">
+            <div class="panel panel-default widget">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span>
+                    <h3 class="panel-title">
+                        Recent Comments</h3>
+                    <span class="label label-info">
+                        </span>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group artist-comment-list">
+                        <!-- <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="name" placeholder="Name">
+                                <div class="col-xs-2 col-md-1">
+                                    <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" /></div>
+                                <div class="col-xs-10 col-md-11">
+                                    <div>
+                                        <div class="mic-info">
+                                            By: <a href="#">Bhaumik Patel</a> on 2 Aug 2013
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control" id="email" placeholder="E-mail">
+                                    <div class="comment-text">
+                                        Awesome design
                                     </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                    <div class="action">
+                                        <button type="button" class="btn btn-primary btn-xs" title="Edit">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs" title="Approved">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" title="Delete">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12 text-center">
-                                    <button class="btn oneMusic-btn mt-30" type="submit">Send <i class="fa fa-angle-double-right"></i></button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-2 col-md-1">
+                                    <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" /></div>
+                                <div class="col-xs-10 col-md-11">
+                                    <div>
+                                        <a href="http://bootsnipp.com/BhaumikPatel/snippets/Obgj">Admin Panel Quick Shortcuts</a>
+                                        <div class="mic-info">
+                                            By: <a href="#">Bhaumik Patel</a> on 11 Nov 2013
+                                        </div>
+                                    </div>
+                                    <div class="comment-text">
+                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
+                                        euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim
+                                    </div>
+                                    <div class="action">
+                                        <button type="button" class="btn btn-primary btn-xs" title="Edit">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs" title="Approved">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" title="Delete">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-2 col-md-1">
+                                    <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" /></div>
+                                <div class="col-xs-10 col-md-11">
+                                    <div>
+                                        <a href="http://bootsnipp.com/BhaumikPatel/snippets/4ldn">Cool Sign Up</a>
+                                        <div class="mic-info">
+                                            By: <a href="#">Bhaumik Patel</a> on 11 Nov 2013
+                                        </div>
+                                    </div>
+                                    <div class="comment-text">
+                                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
+                                        euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim
+                                    </div>
+                                    <div class="action">
+                                        <button type="button" class="btn btn-primary btn-xs" title="Edit">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-xs" title="Approved">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" title="Delete">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li> -->
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- ##### Contact Area End ##### -->
+    </div>
 
     <!-- ##### Footer Area Start ##### -->
     <footer class="footer-area">
@@ -216,6 +282,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <!-- jQuery-2.2.4 js -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
+
     <script src="js/bootstrap/popper.min.js"></script>
     <!-- Bootstrap js -->
     <script src="js/bootstrap/bootstrap.min.js"></script>

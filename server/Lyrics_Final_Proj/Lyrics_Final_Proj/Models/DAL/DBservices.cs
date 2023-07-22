@@ -1718,7 +1718,7 @@ public class DBservices
                 comment.Username = dataReader["username"].ToString();
                 comment.Email = dataReader["email"].ToString();
                 comment.Content = dataReader["comment"].ToString();
-                comment.Whom = dataReader["song"].ToString();
+                comment.Whom = dataReader["songName"].ToString();
                 comment.Date = Convert.ToDateTime(dataReader["created_at"]);
                 commentsToSong.Add(comment);
             }
