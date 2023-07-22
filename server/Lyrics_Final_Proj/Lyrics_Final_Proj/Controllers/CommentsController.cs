@@ -52,15 +52,23 @@ namespace Lyrics_Final_Proj.Controllers
         }
 
         // PUT api/<CommentsController>/5
-        [HttpPut("{id}")]
-        public void PutContent(int id, [FromBody] string value)
+        [HttpPut()]
+        [Route("ChangeCommentToArtist/{idA}")]
+        public bool PutContentArtist(int idA, [FromBody] string content)
         {
-            
+            return Comment.ChangeCommentArtist(idA,content); 
+        }
+
+        [HttpPut()]
+        [Route("ChangeCommentToSong/{idS}")]
+        public bool PutContentSong(int idS, [FromBody] string content)
+        {
+            return Comment.ChangeCommentSong(idS, content);
         }
 
         // DELETE api/<CommentsController>/5
         [HttpDelete()]
-        [Route("DeleteSongByID/{idA}")]
+        [Route("DeleteCommentArtistByID/{idA}")]
         public int DeleteCommentArtist(int idA)
         {
             Comment comment = new Comment();
@@ -68,7 +76,8 @@ namespace Lyrics_Final_Proj.Controllers
         }
 
         // DELETE api/<CommentsController>/5
-        [HttpDelete("{idS}")]
+        [HttpDelete()]
+        [Route("DeleteCommentSongByID/{idS}")]
         public int DeleteCommentSong(int idS)
         {
             Comment comment = new Comment();

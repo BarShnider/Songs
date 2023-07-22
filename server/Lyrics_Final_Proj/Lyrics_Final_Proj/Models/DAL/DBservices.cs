@@ -1559,7 +1559,7 @@ public class DBservices
         try
         {
             int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                                                     //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
             return numEffected;
         }
         catch (Exception ex)
@@ -1740,7 +1740,109 @@ public class DBservices
         }
 
     }
+    
+    //--------------------------------------------------------------------------------------------------
+    // This method changes comment for artist
+    //--------------------------------------------------------------------------------------------------
 
+    public bool ChangeCommentArtist(int id,string comment)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@id", id);
+        paramDic.Add("@comment", comment);
+
+        cmd = CreateCommandWithStoredProcedure("Final_ChangeCommentContentArtist", con, paramDic);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            if(numEffected > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+    //--------------------------------------------------------------------------------------------------
+    // This method changes comment for song
+    //--------------------------------------------------------------------------------------------------
+
+    public bool ChangeCommentSong(int id, string comment)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@id", id);
+        paramDic.Add("@comment", comment);
+
+        cmd = CreateCommandWithStoredProcedure("Final_ChangeCommentContentSong", con, paramDic);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            if (numEffected > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
 
     /////////////////////////////////////////////////////////////////
     ///////////////////////// Question //////////////////////////////

@@ -41,6 +41,16 @@
             return dbs.ReturnCommentsToSong(song);
         }
         
+        public static bool ChangeCommentArtist(int id, string comment)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ChangeCommentArtist(id, comment);
+        }
+        public static bool ChangeCommentSong(int id, string comment)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.ChangeCommentSong(id, comment);
+        }
 
     }
 }
