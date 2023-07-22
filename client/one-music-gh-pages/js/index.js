@@ -668,11 +668,12 @@ function deezerSuccessCB(data){
     }
   }
 }
-
+// render the songs page with songs
 function renderAllSongsList(){
   ajaxCall("GET",currApi + `/Songs/GetAllSongs`,"",allSongsSuccessCB,errorCB);
 }
 
+// sets the page with all songs from the database
 function allSongsSuccessCB(data){
   let container = document.querySelector(".song-list-accordion");
   for (let i = 0; i < data.length; i++) {
@@ -694,6 +695,7 @@ function allSongsSuccessCB(data){
         </div>`;
   }
 }
+
 
 function renderHomepageTop(){
   ajaxCall("GET",currApi + `/Artists/TopArtists`,"",homepageTopSuccessCB,errorCB);

@@ -70,4 +70,11 @@ public class User
         DBservices dbs = new DBservices();
         return dbs.GetStatisticsAdmin();
     }
+
+    //This function receives user email and deletes user  
+    public bool DeleteUser(string email)
+    {
+        DBservices dbs = new DBservices();
+        return dbs.DeleteUserByEmail(email);
+    }
 }

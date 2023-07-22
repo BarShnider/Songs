@@ -961,6 +961,59 @@ public class DBservices
 
     }
 
+    //--------------------------------------------------------------------------------------------------
+    // This method deletes user 
+    //--------------------------------------------------------------------------------------------------
+
+    public bool DeleteUserByEmail(string email)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@email", email);
+
+        cmd = CreateCommandWithStoredProcedure("Final_Delete_User", con, paramDic);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery(); // execute the command
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
+            if(numEffected > 0)
+            {
+                return true;
+            }
+            else { 
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+    }
+
 
     /////////////////////////////////////////////////////////////////
     ///////////////////////// ARTIST /////////////////////////////////

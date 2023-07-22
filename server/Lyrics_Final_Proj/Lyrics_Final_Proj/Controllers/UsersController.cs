@@ -80,11 +80,14 @@ namespace Lyrics_Final_Proj.Controllers
             }
         }
 
-
+        //This function receives email of user and deletes the user
         // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("Delete/{email}")]
+        public bool Delete(string email)
         {
+            User user = new User();
+            return user.DeleteUser(email);
         }
     }
 }
